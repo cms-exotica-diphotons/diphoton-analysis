@@ -49,6 +49,7 @@ namespace ExoDiPhotons
     double alphaHighPtID; // filled
     double kappaHighPtID; // filled
     double phoEAHighPtID; // filled
+    double phoIsoExtraHighPtID; 
 
     // EGM ID
     double chEAegmID; // filled
@@ -90,7 +91,7 @@ namespace ExoDiPhotons
     bool isMCTruthFake; // filled in analyzer
   };
 
-  std::string photonBranchDefString("pt/D:eta:phi:scEta:scPhi:rho:chargedHadIso03:neutralHadIso03:photonIso03:rhoCorChargedHadIso03:rhoCorNeutralHadIso03:rhoCorPhotonIso03:corPhotonIso03:hadTowerOverEm:hadronicOverEm:r9:r9_5x5:sigmaIetaIeta:sigmaIetaIeta5x5:sigmaEtaEta:sigmaIphiIphi:sigmaIphiIphi5x5:sigmaIetaIphi:sigmaIetaIphi5x5:maxEnergyXtal:iEta:iPhi:alphaHighPtID:kappaHighPtID:phoEAHighPtID:chEAegmID:nhEAegmID:phoEAegmID:passEGMLooseID/O:passEGMMediumID:passEGMTightID:isEB:isEE:isEBEtaGap:isEBPhiGap:isEERingGap:isEEDeeGap:isEBEEGap:passElectronVeto:passHTowOverE:passChIso:passCorPhoIso:passSieie:passHighPtID:passChIsoDenom:passCorPhoIsoDenom:isFakeable:isNumeratorObjCand:isDenominatorObj:isSaturated:isMCTruthFake");
+  std::string photonBranchDefString("pt/D:eta:phi:scEta:scPhi:rho:chargedHadIso03:neutralHadIso03:photonIso03:rhoCorChargedHadIso03:rhoCorNeutralHadIso03:rhoCorPhotonIso03:corPhotonIso03:hadTowerOverEm:hadronicOverEm:r9:r9_5x5:sigmaIetaIeta:sigmaIetaIeta5x5:sigmaEtaEta:sigmaIphiIphi:sigmaIphiIphi5x5:sigmaIetaIphi:sigmaIetaIphi5x5:maxEnergyXtal:iEta:iPhi:alphaHighPtID:kappaHighPtID:phoEAHighPtID:phoIsoExtraHighPtID:chEAegmID:nhEAegmID:phoEAegmID:passEGMLooseID/O:passEGMMediumID:passEGMTightID:isEB:isEE:isEBEtaGap:isEBPhiGap:isEERingGap:isEEDeeGap:isEBEEGap:passElectronVeto:passHTowOverE:passChIso:passCorPhoIso:passSieie:passHighPtID:passChIsoDenom:passCorPhoIsoDenom:isFakeable:isNumeratorObjCand:isDenominatorObj:isSaturated:isMCTruthFake");
 
   void InitPhotonInfo(photonInfo_t &photonInfo)
   {
@@ -130,9 +131,10 @@ namespace ExoDiPhotons
     photonInfo.iPhi =  -9999.99;
     
     // high pT ID
-    photonInfo.alphaHighPtID = -9999.99;
-    photonInfo.kappaHighPtID = -9999.99;
-    photonInfo.phoEAHighPtID = -9999.99;
+    photonInfo.alphaHighPtID       = -9999.99;
+    photonInfo.kappaHighPtID       = -9999.99;
+    photonInfo.phoEAHighPtID       = -9999.99;
+    photonInfo.phoIsoExtraHighPtID = -9999.99;
 
     // EGM ID
     photonInfo.chEAegmID       = -9999.99;
@@ -194,14 +196,14 @@ namespace ExoDiPhotons
     photonInfo.isEBEEGap   = photon->isEBEEGap();
   }
   
-  void FillPhotonIDInfo(photonInfo_t &photonInfo, const pat::Photon *photon, double rho, double isSat)
+  void FillPhotonIDInfo(photonInfo_t &photonInfo, const pat::Photon *photon, double rho, std::vector<std::vector<float>> phoIsoCorrInfo, std::vector<int> multiplicity_offset_, std::vector<TH1*> histograms_, bool isMC, double isSat)
   {
     // isolation
     photonInfo.rho              = rho;
     photonInfo.chargedHadIso03  = photon->chargedHadronIso();
     photonInfo.neutralHadIso03  = photon->neutralHadronIso();
     photonInfo.photonIso03      = photon->photonIso();
-    photonInfo.corPhotonIso03   = ExoDiPhotons::corPhoIsoHighPtID(photon,rho);
+    photonInfo.corPhotonIso03   = ExoDiPhotons::corPhoIsoHighPtID(photon,rho,phoIsoCorrInfo, multiplicity_offset_, histograms_, isMC);
     photonInfo.hadTowerOverEm   = photon->hadTowOverEm();
     photonInfo.hadronicOverEm   = photon->hadronicOverEm();
 
@@ -222,23 +224,24 @@ namespace ExoDiPhotons
     photonInfo.iPhi             = photon->iPhi();
     
     // high pT ID
-    photonInfo.alphaHighPtID    = ExoDiPhotons::phoAlphaHighPtID(photon);
-    photonInfo.kappaHighPtID    = ExoDiPhotons::phoKappaHighPtID(photon);
-    photonInfo.phoEAHighPtID    = ExoDiPhotons::phoEAHighPtID(photon);
+    photonInfo.alphaHighPtID       = ExoDiPhotons::phoAlphaHighPtID(photon);
+    photonInfo.kappaHighPtID       = ExoDiPhotons::phoKappaHighPtID(photon);
+    photonInfo.phoEAHighPtID       = ExoDiPhotons::phoEAHighPtID(photon);
+    photonInfo.phoIsoExtraHighPtID = ExoDiPhotons::getExtra(photonInfo.scEta,rho,phoIsoCorrInfo, multiplicity_offset_, histograms_);
     
     // electron veto and high pT ID checks
     photonInfo.passElectronVeto = photon->passElectronVeto();
     photonInfo.passHTowOverE    = ExoDiPhotons::passHadTowerOverEmCut(photon);
     photonInfo.passChIso        = ExoDiPhotons::passChargedHadronCut(photon);
-    photonInfo.passCorPhoIso    = ExoDiPhotons::passCorPhoIsoHighPtID(photon,rho);
+    photonInfo.passCorPhoIso    = ExoDiPhotons::passCorPhoIsoHighPtID(photon, rho, phoIsoCorrInfo, multiplicity_offset_, histograms_, isMC);
     photonInfo.passSieie        = ExoDiPhotons::passSigmaIetaIetaCut(photon,isSat);
-    photonInfo.passHighPtID     = ExoDiPhotons::passHighPtID(photon,rho,isSat);
+    photonInfo.passHighPtID     = ExoDiPhotons::passHighPtID(photon, rho, phoIsoCorrInfo, multiplicity_offset_, histograms_, isMC, isSat);
 
     // for fake rate
     photonInfo.passChIsoDenom     = ExoDiPhotons::passChargedHadronDenomCut(photon);
-    photonInfo.passCorPhoIsoDenom = ExoDiPhotons::passCorPhoIsoDenom(photon,rho);
-    photonInfo.isNumeratorObjCand = ExoDiPhotons::passNumeratorCandCut(photon,rho);
-    photonInfo.isDenominatorObj   = ExoDiPhotons::passDenominatorCut(photon,rho,isSat);
+    photonInfo.passCorPhoIsoDenom = ExoDiPhotons::passCorPhoIsoDenom(photon, rho, phoIsoCorrInfo, multiplicity_offset_, histograms_, isMC);
+    photonInfo.isNumeratorObjCand = ExoDiPhotons::passNumeratorCandCut(photon, rho, phoIsoCorrInfo, multiplicity_offset_, histograms_, isMC);
+    photonInfo.isDenominatorObj   = ExoDiPhotons::passDenominatorCut(photon, rho, phoIsoCorrInfo, multiplicity_offset_, histograms_, isMC, isSat);
   }
 
   void FillPhotonEGMidInfo(photonInfo_t &photonInfo, const pat::Photon *photon, double rho, EffectiveAreas eaCH, EffectiveAreas eaNH, EffectiveAreas eaPho)
