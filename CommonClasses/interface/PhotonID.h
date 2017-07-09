@@ -9,10 +9,8 @@
 #include "DataFormats/EcalDetId/interface/EBDetId.h"
 #include "DataFormats/EcalDetId/interface/EEDetId.h"
 
-#include "TFile.h"
-#include "TVectorD.h"
-#include "TH1.h"
-#include "TRandom.h"
+// for the data/mc correction to phoIso
+#include "diphoton-analysis/CommonClasses/interface/IsoCorrections.h"
 
 namespace ExoDiPhotons{
 
@@ -196,28 +194,18 @@ namespace ExoDiPhotons{
       return -99999.99;
     }
   }
-  int index(int ieta, int irho, int n_rho_centers_) {
-    return ieta*n_rho_centers_ + irho;
-  }
-        
-  int findIndex(float val, std::vector<float> & vec) {
-      
-    if( val < vec.front() ) return 0;
-    if( val >= vec.back() ) return vec.size()-1;
-    int lb = std::distance(vec.begin(), std::lower_bound(vec.begin(),vec.end(), val) );
-    return ( fabs(vec[lb] - val) < fabs(vec[lb-1]-val) ? lb : lb -1) ;  
-  }
   // data/mc correction to photon isolation from the resonant group
-  double getExtra(float eta, float rho, std::vector<std::vector<float>> phoIsoCorrInfo, std::vector<int> multiplicity_offset_, std::vector<TH1*> histograms_, float extraMult=0) {
+  double getExtra(float eta, float rho, float extraMult=0) {
 
     // make sure eta is |eta|
     eta = fabs(eta);
-    // first unpack phoIsoCorInfo
-    std::vector<float> eta_centers_ = phoIsoCorrInfo[0];
-    std::vector<float> rho_centers_eb_ = phoIsoCorrInfo[1];
-    std::vector<float> rho_centers_ee_ = phoIsoCorrInfo[2];
-    std::vector<float> extra_multiplicity_ = phoIsoCorrInfo[3];
-    std::vector<float> extra_multiplicity_slope_ = phoIsoCorrInfo[4];
+
+    std::vector<float> eta_centers_ = ExoDiPhotons::eta_centers_;
+    std::vector<float> rho_centers_eb_ = ExoDiPhotons::rho_centers_eb_;
+    std::vector<float> rho_centers_ee_ = ExoDiPhotons::rho_centers_ee_;
+    std::vector<float> extra_multiplicity_ = ExoDiPhotons::extra_multiplicity_;
+    std::vector<float> extra_multiplicity_slope_ = ExoDiPhotons::extra_multiplicity_slope_;
+    std::vector<TH1*> histograms_ = ExoDiPhotons::histograms_;
 
     int n_rho_centers_ = std::max(rho_centers_eb_.size(),rho_centers_ee_.size());
         
@@ -256,20 +244,20 @@ namespace ExoDiPhotons{
     double extraD = 1.*extra; // not sure if the 1.* is needed for the conversion, but certainly doesn't hurt
     return extraD;
   }
-  double corPhoIsoHighPtID(const pat::Photon* photon, double rho, std::vector<std::vector<float>> phoIsoCorrInfo, std::vector<int> multiplicity_offset_, std::vector<TH1*> histograms_, bool isMC) {
+  double corPhoIsoHighPtID(const pat::Photon* photon, double rho, bool isMC) {
     double phoIso = photon->photonIso();
     double eta = fabs(photon->superCluster()->eta());
     // the "extra" correction is only to correct MC to data, so only needed for MC!
     double extra = 0.;
-    if (isMC) extra  = getExtra(eta,rho,phoIsoCorrInfo,multiplicity_offset_,histograms_);
+    if (isMC) extra  = getExtra(eta,rho);
     return (phoIso + extra - rho*phoEAHighPtID(photon) );
   }
   
-  bool passCorPhoIsoHighPtID(const pat::Photon* photon, double rho, std::vector<std::vector<float>> phoIsoCorrInfo, std::vector<int> multiplicity_offset_, std::vector<TH1*> histograms_, bool isMC) {
+  bool passCorPhoIsoHighPtID(const pat::Photon* photon, double rho, bool isMC) {
     // double phoEta = fabs(photon->superCluster()->eta());
     double phoPt = photon->pt();
     double corPhoIsoCut = -999.9;
-    double corPhoIso = corPhoIsoHighPtID(photon,rho,phoIsoCorrInfo,multiplicity_offset_,histograms_,isMC);
+    double corPhoIso = corPhoIsoHighPtID(photon,rho,isMC);
 
     corPhoIsoCut = phoAlphaHighPtID(photon)+phoKappaHighPtID(photon)*phoPt;
 
@@ -277,10 +265,10 @@ namespace ExoDiPhotons{
     else return false;
   }
 
-  bool passCorPhoIsoDenom(const pat::Photon* photon, double rho, std::vector<std::vector<float>> phoIsoCorrInfo, std::vector<int> multiplicity_offset_, std::vector<TH1*> histograms_, bool isMC) {
+  bool passCorPhoIsoDenom(const pat::Photon* photon, double rho, bool isMC) {
     // double phoEta = fabs(photon->superCluster()->eta());
     // double corPhoIsoCut = -999.9;
-    double corPhoIso = corPhoIsoHighPtID(photon,rho,phoIsoCorrInfo,multiplicity_offset_,histograms_,isMC);
+    double corPhoIso = corPhoIsoHighPtID(photon,rho,isMC);
 
     // if (phoEta < 1.4442) corPhoIsoCut = 2.75;
     // if (1.560 < phoEta && phoEta < 2.5) corPhoIsoCut = 2.00;
@@ -290,12 +278,12 @@ namespace ExoDiPhotons{
     else return false;
   }
 
-  bool passHighPtID(const pat::Photon* photon, double rho, std::vector<std::vector<float>> phoIsoCorrInfo, std::vector<int> multiplicity_offset_, std::vector<TH1*> histograms_, bool isMC, bool isSat) {
+  bool passHighPtID(const pat::Photon* photon, double rho, bool isMC, bool isSat) {
     if (
       passHadTowerOverEmCut(photon) &&
       passChargedHadronCut(photon) &&
       passSigmaIetaIetaCut(photon,isSat) &&
-      passCorPhoIsoHighPtID(photon,rho,phoIsoCorrInfo,multiplicity_offset_,histograms_,isMC) &&
+      passCorPhoIsoHighPtID(photon,rho,isMC) &&
       photon->passElectronVeto()
     ) return true;
 
@@ -304,17 +292,17 @@ namespace ExoDiPhotons{
 
   // must pass all cuts in the High pT ID except for the Sieie cut and chIso cut
   // NOTE: enforce chIso and sieie cuts offline depending on if this is used for numerator or fake template
-  bool passNumeratorCandCut(const pat::Photon* photon, double rho, std::vector<std::vector<float>> phoIsoCorrInfo, std::vector<int> multiplicity_offset_, std::vector<TH1*> histograms_, bool isMC) {
+  bool passNumeratorCandCut(const pat::Photon* photon, double rho, bool isMC) {
     if (
       passHadTowerOverEmCut(photon) &&
-      passCorPhoIsoHighPtID(photon,rho,phoIsoCorrInfo,multiplicity_offset_,histograms_,isMC) &&
+      passCorPhoIsoHighPtID(photon,rho,isMC) &&
       photon->passElectronVeto()
     ) return true;
 
     else return false;
   }
 
-  bool passDenominatorCut(const pat::Photon* photon, double rho, std::vector<std::vector<float>> phoIsoCorrInfo, std::vector<int> multiplicity_offset_, std::vector<TH1*> histograms_, bool isMC, bool isSat) {
+  bool passDenominatorCut(const pat::Photon* photon, double rho, bool isMC, bool isSat) {
 
     double phoEta = fabs( photon->superCluster()->eta() );
     bool isEB = phoEta < 1.4442;
@@ -329,10 +317,10 @@ namespace ExoDiPhotons{
     );
 
     if (isEB)
-      failID = failID || !passCorPhoIsoHighPtID(photon,rho,phoIsoCorrInfo,multiplicity_offset_,histograms_,isMC);
+      failID = failID || !passCorPhoIsoHighPtID(photon,rho,isMC);
     
     // now check if it pass the looser ID
-    bool passLooseIso = passChargedHadronDenomCut(photon) && passCorPhoIsoDenom(photon,rho,phoIsoCorrInfo,multiplicity_offset_,histograms_,isMC);
+    bool passLooseIso = passChargedHadronDenomCut(photon) && passCorPhoIsoDenom(photon,rho,isMC);
     
     // require object to pass CSEV
     bool passCSEV = photon->passElectronVeto();
@@ -340,7 +328,7 @@ namespace ExoDiPhotons{
     // require object to pass an additional reco::Photon::hadronicOverEm cut
     bool passHadOverEmCut = photon->hadronicOverEm() < 0.1;
 
-    bool passCorIso = passCorPhoIsoHighPtID(photon,rho,phoIsoCorrInfo,multiplicity_offset_,histograms_,isMC);
+    bool passCorIso = passCorPhoIsoHighPtID(photon,rho,isMC);
     
     bool retVal = false;
     if (isEB && failID && passLooseIso && passCSEV && passHadOverEmCut){

@@ -93,13 +93,11 @@ class ExoDiPhotonAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResource
       void fillGenInfo(const edm::Handle<edm::View<reco::GenParticle> > genParticles, const std::vector<edm::Ptr<pat::Photon>> selectedPhotons);
       void photonFiller(const std::vector<edm::Ptr<pat::Photon>>& photons, const edm::Handle<EcalRecHitCollection>& recHitsEB, const edm::Handle<EcalRecHitCollection>& recHitsEE, 
             const edm::Handle<edm::ValueMap<bool> >* id_decisions,
-            std::vector<std::vector<float>> phoIsoCorrInfo_, std::vector<int> multiplicity_offset, std::vector<TH1*> histograms, bool isMC,
+            bool isMC,
             ExoDiPhotons::photonInfo_t& photon1Info, ExoDiPhotons::photonInfo_t& photon2Info, ExoDiPhotons::diphotonInfo_t& diphotonInfo);
       void sherpaDiphotonFiller(const edm::Handle<edm::View<reco::GenParticle> > genParticles,
                 std::vector<edm::Ptr<const reco::GenParticle>> sherpaDiphotons);
       void mcTruthFiller(const pat::Photon *photon, ExoDiPhotons::photonInfo_t& photonInfo, const edm::Handle<edm::View<reco::GenParticle> > genParticles);
-      std::vector<float> convertToStd(TVectorD* input);
-      std::vector<int>   convertToStdInt(TVectorD* input);
   
    private:
       virtual void beginJob() override;
@@ -234,11 +232,6 @@ class ExoDiPhotonAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResource
   bool isFT_;
   bool isFF_;
   bool isSherpaDiphoton_;
-
-  // Info used to determine data/mc correction to phoIso
-  std::vector< std::vector<float> > phoIsoCorrInfo;
-  std::vector<int> multiplicity_offset_;
-  std::vector<TH1*> histograms_;
 
   // extra variables that need to be handled by hand
   double SherpaGenPhoton0_iso_;
@@ -393,52 +386,8 @@ ExoDiPhotonAnalyzer::ExoDiPhotonAnalyzer(const edm::ParameterSet& iConfig)
   if(outputFile_.Contains("2015")) year = 2015;
   if(outputFile_.Contains("2016")) year = 2016;
 
-  // initiate everything needed for the data/mc phoIso correction
-  // code is mostly lifted from https://github.com/cms-analysis/flashgg/blob/master/Taggers/src/IsolationCorrection.C
-  auto * fin = TFile::Open("../data/pho_iso_corrections_hybrid_moriond17_v3.root");
-  fin->ls();
-
-  std::vector<float> eta_centers_ = convertToStd(dynamic_cast<TVectorD*>(fin->Get("eta_centers"))); 
-  std::vector<float> rho_centers_eb_ = convertToStd(dynamic_cast<TVectorD*>(fin->Get("rho_centers_eb"))); 
-  std::vector<float> rho_centers_ee_ = convertToStd(dynamic_cast<TVectorD*>(fin->Get("rho_centers_ee")));    
-  std::vector<float> extra_multiplicity_ = convertToStd(dynamic_cast<TVectorD*>(fin->Get("extra_multiplicity")));    
-  std::vector<float> extra_multiplicity_slope_ = convertToStd(dynamic_cast<TVectorD*>(fin->Get("extra_multiplicity_slope")));
-
-  multiplicity_offset_ = convertToStdInt(dynamic_cast<TVectorD*>(fin->Get("multiplicity_offset")));
-
-  int n_rho_centers_ = std::max(rho_centers_eb_.size(),rho_centers_ee_.size());
-      
-  histograms_.resize(n_rho_centers_*eta_centers_.size(),0);
-
-  for(size_t ieta=0; ieta<eta_centers_.size(); ++ieta) {
-    auto & eta = eta_centers_[ieta];
-    // std::cerr << eta << std::endl;
-    auto & rho_centers = ( eta<1.5 ? rho_centers_eb_ : rho_centers_ee_ );
-          
-    for(size_t irho=0; irho<rho_centers.size(); ++irho) {
-      auto ibin = ExoDiPhotons::index(ieta,irho,n_rho_centers_);
-      auto & rho = rho_centers[irho];
-
-      /// std::cerr << rho << std::endl;
-      TString name = TString::Format("hist_%1.3f_%1.2f",eta,rho);
-      name.ReplaceAll(".","p");
-      // std::cerr << name << std::endl;
-      auto hist = dynamic_cast<TH1*>(fin->Get(name)->Clone());
-      // std::cerr << name << " " << hist << std::endl;
-      hist->SetDirectory(0);
-              
-      histograms_[ibin] = hist;
-    }
-  } 
-        
-  fin->Close();
-
-  // fill the vector of vectors for all the float quantities to simplify passing in all this info to the phoIso correction code
-  phoIsoCorrInfo.push_back(eta_centers_);
-  phoIsoCorrInfo.push_back(rho_centers_eb_);
-  phoIsoCorrInfo.push_back(rho_centers_ee_);
-  phoIsoCorrInfo.push_back(extra_multiplicity_);
-  phoIsoCorrInfo.push_back(extra_multiplicity_slope_);
+  // prepare histogram vector for data/mc photon iso correction, only needs to be done once
+  ExoDiPhotons::prepIsoCorrectionHistos();
 
 } // end constructor
 
@@ -706,8 +655,8 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     // check if photon is saturated
     isSat = ExoDiPhotons::isSaturated(&(*pho), &(*recHitsEB), &(*recHitsEE), &(*subDetTopologyEB_), &(*subDetTopologyEE_));
 
-    bool passID = ExoDiPhotons::passHighPtID(&(*pho), rho_, phoIsoCorrInfo, multiplicity_offset_, histograms_, isMC_, isSat);
-    bool denominatorObject = ExoDiPhotons::passDenominatorCut(&(*pho), rho_, phoIsoCorrInfo, multiplicity_offset_, histograms_, isMC_, isSat);
+    bool passID = ExoDiPhotons::passHighPtID(&(*pho), rho_, isMC_, isSat);
+    bool denominatorObject = ExoDiPhotons::passDenominatorCut(&(*pho), rho_, isMC_, isSat);
     // fill photons that pass high pt ID
     if(passID) {
       goodPhotons.push_back(pho);
@@ -731,7 +680,7 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     selectedPhotons[photon1TrueOrFake][photon2TrueOrFake].push_back(realAndFakePhotons.at(1).first);
     photonFiller(selectedPhotons[photon1TrueOrFake][photon2TrueOrFake],
          recHitsEB, recHitsEE, &id_decisions[0],
-         phoIsoCorrInfo,multiplicity_offset_,histograms_,isMC_,
+         isMC_,
          fTrueOrFakePhoton1Info[photon1TrueOrFake][photon2TrueOrFake],
          fTrueOrFakePhoton2Info[photon1TrueOrFake][photon2TrueOrFake],
          fTrueOrFakeDiphotonInfo[photon1TrueOrFake][photon2TrueOrFake]);
@@ -748,7 +697,7 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   
   if (goodPhotons.size() >= 2) {
     isGood_ = true;
-    photonFiller(goodPhotons, recHitsEB, recHitsEE, &id_decisions[0], phoIsoCorrInfo, multiplicity_offset_, histograms_, isMC_, fPhoton1Info, fPhoton2Info, fDiphotonInfo);
+    photonFiller(goodPhotons, recHitsEB, recHitsEE, &id_decisions[0], isMC_, fPhoton1Info, fPhoton2Info, fDiphotonInfo);
     if (isMC_) {
       fillGenInfo(genParticles, goodPhotons);
       if (isClosureTest_) {
@@ -897,7 +846,7 @@ void ExoDiPhotonAnalyzer::fillGenInfo(const edm::Handle<edm::View<reco::GenParti
 void ExoDiPhotonAnalyzer::photonFiller(const std::vector<edm::Ptr<pat::Photon>>& photons,
                          const edm::Handle<EcalRecHitCollection>& recHitsEB, const edm::Handle<EcalRecHitCollection>& recHitsEE,
                          const edm::Handle<edm::ValueMap<bool> >* id_decisions,
-                         std::vector<std::vector<float>> phoIsoCorrInfo_, std::vector<int> multiplicity_offset, std::vector<TH1*> histograms, bool isMC,
+                         bool isMC,
                          ExoDiPhotons::photonInfo_t& photon1Info, ExoDiPhotons::photonInfo_t& photon2Info, ExoDiPhotons::diphotonInfo_t& diphotonInfo)
 {
   std::cout << "Photon 1 pt = " << photons[0]->pt() << "; eta = " << photons[0]->eta() << "; phi = " << photons[0]->phi() << std::endl;
@@ -912,7 +861,7 @@ void ExoDiPhotonAnalyzer::photonFiller(const std::vector<edm::Ptr<pat::Photon>>&
 
   // fill photon info
   ExoDiPhotons::FillBasicPhotonInfo(photon1Info, &(*photons[0]));
-  ExoDiPhotons::FillPhotonIDInfo(photon1Info, &(*photons[0]), rho_, phoIsoCorrInfo_,multiplicity_offset,histograms, isMC, photon1Info.isSaturated);
+  ExoDiPhotons::FillPhotonIDInfo(photon1Info, &(*photons[0]), rho_, isMC, photon1Info.isSaturated);
 
   // fill EGM ID info
   ExoDiPhotons::FillPhotonEGMidInfo(photon1Info, &(*photons[0]), rho_, effAreaChHadrons_, effAreaNeuHadrons_, effAreaPhotons_);
@@ -929,7 +878,7 @@ void ExoDiPhotonAnalyzer::photonFiller(const std::vector<edm::Ptr<pat::Photon>>&
 
   // fill photon info
   ExoDiPhotons::FillBasicPhotonInfo(photon2Info, &(*photons[1]));
-  ExoDiPhotons::FillPhotonIDInfo(photon2Info, &(*photons[1]), rho_, phoIsoCorrInfo_, multiplicity_offset, histograms, isMC, photon2Info.isSaturated);
+  ExoDiPhotons::FillPhotonIDInfo(photon2Info, &(*photons[1]), rho_, isMC, photon2Info.isSaturated);
 
   // fill EGM ID info
   ExoDiPhotons::FillPhotonEGMidInfo(photon2Info, &(*photons[1]), rho_, effAreaChHadrons_, effAreaNeuHadrons_, effAreaPhotons_);
@@ -1071,21 +1020,6 @@ void ExoDiPhotonAnalyzer::mcTruthFiller(const pat::Photon *photon, ExoDiPhotons:
   if (is_fake) photonInfo.isMCTruthFake = true;
   
 } // end mcTruthFiller
-std::vector<float> convertToStd(TVectorD * input)
-{
-  std::vector<float> ret(input->GetNrows());
-  for(int iel=0; iel < input->GetNrows(); ++iel) { ret[iel] = (*input)[iel]; }
-    
-  return ret;
-}
-
-std::vector<int> convertToStdInt(TVectorD * input)
-{
-  std::vector<int> ret(input->GetNrows());
-  for(int iel=0; iel < input->GetNrows(); ++iel) { ret[iel] = (*input)[iel]; }
-    
-  return ret;
-}
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(ExoDiPhotonAnalyzer);
