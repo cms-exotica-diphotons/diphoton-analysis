@@ -651,6 +651,7 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     
     // print photon info
     cout << "Photon: " << "pt = " << pho->pt() << "; eta = " << pho->eta() << "; phi = " << pho->phi() << endl;
+    // cout << "Photon: "<< "iso = " << pho->photonIso() << "; coriso = " << ExoDiPhotons::corPhoIsoHighPtID(&(*pho), rho_, isMC_) << "; extra = " << ExoDiPhotons::getExtra(pho->superCluster()->eta(),rho_) << endl;
     
     // check if photon is saturated
     isSat = ExoDiPhotons::isSaturated(&(*pho), &(*recHitsEB), &(*recHitsEE), &(*subDetTopologyEB_), &(*subDetTopologyEE_));
