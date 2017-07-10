@@ -23,7 +23,7 @@ if "output" in outName: # if an input file name is specified, event weights can 
     outName = "out_" + basename(options.inputFiles[0])
     print "Output root file name: " + outName
 else:
-    options.inputFiles = "file:GGJets_M-1000To2000_Pt-50_13TeV-sherpa.root"
+    options.inputFiles = 'root://eoscms.cern.ch//store/mc/RunIISummer16MiniAODv2/GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/50000/82DE1D78-71BE-E611-892B-001E67C7B133.root'
 #    outName = "ExoDiphotonAnalyzer.root"
 
 isMC = True
@@ -112,6 +112,34 @@ process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
                                            maxd0 = cms.double(2)
 )
 
+from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
+process = regressionWeights(process)
+
+process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
+process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+                  calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(8675389),
+                                                      engineName = cms.untracked.string('TRandom3'),
+                                                      ),
+                  calibratedPatPhotons    = cms.PSet( initialSeed = cms.untracked.uint32(8675389),
+                                                      engineName = cms.untracked.string('TRandom3'),
+                                                      ),
+                  mix                     = cms.PSet(
+                                                      initialSeed = cms.untracked.uint32(8675389),
+                                                      engineName = cms.untracked.string('TRandom3')
+                                                      ),
+                                                   )
+process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
+process.load('EgammaAnalysis.ElectronTools.calibratedPatPhotonsRun2_cfi')
+
+process.calibratedPatElectrons.isMC = cms.bool(isMC)
+process.calibratedPatPhotons.isMC = cms.bool(isMC)
+process.calibratedPatPhotons.photons = cms.InputTag('slimmedPhotons',"","ExoDiPhoton") # use the output of the regression as input to the smearing
+
+## needed because the regression can reduce pT to below range used in EGM ID.
+process.selectedPhotons = cms.EDFilter('PATPhotonSelector',
+    src = cms.InputTag('calibratedPatPhotons'),
+    cut = cms.string('pt>5 && abs(eta)')
+)
 
 # Setup VID for EGM ID
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
@@ -121,6 +149,12 @@ my_id_modules = ['RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonI
 #add them to the VID producer
 for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
+
+process.egmPhotonIDs.physicsObjectSrc = cms.InputTag('selectedPhotons')
+# process.egmPhotonIsolation.srcToIsolate = cms.InputTag('slimmedPhotons')
+process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons')
+process.photonRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons')
+process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons')
 
 ## update AK4PFchs jet collection in MiniAOD JECs
 from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
@@ -135,7 +169,8 @@ updateJetCollection(
 process.diphoton = cms.EDAnalyzer(
     'ExoDiPhotonAnalyzer',
     # photon tag
-    photonsMiniAOD = cms.InputTag("slimmedPhotons"),
+    # photonsMiniAOD = cms.InputTag("slimmedPhotons"),
+    photonsMiniAOD = cms.InputTag("selectedPhotons","","ExoDiPhoton"),
     minPhotonPt = cms.double(75.),
     # genParticle tag
     genParticlesMiniAOD = cms.InputTag("prunedGenParticles"),
@@ -172,7 +207,14 @@ process.diphoton = cms.EDAnalyzer(
 # analyzer to print cross section
 process.xsec = cms.EDAnalyzer("GenXSecAnalyzer")
 
+# Path and EndPath definitions for EGamma corrections
+process.EGMRegression = cms.Path(process.regressionApplication)
+process.EGMSmearerElectrons = cms.Path(process.calibratedPatElectrons)
+process.EGMSmearerPhotons   = cms.Path(process.calibratedPatPhotons)
+
 if isMC:
-    process.p = cms.Path(process.egmPhotonIDSequence * process.diphoton * process.xsec)
+    process.p = cms.Path(process.selectedPhotons * process.egmPhotonIDSequence * process.diphoton * process.xsec)
 else:
-    process.p = cms.Path(process.egmPhotonIDSequence * process.diphoton)
+    process.p = cms.Path(process.selectedPhotons * process.egmPhotonIDSequence * process.diphoton)
+
+process.schedule = cms.Schedule(process.EGMRegression,process.EGMSmearerElectrons,process.EGMSmearerPhotons,process.p)
