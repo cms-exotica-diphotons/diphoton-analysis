@@ -112,14 +112,14 @@ process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
                                            maxd0 = cms.double(2)
 )
 
-from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
-process = regressionWeights(process)
+# from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
+# process = regressionWeights(process)
 
-process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
+# process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-                  calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(8675389),
-                                                      engineName = cms.untracked.string('TRandom3'),
-                                                      ),
+                  # calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(8675389),
+                  #                                     engineName = cms.untracked.string('TRandom3'),
+                  #                                     ),
                   calibratedPatPhotons    = cms.PSet( initialSeed = cms.untracked.uint32(8675389),
                                                       engineName = cms.untracked.string('TRandom3'),
                                                       ),
@@ -128,12 +128,14 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
                                                       engineName = cms.untracked.string('TRandom3')
                                                       ),
                                                    )
-process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
+# process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
 process.load('EgammaAnalysis.ElectronTools.calibratedPatPhotonsRun2_cfi')
 
-process.calibratedPatElectrons.isMC = cms.bool(isMC)
+# process.calibratedPatElectrons.isMC = cms.bool(isMC)
 process.calibratedPatPhotons.isMC = cms.bool(isMC)
-process.calibratedPatPhotons.photons = cms.InputTag('slimmedPhotons',"","ExoDiPhoton") # use the output of the regression as input to the smearing
+process.calibratedPatPhotons.photons = cms.InputTag('slimmedPhotons',"","PAT") # use the MiniAOD photon collection
+# process.calibratedPatPhotons.photons = cms.InputTag('slimmedPhotons',"","ExoDiPhoton") # use the output of the regression as input to the smearing
+process.calibratedPatPhotons.correctionFile = cms.string("EgammaAnalysis/ElectronTools/data/ScalesSmearings/Moriond17_74x_pho") # want the 74X corrections for now to synchonize with the resonant group (who is synched with h->gg). May change to 80X later.
 
 ## needed because the regression can reduce pT to below range used in EGM ID.
 process.selectedPhotons = cms.EDFilter('PATPhotonSelector',
@@ -208,8 +210,8 @@ process.diphoton = cms.EDAnalyzer(
 process.xsec = cms.EDAnalyzer("GenXSecAnalyzer")
 
 # Path and EndPath definitions for EGamma corrections
-process.EGMRegression = cms.Path(process.regressionApplication)
-process.EGMSmearerElectrons = cms.Path(process.calibratedPatElectrons)
+# process.EGMRegression = cms.Path(process.regressionApplication)
+# process.EGMSmearerElectrons = cms.Path(process.calibratedPatElectrons)
 process.EGMSmearerPhotons   = cms.Path(process.calibratedPatPhotons)
 
 if isMC:
@@ -217,4 +219,5 @@ if isMC:
 else:
     process.p = cms.Path(process.selectedPhotons * process.egmPhotonIDSequence * process.diphoton)
 
-process.schedule = cms.Schedule(process.EGMRegression,process.EGMSmearerElectrons,process.EGMSmearerPhotons,process.p)
+# process.schedule = cms.Schedule(process.EGMRegression,process.EGMSmearerPhotons,process.p)
+process.schedule = cms.Schedule(process.EGMSmearerPhotons,process.p)
