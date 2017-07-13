@@ -32,7 +32,7 @@ namespace ExoDiPhotons{
   void prepIsoCorrectionHistos(){
     // initiate everything needed for the data/mc phoIso correction
     // code is mostly lifted from https://github.com/cms-analysis/flashgg/blob/master/Taggers/src/IsolationCorrection.C
-    auto * fin = TFile::Open("../data/pho_iso_corrections_hybrid_moriond17_v3.root"); // filename hardcoded for now
+    auto * fin = TFile::Open("root://cmseos.fnal.gov//store/user/skaplan/noreplica/pho_iso_corrections_hybrid_moriond17_v3.root"); // filename hardcoded for now
     // fin->ls();
 
     n_rho_centers_ = std::max(rho_centers_eb_.size(),rho_centers_ee_.size());
