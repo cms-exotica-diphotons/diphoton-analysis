@@ -39,6 +39,10 @@
 #include "diphoton-analysis/CommonClasses/interface/DiPhotonInfo.h"
 #include "diphoton-analysis/CommonClasses/interface/PileupInfo.h"
 
+// from our ported flashgg code
+#include "diphoton-analysis/flashgg/DataFormats/interface/VertexCandidateMap.h"
+#include "diphoton-analysis/flashgg/DataFormats/interface/DiPhotonCandidate.h"
+
 // for TFileService, trees
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
@@ -112,6 +116,9 @@ class ExoDiPhotonAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResource
   edm::EDGetToken photonsMiniAODToken_;
   double fMinPt;
 
+  // higgs diphoton candidate token;
+  edm::EDGetToken higgsDiPhotonToken_;
+
   // AK4 jet token and cuts
   edm::EDGetToken jetsMiniAODToken_;
   double jetPtThreshold;
@@ -159,6 +166,8 @@ class ExoDiPhotonAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResource
   edm::EDGetTokenT<edm::ValueMap<bool> > phoLooseIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > phoMediumIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > phoTightIdMapToken_;
+
+  edm::EDGetToken vtxCandToken_;
   
   // output file name
   TString outputFile_;
@@ -205,6 +214,9 @@ class ExoDiPhotonAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResource
   
   // flag to determine if sample is reco or re-reco
   bool isReMINIAOD_;
+
+  // flag to determine whether or not to use the photons from the higgs vertex ID for the main isGood photons
+  bool useHiggsVertexID_;
 
   // genParticles
   ExoDiPhotons::genParticleInfo_t fGenPhoton1Info; // leading
@@ -351,14 +363,14 @@ ExoDiPhotonAnalyzer::ExoDiPhotonAnalyzer(const edm::ParameterSet& iConfig)
   fTree->Branch("nPV", &nPV_);
 
   // photon token
-  photonsMiniAODToken_ = mayConsume<edm::View<pat::Photon> >(iConfig.getParameter<edm::InputTag>("photonsMiniAOD"));
+  photonsMiniAODToken_ = consumes<edm::View<pat::Photon> >(iConfig.getParameter<edm::InputTag>("photonsMiniAOD"));
   fMinPt = iConfig.getParameter<double>("minPhotonPt");
 
   // genParticle token
-  genParticlesMiniAODToken_ = mayConsume<edm::View<reco::GenParticle> >(iConfig.getParameter<edm::InputTag>("genParticlesMiniAOD"));
+  genParticlesMiniAODToken_ = consumes<edm::View<reco::GenParticle> >(iConfig.getParameter<edm::InputTag>("genParticlesMiniAOD"));
   
   // AK4 jets token
-  jetsMiniAODToken_ = mayConsume< edm::View<pat::Jet> >(iConfig.getParameter<edm::InputTag>("jetsMiniAOD"));
+  jetsMiniAODToken_ = consumes< edm::View<pat::Jet> >(iConfig.getParameter<edm::InputTag>("jetsMiniAOD"));
   jetPtThreshold = iConfig.getParameter<double>("jetPtThreshold");
   jetEtaThreshold = iConfig.getParameter<double>("jetEtaThreshold");
   
@@ -381,6 +393,17 @@ ExoDiPhotonAnalyzer::ExoDiPhotonAnalyzer(const edm::ParameterSet& iConfig)
 
   // trigger prescales
   prescalesToken_ = consumes<pat::PackedTriggerPrescales>( edm::InputTag("patTrigger","",(isMC_||isReMINIAOD_)?("PAT"):("RECO")) );
+
+  //vertex candidiate map
+  vtxCandToken_ = ( iConfig.exists("vtxCandMap") ? consumes<flashgg::VertexCandidateMap>( iConfig.getParameter<edm::InputTag>("vtxCandMap") ) : edm::EDGetToken());
+
+  // higgs vertex boolean, set to false by default if not specified in the config file
+  useHiggsVertexID_ = ( iConfig.exists("useHiggsVertexID") ? iConfig.getParameter<bool>("useHiggsVertexID") : false );
+
+  // higgsDiPhotonToken_ = (iConfig.exists("higgsDiPhotonSrc") ? consumes< std::vector<flashgg::DiPhotonCandidate> >( iConfig.getParameter<edm::InputTag>("higgsDiPhotonSrc") ) : edm::EDGetToken());
+  higgsDiPhotonToken_ = (iConfig.exists("higgsDiPhotonSrc") ? consumes< edm::View<pat::Photon> >( iConfig.getParameter<edm::InputTag>("higgsDiPhotonSrc") ) : edm::EDGetToken());
+
+
 
   // set appropriate year (used for pileup reweighting)
   if(outputFile_.Contains("2015")) year = 2015;
@@ -617,6 +640,35 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     else throw cms::Exception("Should always have exactly two photons with status==3 in the diphoton sample");
   }
 
+  // ====================
+  // Vertex Candidate Map
+  // ====================
+
+  Handle<flashgg::VertexCandidateMap> vtxCandMap;
+  if (useHiggsVertexID_)
+    iEvent.getByToken(vtxCandToken_,vtxCandMap);
+
+  // ========================
+  // Higgs Diphoton Candidate
+  // ========================
+  bool existsDiPhotonCand = false;
+  edm::Handle<edm::View<pat::Photon> > higgsDiPhotonCandHandle;
+  // flashgg::DiPhotonCandidate selectedDiPhotonCand;
+  // if (useHiggsVertexID_){
+  //   Handle< std::vector<flashgg::DiPhotonCandidate> > higgsDiPhotonCandHandle;
+  //   iEvent.getByToken(higgsDiPhotonToken_,higgsDiPhotonCandHandle);
+  //   std::vector<flashgg::DiPhotonCandidate> higgsDiPhotonCandVec = *(&(*higgsDiPhotonCandHandle));
+  //   if (higgsDiPhotonCandVec.size() > 0){
+  //     selectedDiPhotonCand = higgsDiPhotonCandVec.at(0); // already ordered by decreasing sumPt of the diphoton system
+  //     selectedDiPhotonCand.makePhotonsPersistent(); //i.e. remove the "const" on the pat::Photons so cand.getLeadingPhoton() etc works
+  //     existsDiPhotonCand = true;
+  //   }
+  // }
+  if (useHiggsVertexID_){
+    iEvent.getByToken(higgsDiPhotonToken_,higgsDiPhotonCandHandle);
+    if (higgsDiPhotonCandHandle->size() > 0) existsDiPhotonCand = true;
+  }
+
   // =======
   // PHOTONS
   // =======
@@ -645,6 +697,18 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     
   std::vector<std::pair<edm::Ptr<pat::Photon>, int> > realAndFakePhotons;
 
+  // SK Note: if useHiggsVertexID_=true, goodPhotons will now be filled with the photons from the DiPhotonCandidate!  Rest of code should proceed as normal.
+  if (useHiggsVertexID_ && existsDiPhotonCand){
+    const auto leadingPhoPtr = higgsDiPhotonCandHandle->ptrAt(0);
+    const auto subLeadingPhoPtr = higgsDiPhotonCandHandle->ptrAt(1);
+    bool isSat1 = ExoDiPhotons::isSaturated(&(*leadingPhoPtr), &(*recHitsEB), &(*recHitsEE), &(*subDetTopologyEB_), &(*subDetTopologyEE_));
+    bool isSat2 = ExoDiPhotons::isSaturated(&(*subLeadingPhoPtr), &(*recHitsEB), &(*recHitsEE), &(*subDetTopologyEB_), &(*subDetTopologyEE_));
+    bool passID1 = ExoDiPhotons::passHighPtID(&(*leadingPhoPtr), rho_, isMC_, isSat1);
+    bool passID2 = ExoDiPhotons::passHighPtID(&(*subLeadingPhoPtr), rho_, isMC_, isSat2);
+    if (passID1) goodPhotons.push_back(leadingPhoPtr);
+    if (passID2) goodPhotons.push_back(subLeadingPhoPtr);
+  }
+
   //for (edm::View<pat::Photon>::const_iterator pho = photons->begin(); pho != photons->end(); ++pho) {
   for (size_t i = 0; i < photons->size(); ++i) {
     const auto pho = photons->ptrAt(i);
@@ -660,7 +724,8 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     bool denominatorObject = ExoDiPhotons::passDenominatorCut(&(*pho), rho_, isMC_, isSat);
     // fill photons that pass high pt ID
     if(passID) {
-      goodPhotons.push_back(pho);
+      // SK Note: if useHiggsVertexID_=true, goodPhotons no longer are coming from the photon collection but from the DiPhotonCandidate object from flashgg!
+      if (!useHiggsVertexID_) goodPhotons.push_back(pho); 
       realAndFakePhotons.push_back(std::pair<edm::Ptr<pat::Photon>, int>(pho, TRUE));
     }
     if(denominatorObject) {
