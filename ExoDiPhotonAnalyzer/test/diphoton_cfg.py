@@ -112,10 +112,9 @@ process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
                                            maxd0 = cms.double(2)
 )
 
-# from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
-# process = regressionWeights(process)
+from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
+process = regressionWeights(process)
 
-# process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                   # calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(8675389),
                   #                                     engineName = cms.untracked.string('TRandom3'),
@@ -128,6 +127,8 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
                                                       engineName = cms.untracked.string('TRandom3')
                                                       ),
                                                    )
+process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
+
 # process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
 process.load('EgammaAnalysis.ElectronTools.calibratedPatPhotonsRun2_cfi')
 
@@ -135,12 +136,31 @@ process.load('EgammaAnalysis.ElectronTools.calibratedPatPhotonsRun2_cfi')
 process.calibratedPatPhotons.isMC = cms.bool(isMC)
 process.calibratedPatPhotons.photons = cms.InputTag('slimmedPhotons',"","PAT") # use the MiniAOD photon collection
 # process.calibratedPatPhotons.photons = cms.InputTag('slimmedPhotons',"","ExoDiPhoton") # use the output of the regression as input to the smearing
-process.calibratedPatPhotons.correctionFile = cms.string("EgammaAnalysis/ElectronTools/data/ScalesSmearings/Moriond17_74x_pho") # want the 74X corrections for now to synchonize with the resonant group (who is synched with h->gg). May change to 80X later.
+process.calibratedPatPhotons.correctionFile = cms.string("EgammaAnalysis/ElectronTools/data/ScalesSmearings/Moriond17_23Jan_ele")
 
 ## needed because the regression can reduce pT to below range used in EGM ID.
 process.selectedPhotons = cms.EDFilter('PATPhotonSelector',
-    src = cms.InputTag('calibratedPatPhotons'),
+    src = cms.InputTag('calibratedPatPhotons',"","ExoDiPhoton"),
     cut = cms.string('pt>5 && abs(eta)')
+)
+
+# vertex candidate map
+process.flashggVertexMapForCHSOld = cms.EDProducer('FlashggDzVertexMapProducerForCHS',
+       PFCandidatesTag=cms.InputTag('packedPFCandidates'),
+       VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
+       MaxAllowedDz=cms.double(0.2)
+)
+# flashgg::DiPhotonCandidates (i.e. recalculated diphotons with the higgs vertex)
+process.load("flashgg.MicroAOD.flashggDiPhotons_cfi");
+process.flashggDiPhotons.PhotonTag = cms.InputTag("selectedPhotons","","ExoDiPhoton")
+process.flashggDiPhotons.VertexCandidateMapTag  = cms.InputTag("flashggVertexMapForCHSOld")
+process.flashggDiPhotons.GenParticleTag = cms.InputTag( "prunedGenParticles" )
+process.flashggDiPhotons.MaxJetCollections = cms.uint32(0) # makes no difference to the code, just need to input something
+
+## merged photon collection (higgs + slimmedPhotons) for the EGM ID
+process.concatenatedPhotons = cms.EDProducer("PhotonCollectionConcatenator",
+  photonColl1 = cms.InputTag("slimmedPhotons","","PAT"),
+  photonColl2 = cms.InputTag("flashggDiPhotons","","ExoDiPhoton")
 )
 
 # Setup VID for EGM ID
@@ -152,11 +172,19 @@ my_id_modules = ['RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonI
 for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
 
-process.egmPhotonIDs.physicsObjectSrc = cms.InputTag('selectedPhotons')
-# process.egmPhotonIsolation.srcToIsolate = cms.InputTag('slimmedPhotons')
-process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons')
-process.photonRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons')
-process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons')
+process.egmPhotonIDs.physicsObjectSrc = cms.InputTag('concatenatedPhotons')
+# process.egmPhotonIsolation.srcToIsolate = cms.InputTag('concatenatedPhotons')
+process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('concatenatedPhotons')
+process.photonRegressionValueMapProducer.srcMiniAOD = cms.InputTag('concatenatedPhotons')
+process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('concatenatedPhotons')
+
+# process.EGMIDForDiphoton = process.egmPhotonIDSequence.clone(
+#   process.egmPhotonIDs.physicsObjectSrc = cms.InputTag('flashggDiPhotons')
+#   # process.egmPhotonIsolation.srcToIsolate = cms.InputTag('slimmedPhotons')
+#   process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('flashggDiPhotons')
+#   process.photonRegressionValueMapProducer.srcMiniAOD = cms.InputTag('flashggDiPhotons')
+#   process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('flashggDiPhotons')
+# )
 
 ## update AK4PFchs jet collection in MiniAOD JECs
 from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
@@ -171,9 +199,12 @@ updateJetCollection(
 process.diphoton = cms.EDAnalyzer(
     'ExoDiPhotonAnalyzer',
     # photon tag
-    # photonsMiniAOD = cms.InputTag("slimmedPhotons"),
-    photonsMiniAOD = cms.InputTag("selectedPhotons","","ExoDiPhoton"),
+    photonsMiniAOD = cms.InputTag("slimmedPhotons","","PAT"),
     minPhotonPt = cms.double(75.),
+    # higgs photon collections
+    useHiggsVertexID = cms.bool(True),
+    higgsPhotons = cms.InputTag("flashggDiPhotons"), # vector with two photons corresponding to the chosen diphoton pair, needed only to more easily integrate with existing code
+    higgsDiPhotonObjs = cms.InputTag("flashggDiPhotons"), # vector with all flashgg::DiPhotonCandidate objects, needed to get the vertex info and for future studies if need be
     # genParticle tag
     genParticlesMiniAOD = cms.InputTag("prunedGenParticles"),
     # vertex tag
@@ -210,14 +241,14 @@ process.diphoton = cms.EDAnalyzer(
 process.xsec = cms.EDAnalyzer("GenXSecAnalyzer")
 
 # Path and EndPath definitions for EGamma corrections
-# process.EGMRegression = cms.Path(process.regressionApplication)
+process.EGMRegression = cms.Path(process.regressionApplication)
 # process.EGMSmearerElectrons = cms.Path(process.calibratedPatElectrons)
 process.EGMSmearerPhotons   = cms.Path(process.calibratedPatPhotons)
 
 if isMC:
-    process.p = cms.Path(process.selectedPhotons * process.egmPhotonIDSequence * process.diphoton * process.xsec)
+    process.p = cms.Path(process.selectedPhotons * process.flashggVertexMapForCHSOld * process.flashggDiPhotons * process.concatenatedPhotons * process.egmPhotonIDSequence * process.diphoton * process.xsec)
 else:
-    process.p = cms.Path(process.selectedPhotons * process.egmPhotonIDSequence * process.diphoton)
+    process.p = cms.Path(process.selectedPhotons * process.flashggVertexMapForCHSOld * process.flashggDiPhotons * process.concatenatedPhotons * process.egmPhotonIDSequence * process.diphoton)
 
-# process.schedule = cms.Schedule(process.EGMRegression,process.EGMSmearerPhotons,process.p)
-process.schedule = cms.Schedule(process.EGMSmearerPhotons,process.p)
+process.schedule = cms.Schedule(process.EGMRegression,process.EGMSmearerPhotons,process.p)
+# process.schedule = cms.Schedule(process.EGMSmearerPhotons,process.p)
