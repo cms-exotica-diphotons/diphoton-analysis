@@ -9,7 +9,8 @@
 <use name="CommonTools/UtilAlgos"/>
 <use name="Geometry/CaloTopology"/>
 <use name="L1Trigger/L1TGlobal"/>
-<use name=root>
+<use name="flashgg/MicroAOD"/>
+<use name="root"/>
 <use name="rootcore"/>
 <use name="rootrflx"/>
 <use name="roofit"/>

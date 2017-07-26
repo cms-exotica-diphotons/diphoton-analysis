@@ -42,6 +42,7 @@
 // from our ported flashgg code
 #include "flashgg/DataFormats/interface/VertexCandidateMap.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/MicroAOD/interface/PhotonIdUtils.h"
 
 // for TFileService, trees
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
@@ -168,7 +169,8 @@ class ExoDiPhotonAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResource
   edm::EDGetTokenT<edm::ValueMap<bool> > phoMediumIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > phoTightIdMapToken_;
 
-  // edm::EDGetToken vtxCandToken_;
+  // vertex candidate map
+  edm::EDGetToken vtxCandToken_;
   
   // output file name
   TString outputFile_;
@@ -397,8 +399,8 @@ ExoDiPhotonAnalyzer::ExoDiPhotonAnalyzer(const edm::ParameterSet& iConfig)
   // trigger prescales
   prescalesToken_ = consumes<pat::PackedTriggerPrescales>( edm::InputTag("patTrigger","",(isMC_||isReMINIAOD_)?("PAT"):("RECO")) );
 
-  // //vertex candidiate map
-  // vtxCandToken_ = ( iConfig.exists("vtxCandMap") ? consumes<flashgg::VertexCandidateMap>( iConfig.getParameter<edm::InputTag>("vtxCandMap") ) : edm::EDGetToken());
+  //vertex candidiate map
+  vtxCandToken_ = ( iConfig.exists("vtxCandMap") ? consumes<flashgg::VertexCandidateMap>( iConfig.getParameter<edm::InputTag>("vtxCandMap") ) : edm::EDGetToken());
 
   // higgs vertex boolean, set to false by default if not specified in the config file
   useHiggsVertexID_ = ( iConfig.exists("useHiggsVertexID") ? iConfig.getParameter<bool>("useHiggsVertexID") : false );
@@ -648,9 +650,9 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   // Vertex Candidate Map
   // ====================
 
-  // Handle<flashgg::VertexCandidateMap> vtxCandMap;
-  // if (useHiggsVertexID_)
-  //   iEvent.getByToken(vtxCandToken_,vtxCandMap);
+  Handle<flashgg::VertexCandidateMap> vtxCandMap;
+  if (useHiggsVertexID_)
+    iEvent.getByToken(vtxCandToken_,vtxCandMap);
 
   // ========================
   // Higgs Diphoton Candidate
@@ -670,12 +672,13 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   //     existsDiPhotonCand = true;
   //   }
   // }
+  edm::Ptr<reco::Vertex> higgsVtxPtr;
   if (useHiggsVertexID_){
     iEvent.getByToken(higgsPhotonsToken_,higgsPhotonsHandle);
     iEvent.getByToken(higgsDiPhotonObjToken_,higgsDiPhotonObjsHandle);
     if (higgsPhotonsHandle->size() > 0){
       existsDiPhotonCand = true;
-      edm::Ptr<reco::Vertex> higgsVtxPtr = higgsDiPhotonObjsHandle->at(0).vtx();
+      higgsVtxPtr = higgsDiPhotonObjsHandle->at(0).vtx();
       ExoDiPhotons::FillVertexInfo(fHiggsVertexInfo,&(*higgsVtxPtr));
     }
   }
@@ -709,15 +712,27 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   std::vector<std::pair<edm::Ptr<pat::Photon>, int> > realAndFakePhotons;
 
   // SK Note: if useHiggsVertexID_=true, goodPhotons will now be filled with the photons from the DiPhotonCandidate!  Rest of code should proceed as normal.
+  double higgsChIso1;
+  double higgsChIso2;
+  flashgg::PhotonIdUtils idUtil;
   if (useHiggsVertexID_ && existsDiPhotonCand){
     const auto leadingPhoPtr = higgsPhotonsHandle->ptrAt(0);
     const auto subLeadingPhoPtr = higgsPhotonsHandle->ptrAt(1);
+    // calculate new chIso values since 4 vectors may have changed
+    higgsChIso1 = idUtil.pfIsoChgWrtVtx(leadingPhoPtr,higgsVtxPtr,*(&(*vtxCandMap)),0.3,0.02,0.02,0.1);
+    higgsChIso2 = idUtil.pfIsoChgWrtVtx(subLeadingPhoPtr,higgsVtxPtr,*(&(*vtxCandMap)),0.3,0.02,0.02,0.1);
+    // std::cout << "old chIso 1 and 2 = " << leadingPhoPtr->chargedHadronIso() << " " << subLeadingPhoPtr->chargedHadronIso() << std::endl;
+    // std::cout << "new chIso 1 and 2 = " << higgsChIso1 << " " << higgsChIso2 << std::endl;
     bool isSat1 = ExoDiPhotons::isSaturated(&(*leadingPhoPtr), &(*recHitsEB), &(*recHitsEE), &(*subDetTopologyEB_), &(*subDetTopologyEE_));
     bool isSat2 = ExoDiPhotons::isSaturated(&(*subLeadingPhoPtr), &(*recHitsEB), &(*recHitsEE), &(*subDetTopologyEB_), &(*subDetTopologyEE_));
-    bool passID1 = ExoDiPhotons::passHighPtID(&(*leadingPhoPtr), rho_, isMC_, isSat1);
-    bool passID2 = ExoDiPhotons::passHighPtID(&(*subLeadingPhoPtr), rho_, isMC_, isSat2);
+    bool passID1 = ExoDiPhotons::passHighPtID_HiggsChIso(&(*leadingPhoPtr), rho_, isMC_, isSat1, higgsChIso1);
+    bool passID2 = ExoDiPhotons::passHighPtID_HiggsChIso(&(*subLeadingPhoPtr), rho_, isMC_, isSat2, higgsChIso2);
     if (passID1) goodPhotons.push_back(leadingPhoPtr);
     if (passID2) goodPhotons.push_back(subLeadingPhoPtr);
+    // std::cout << "Photon1 pt, eta, phoiso, extra, extraExplicit: " << leadingPhoPtr->pt() << ", " << leadingPhoPtr->superCluster()->eta() << ", " << leadingPhoPtr->photonIso() << ", " << ExoDiPhotons::getExtra(leadingPhoPtr->superCluster()->eta(), rho_  ) << ", " << ExoDiPhotons::getExtra(-0.045875,rho_) << std::endl;
+    // std::cout << "Photon2 pt, eta, phoiso, extra: " << subLeadingPhoPtr->pt() << ", " << subLeadingPhoPtr->superCluster()->eta() << ", " << subLeadingPhoPtr->photonIso() << ", " << ExoDiPhotons::getExtra(subLeadingPhoPtr->superCluster()->eta(), rho_  ) << std::endl;
+    // std::cout << "Vertex0 x,y,z = " << fVertex0Info.vx << ", " << fVertex0Info.vy << ", " << fVertex0Info.vz << std::endl;
+    // std::cout << "HiggsVertex x,y,z = " << fHiggsVertexInfo.vx << ", " << fHiggsVertexInfo.vy << ", " << fHiggsVertexInfo.vz << std::endl;
   }
 
   //for (edm::View<pat::Photon>::const_iterator pho = photons->begin(); pho != photons->end(); ++pho) {
@@ -725,8 +740,8 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     const auto pho = photons->ptrAt(i);
     
     // print photon info
-    cout << "Photon: " << "pt = " << pho->pt() << "; eta = " << pho->eta() << "; phi = " << pho->phi() << endl;
-    // cout << "Photon: "<< "iso = " << pho->photonIso() << "; coriso = " << ExoDiPhotons::corPhoIsoHighPtID(&(*pho), rho_, isMC_) << "; extra = " << ExoDiPhotons::getExtra(pho->superCluster()->eta(),rho_) << endl;
+    cout << "Photon: " << "pt = " << pho->pt() << "; eta = " << pho->eta() << "; scEta = " <<  pho->superCluster()->eta() << "; phi = " << pho->phi() << endl;
+    // cout << "Photon: "<< "iso = " << pho->photonIso() << "; extraWithScEta = " << ExoDiPhotons::getExtra(pho->superCluster()->eta(),rho_)  << "; extraWithPhysEta = " << ExoDiPhotons::getExtra(pho->eta(),rho_) << endl;
     
     // check if photon is saturated
     isSat = ExoDiPhotons::isSaturated(&(*pho), &(*recHitsEB), &(*recHitsEE), &(*subDetTopologyEB_), &(*subDetTopologyEE_));
@@ -758,14 +773,12 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     int photon2TrueOrFake = realAndFakePhotons.at(1).second;
     selectedPhotons[photon1TrueOrFake][photon2TrueOrFake].push_back(realAndFakePhotons.at(0).first);
     selectedPhotons[photon1TrueOrFake][photon2TrueOrFake].push_back(realAndFakePhotons.at(1).first);
-    std::cout << "if realAndFake >= 2 before" << std::endl;
     photonFiller(selectedPhotons[photon1TrueOrFake][photon2TrueOrFake],
          recHitsEB, recHitsEE, &id_decisions[0],
          isMC_,
          fTrueOrFakePhoton1Info[photon1TrueOrFake][photon2TrueOrFake],
          fTrueOrFakePhoton2Info[photon1TrueOrFake][photon2TrueOrFake],
          fTrueOrFakeDiphotonInfo[photon1TrueOrFake][photon2TrueOrFake]);
-    std::cout << "if realAndFake >= 2 after" << std::endl;
     if(photon1TrueOrFake==TRUE && photon2TrueOrFake==TRUE) isTT_ = true;
     else if(photon1TrueOrFake==TRUE && photon2TrueOrFake==FAKE) isTF_ = true;
     else if(photon1TrueOrFake==FAKE && photon2TrueOrFake==TRUE) isFT_ = true;
@@ -779,9 +792,17 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   
   if (goodPhotons.size() >= 2) {
     isGood_ = true;
-    std::cout << "if good >= 2 before" << std::endl;
     photonFiller(goodPhotons, recHitsEB, recHitsEE, &id_decisions[0], isMC_, fPhoton1Info, fPhoton2Info, fDiphotonInfo);
-    std::cout << "if good >= 2 before" << std::endl;
+    // if using higgs vertex, need to update a few variables because they're automatically calculated wrt vertex0 info
+    if (useHiggsVertexID_){
+      fPhoton1Info.passHighPtID = true;
+      fPhoton1Info.passChIso = true;
+      fPhoton1Info.chargedHadIso = idUtil.pfIsoChgWrtVtx(goodPhotons.at(0),higgsVtxPtr,*(&(*vtxCandMap)),0.3,0.02,0.02,0.1);
+
+      fPhoton2Info.passHighPtID = true;
+      fPhoton2Info.passChIso = true;
+      fPhoton2Info.chargedHadIso = idUtil.pfIsoChgWrtVtx(goodPhotons.at(1),higgsVtxPtr,*(&(*vtxCandMap)),0.3,0.02,0.02,0.1);
+    }
     if (isMC_) {
       fillGenInfo(genParticles, goodPhotons);
       if (isClosureTest_) {

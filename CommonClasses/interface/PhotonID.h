@@ -80,6 +80,13 @@ namespace ExoDiPhotons{
   }
 
   // CH ISO
+
+  // top function needed for higgs diphotons where chIso must be recalculated
+  bool passChargedHadronCut(double chIso) {
+    double chIsoCut = 5.;
+    if (chIso < chIsoCut) return true;
+    else return false;
+  }
   bool passChargedHadronCut(const pat::Photon* photon) {
     double chIsoCut = 5.;
     double chIso = photon->chargedHadronIso();
@@ -282,6 +289,17 @@ namespace ExoDiPhotons{
     if (
       passHadTowerOverEmCut(photon) &&
       passChargedHadronCut(photon) &&
+      passSigmaIetaIetaCut(photon,isSat) &&
+      passCorPhoIsoHighPtID(photon,rho,isMC) &&
+      photon->passElectronVeto()
+    ) return true;
+
+    else return false;
+  }
+  bool passHighPtID_HiggsChIso(const pat::Photon* photon, double rho, bool isMC, bool isSat, double chIso) {
+    if (
+      passHadTowerOverEmCut(photon) &&
+      passChargedHadronCut(chIso) &&
       passSigmaIetaIetaCut(photon,isSat) &&
       passCorPhoIsoHighPtID(photon,rho,isMC) &&
       photon->passElectronVeto()
