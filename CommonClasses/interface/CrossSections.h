@@ -190,6 +190,9 @@ namespace ExoDiPhotons {
     if(sample.Contains("GG_M-2000To4000_Pt-70_13TeV-sherpa")) xsec = 2.315e-04;
     if(sample.Contains("GG_M-4000To8000_Pt-70_13TeV-sherpa")) xsec = 1.669e-06;
     if(sample.Contains("GG_M-8000To13000_Pt-70_13TeV-sherpa")) xsec = 5.430e-11;
+
+    //RSGrav sample for synching study
+    if(sample.Contains("RSGravToGG_kMpl-001_M-5000")) xsec = 1.425e-07;
     
     // do not use weights for data
     if(sample.Contains("Run2015") || sample.Contains("Run2016")) xsec = 1.0;
@@ -357,6 +360,8 @@ namespace ExoDiPhotons {
     if(sample.Contains("GG_M-2000To4000_Pt-70_13TeV-sherpa")) average = 476.126/99999;
     if(sample.Contains("GG_M-4000To8000_Pt-70_13TeV-sherpa")) average = 3.85555/97816;
     if(sample.Contains("GG_M-8000To13000_Pt-70_13TeV-sherpa")) average = 0.00022662/99274;
+
+    if(sample.Contains("RSGravToGG_kMpl-001_M-5000")) average=100000./100000.;
     
     return average;
   }

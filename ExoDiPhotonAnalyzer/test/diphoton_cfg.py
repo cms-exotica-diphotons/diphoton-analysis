@@ -23,7 +23,7 @@ if "output" in outName: # if an input file name is specified, event weights can 
     outName = "out_" + basename(options.inputFiles[0])
     print "Output root file name: " + outName
 else:
-    options.inputFiles = 'root://eoscms.cern.ch//store/mc/RunIISummer16MiniAODv2/GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/50000/82DE1D78-71BE-E611-892B-001E67C7B133.root'
+    options.inputFiles = 'file:pickevents.root'
 #    outName = "ExoDiphotonAnalyzer.root"
 
 isMC = True
@@ -134,8 +134,9 @@ process.load('EgammaAnalysis.ElectronTools.calibratedPatPhotonsRun2_cfi')
 
 # process.calibratedPatElectrons.isMC = cms.bool(isMC)
 process.calibratedPatPhotons.isMC = cms.bool(isMC)
-process.calibratedPatPhotons.photons = cms.InputTag('slimmedPhotons',"","PAT") # use the MiniAOD photon collection
-# process.calibratedPatPhotons.photons = cms.InputTag('slimmedPhotons',"","ExoDiPhoton") # use the output of the regression as input to the smearing
+# process.calibratedPatPhotons.photons = cms.InputTag('slimmedPhotons',"","PAT") # use the MiniAOD photon collection
+process.calibratedPatPhotons.photons = cms.InputTag('slimmedPhotons',"","ExoDiPhoton") # use the output of the regression as input to the smearing
+# process.calibratedPatPhotons.correctionFile = cms.string("EgammaAnalysis/ElectronTools/data/ScalesSmearings/Moriond17_74x_pho")
 process.calibratedPatPhotons.correctionFile = cms.string("EgammaAnalysis/ElectronTools/data/ScalesSmearings/Moriond17_23Jan_ele")
 
 ## needed because the regression can reduce pT to below range used in EGM ID.
@@ -145,15 +146,23 @@ process.selectedPhotons = cms.EDFilter('PATPhotonSelector',
 )
 
 # vertex candidate map
-process.flashggVertexMapForCHSOld = cms.EDProducer('FlashggDzVertexMapProducerForCHS',
-       PFCandidatesTag=cms.InputTag('packedPFCandidates'),
-       VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
-       MaxAllowedDz=cms.double(0.2)
+# process.flashggVertexMapForCHSOld = cms.EDProducer('FlashggDzVertexMapProducerForCHS',
+#        PFCandidatesTag=cms.InputTag('packedPFCandidates'),
+#        VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
+#        MaxAllowedDz=cms.double(0.2)
+# )
+
+process.flashggVertexMapUnique = cms.EDProducer('FlashggDzVertexMapProducer',
+                                        PFCandidatesTag=cms.InputTag('packedPFCandidates'),
+                                        VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                        MaxAllowedDz=cms.double(0.2),
+                                        UseEachTrackOnce=cms.bool(True)
 )
+
 # flashgg::DiPhotonCandidates (i.e. recalculated diphotons with the higgs vertex)
 process.load("flashgg.MicroAOD.flashggDiPhotons_cfi");
 process.flashggDiPhotons.PhotonTag = cms.InputTag("selectedPhotons","","ExoDiPhoton")
-process.flashggDiPhotons.VertexCandidateMapTag  = cms.InputTag("flashggVertexMapForCHSOld")
+process.flashggDiPhotons.VertexCandidateMapTag  = cms.InputTag("flashggVertexMapUnique")
 process.flashggDiPhotons.GenParticleTag = cms.InputTag( "prunedGenParticles" )
 process.flashggDiPhotons.MaxJetCollections = cms.uint32(0) # makes no difference to the code, just need to input something
 
@@ -203,6 +212,7 @@ process.diphoton = cms.EDAnalyzer(
     minPhotonPt = cms.double(75.),
     # higgs photon collections
     useHiggsVertexID = cms.bool(True),
+    vtxCandMap = cms.InputTag("flashggVertexMapUnique"),
     higgsPhotons = cms.InputTag("flashggDiPhotons"), # vector with two photons corresponding to the chosen diphoton pair, needed only to more easily integrate with existing code
     higgsDiPhotonObjs = cms.InputTag("flashggDiPhotons"), # vector with all flashgg::DiPhotonCandidate objects, needed to get the vertex info and for future studies if need be
     # genParticle tag
@@ -246,9 +256,9 @@ process.EGMRegression = cms.Path(process.regressionApplication)
 process.EGMSmearerPhotons   = cms.Path(process.calibratedPatPhotons)
 
 if isMC:
-    process.p = cms.Path(process.selectedPhotons * process.flashggVertexMapForCHSOld * process.flashggDiPhotons * process.concatenatedPhotons * process.egmPhotonIDSequence * process.diphoton * process.xsec)
+    process.p = cms.Path(process.selectedPhotons * process.flashggVertexMapUnique * process.flashggDiPhotons * process.concatenatedPhotons * process.egmPhotonIDSequence * process.diphoton * process.xsec)
 else:
-    process.p = cms.Path(process.selectedPhotons * process.flashggVertexMapForCHSOld * process.flashggDiPhotons * process.concatenatedPhotons * process.egmPhotonIDSequence * process.diphoton)
+    process.p = cms.Path(process.selectedPhotons * process.flashggVertexMapUnique * process.flashggDiPhotons * process.concatenatedPhotons * process.egmPhotonIDSequence * process.diphoton)
 
 process.schedule = cms.Schedule(process.EGMRegression,process.EGMSmearerPhotons,process.p)
 # process.schedule = cms.Schedule(process.EGMSmearerPhotons,process.p)

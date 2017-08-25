@@ -500,7 +500,14 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   edm::Handle<reco::VertexCollection> vertices;
   iEvent.getByToken(verticesToken_,vertices);
 
+  std::cout << "vtx coll z vals:" << std::endl;
+  for(unsigned int i = 0; i < vertices->size(); i++){
+    std::cout << vertices->at(i).z() << ",  ";
+  }
+  std::cout << " " << std::endl;
+
   // fill vertex0
+  // std::cout << "Vertex2 x,y,z = " <<vertices->at(2).x() << ", " << vertices->at(2).y() << ", " << vertices->at(2).z() << std::endl;
   ExoDiPhotons::FillVertexInfo(fVertex0Info,&(vertices->at(0)));
   
   // select the primary vertex, if any
@@ -682,6 +689,8 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       ExoDiPhotons::FillVertexInfo(fHiggsVertexInfo,&(*higgsVtxPtr));
     }
   }
+  // std::cout << "higgsPhotonsHandle->size() = " << higgsPhotonsHandle->size() << std::endl;
+  // std::cout << "Higgs Vertex x,y,z = " << higgsVtxPtr->x() << ", " << higgsVtxPtr->y() << ", " << higgsVtxPtr->z() << std::endl;
 
   // =======
   // PHOTONS
@@ -718,6 +727,8 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   if (useHiggsVertexID_ && existsDiPhotonCand){
     const auto leadingPhoPtr = higgsPhotonsHandle->ptrAt(0);
     const auto subLeadingPhoPtr = higgsPhotonsHandle->ptrAt(1);
+    // std::cout << "SC1 x,y,z = " << leadingPhoPtr->superCluster()->x() << ", " << leadingPhoPtr->superCluster()->y() << ", " << leadingPhoPtr->superCluster()->z() << std::endl; 
+    // std::cout << "SC1 x,y,z = " << subLeadingPhoPtr->superCluster()->x() << ", " << subLeadingPhoPtr->superCluster()->y() << ", " << subLeadingPhoPtr->superCluster()->z() << std::endl; 
     // calculate new chIso values since 4 vectors may have changed
     higgsChIso1 = idUtil.pfIsoChgWrtVtx(leadingPhoPtr,higgsVtxPtr,*(&(*vtxCandMap)),0.3,0.02,0.02,0.1);
     higgsChIso2 = idUtil.pfIsoChgWrtVtx(subLeadingPhoPtr,higgsVtxPtr,*(&(*vtxCandMap)),0.3,0.02,0.02,0.1);
