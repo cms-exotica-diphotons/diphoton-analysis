@@ -94,6 +94,7 @@ class ExoDiPhotonFakeRateAnalyzer : public edm::one::EDAnalyzer<edm::one::Shared
   edm::EDGetToken jetsMiniAODToken_;
   double jetPtThreshold;
   double jetEtaThreshold;
+  bool   isReMINIAOD_;
     
   // ECAL recHits
   edm::InputTag recHitsEBTag_;
@@ -164,7 +165,8 @@ class ExoDiPhotonFakeRateAnalyzer : public edm::one::EDAnalyzer<edm::one::Shared
 // constructors and destructor
 //
 ExoDiPhotonFakeRateAnalyzer::ExoDiPhotonFakeRateAnalyzer(const edm::ParameterSet& iConfig)
-  : rhoToken_(consumes<double> (iConfig.getParameter<edm::InputTag>("rho"))),
+  : isReMINIAOD_(iConfig.getParameter<bool>("isReMINIAOD")),
+    rhoToken_(consumes<double> (iConfig.getParameter<edm::InputTag>("rho"))),
     effAreaChHadrons_( (iConfig.getParameter<edm::FileInPath>("effAreaChHadFile")).fullPath() ),
     effAreaNeuHadrons_( (iConfig.getParameter<edm::FileInPath>("effAreaNeuHadFile")).fullPath() ),
     effAreaPhotons_( (iConfig.getParameter<edm::FileInPath>("effAreaPhoFile")).fullPath() ),
@@ -214,13 +216,13 @@ ExoDiPhotonFakeRateAnalyzer::ExoDiPhotonFakeRateAnalyzer(const edm::ParameterSet
   beamHaloSummaryToken_ = consumes<reco::BeamHaloSummary>( edm::InputTag("BeamHaloSummary") );
 
   // Filter decisions
-  filterDecisionToken_ = consumes<edm::TriggerResults>( edm::InputTag("TriggerResults","","RECO") );
+  filterDecisionToken_ = consumes<edm::TriggerResults>( edm::InputTag("TriggerResults","",(isReMINIAOD_)?("PAT"):("RECO")) );
 
   // Trigger decisions
   triggerDecisionToken_ = consumes<edm::TriggerResults>( edm::InputTag("TriggerResults","","HLT") );
 
   // trigger prescales
-  prescalesToken_ = consumes<pat::PackedTriggerPrescales>( edm::InputTag("patTrigger","","RECO") );
+  prescalesToken_ = consumes<pat::PackedTriggerPrescales>( edm::InputTag("patTrigger","",(isReMINIAOD_)?("PAT"):("RECO")) );
 
   // vertices
   verticesToken_ = consumes<reco::VertexCollection>( edm::InputTag("offlineSlimmedPrimaryVertices") );
@@ -391,7 +393,7 @@ ExoDiPhotonFakeRateAnalyzer::analyze(const edm::Event& iEvent, const edm::EventS
 
     // fill photon info
     ExoDiPhotons::FillBasicPhotonInfo(fPhotonInfo, &(*pho));
-    ExoDiPhotons::FillPhotonIDInfo(fPhotonInfo, &(*pho), rho_, fPhotonInfo.isSaturated);
+    ExoDiPhotons::FillPhotonIDInfo(fPhotonInfo, &(*pho), rho_,false,fPhotonInfo.isSaturated);
     
     // fill EGM ID info
     ExoDiPhotons::FillPhotonEGMidInfo(fPhotonInfo, &(*pho), rho_, effAreaChHadrons_, effAreaNeuHadrons_, effAreaPhotons_);
@@ -400,8 +402,8 @@ ExoDiPhotonFakeRateAnalyzer::analyze(const edm::Event& iEvent, const edm::EventS
     fPhotonInfo.passEGMTightID  = (*tight_id_decisions)[pho];
 
     // fill our tree
-    if ( ExoDiPhotons::passNumeratorCandCut(&(*pho), rho_) ||
-         ExoDiPhotons::passDenominatorCut(&(*pho), rho_, fPhotonInfo.isSaturated)
+    if ( ExoDiPhotons::passNumeratorCandCut(&(*pho), rho_,false) ||
+         ExoDiPhotons::passDenominatorCut(&(*pho), rho_, false, fPhotonInfo.isSaturated)
        ) fTree->Fill();
 										  
   } // end of photon loop

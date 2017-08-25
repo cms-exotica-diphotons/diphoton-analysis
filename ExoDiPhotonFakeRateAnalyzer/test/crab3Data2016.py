@@ -5,7 +5,7 @@ config.General.transferOutputs = True
 config.General.requestName = 'crab3test'
 config.section_('JobType')
 config.JobType.psetName = 'diphoton_fakeRate_cfg.py'
-config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_2016SeptRepro_v5',]
+config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_2016SeptRepro_v7',]
 config.JobType.pluginName = 'Analysis'
 #config.JobType.inputFiles = ['PileupDataAug10thHistogram.root', 'PileUpMC.root', 'Cert_13TeV_16Dec2015ReReco_Collisions15_25ns_JSON_Silver_v2.txt']
 #config.JobType.outputFiles = ['ExoDiPhotonAnalyzer.root']
@@ -45,88 +45,74 @@ if __name__ == '__main__':
     ## From now on that's what users should modify: this is the a-la-CRAB2 configuration part. ##
     #############################################################################################
 
-    # config.General.requestName = 'JetHT_Run2016B_V1'
-    # config.Data.inputDataset = '/JetHT/Run2016B-23Sep2016-v1/MINIAOD'
-    # submit(config)
-
-    # config.General.requestName = 'JetHT_Run2016B_V3'
-    # config.Data.inputDataset = '/JetHT/Run2016B-23Sep2016-v3/MINIAOD'
-    # submit(config)
-
-    # config.General.requestName = 'JetHT_Run2016C'
-    # config.Data.inputDataset = '/JetHT/Run2016C-23Sep2016-v1/MINIAOD'
-    # submit(config)
-
-    # config.General.requestName = 'JetHT_Run2016D'
-    # config.Data.inputDataset = '/JetHT/Run2016D-23Sep2016-v1/MINIAOD'
-    # submit(config)
-
-    # config.General.requestName = 'JetHT_Run2016E'
-    # config.Data.inputDataset = '/JetHT/Run2016E-23Sep2016-v1/MINIAOD'
-    # submit(config)
-
-    # config.General.requestName = 'JetHT_Run2016F'
-    # config.Data.inputDataset = '/JetHT/Run2016F-23Sep2016-v1/MINIAOD'
-    # submit(config)
-
-    # config.General.requestName = 'JetHT_Run2016G'
-    # config.Data.inputDataset = '/JetHT/Run2016G-23Sep2016-v1/MINIAOD'
-    # submit(config)
-
-    # config.General.requestName = 'JetHT_Run2016H_V1'
-    # config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_Prompt_v15',]
-    # config.Data.inputDataset = '/JetHT/Run2016H-PromptReco-v1/MINIAOD'
-    # submit(config)
-
-    # config.General.requestName = 'JetHT_Run2016H_V2'
-    # config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_Prompt_v15',]
-    # config.Data.inputDataset = '/JetHT/Run2016H-PromptReco-v2/MINIAOD'
-    # submit(config)
-
-    # config.General.requestName = 'JetHT_Run2016H_V3'
-    # config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_Prompt_v15',]
-    # config.Data.inputDataset = '/JetHT/Run2016H-PromptReco-v3/MINIAOD'
-    # submit(config)
-
-    config.General.requestName = 'DoubleMuon_Run2016B_V1'
-    config.Data.inputDataset = '/DoubleMuon/Run2016B-23Sep2016-v1/MINIAOD'
+    config.General.requestName = 'JetHT_Run2016B_V1'
+    config.Data.inputDataset = '/JetHT/Run2016B-03Feb2017_ver1-v1/MINIAOD'
     submit(config)
 
-    config.General.requestName = 'DoubleMuon_Run2016B_V3'
-    config.Data.inputDataset = '/DoubleMuon/Run2016B-23Sep2016-v3/MINIAOD'
+    config.General.requestName = 'JetHT_Run2016B_V2'
+    config.Data.inputDataset = '/JetHT/Run2016B-03Feb2017_ver2-v2/MINIAOD'
+    submit(config)
+
+    config.General.requestName = 'JetHT_Run2016C'
+    config.Data.inputDataset = '/JetHT/Run2016C-03Feb2017-v1/MINIAOD'
+    submit(config)
+
+    config.General.requestName = 'JetHT_Run2016D'
+    config.Data.inputDataset = '/JetHT/Run2016D-03Feb2017-v1/MINIAOD'
+    submit(config)
+
+    config.General.requestName = 'JetHT_Run2016E'
+    config.Data.inputDataset = '/JetHT/Run2016E-03Feb2017-v1/MINIAOD'
+    submit(config)
+
+    config.General.requestName = 'JetHT_Run2016F'
+    config.Data.inputDataset = '/JetHT/Run2016F-03Feb2017-v1/MINIAOD'
+    submit(config)
+
+    config.General.requestName = 'JetHT_Run2016G'
+    config.Data.inputDataset = '/JetHT/Run2016G-03Feb2017-v1/MINIAOD'
+    submit(config)
+
+    config.General.requestName = 'JetHT_Run2016H_V2'
+    config.Data.inputDataset = '/JetHT/Run2016H-03Feb2017_ver2-v1/MINIAOD'
+    submit(config)
+
+    config.General.requestName = 'JetHT_Run2016H_V3'
+    config.Data.inputDataset = '/JetHT/Run2016H-03Feb2017_ver3-v1/MINIAOD'
+    submit(config)
+
+    config.General.requestName = 'DoubleMuon_Run2016B_V1'
+    config.Data.inputDataset = '/DoubleMuon/Run2016B-03Feb2017_ver1-v1/MINIAOD'
+    submit(config)
+
+    config.General.requestName = 'DoubleMuon_Run2016B_V2'
+    config.Data.inputDataset = '/DoubleMuon/Run2016B-03Feb2017_ver2-v2/MINIAOD'
     submit(config)
 
     config.General.requestName = 'DoubleMuon_Run2016C'
-    config.Data.inputDataset = '/DoubleMuon/Run2016C-23Sep2016-v1/MINIAOD'
+    config.Data.inputDataset = '/DoubleMuon/Run2016C-03Feb2017-v2/MINIAOD'
     submit(config)
 
     config.General.requestName = 'DoubleMuon_Run2016D'
-    config.Data.inputDataset = '/DoubleMuon/Run2016D-23Sep2016-v1/MINIAOD'
+    config.Data.inputDataset = '/DoubleMuon/Run2016D-03Feb2017-v1/MINIAOD'
     submit(config)
 
     config.General.requestName = 'DoubleMuon_Run2016E'
-    config.Data.inputDataset = '/DoubleMuon/Run2016E-23Sep2016-v1/MINIAOD'
+    config.Data.inputDataset = '/DoubleMuon/Run2016E-03Feb2017-v1/MINIAOD'
     submit(config)
 
     config.General.requestName = 'DoubleMuon_Run2016F'
-    config.Data.inputDataset = '/DoubleMuon/Run2016F-23Sep2016-v1/MINIAOD'
+    config.Data.inputDataset = '/DoubleMuon/Run2016F-03Feb2017-v1/MINIAOD'
     submit(config)
 
     config.General.requestName = 'DoubleMuon_Run2016G'
-    config.Data.inputDataset = '/DoubleMuon/Run2016G-23Sep2016-v1/MINIAOD'
-    submit(config)
-
-    config.General.requestName = 'DoubleMuon_Run2016H_V1'
-    config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_Prompt_v15',]
-    config.Data.inputDataset = '/DoubleMuon/Run2016H-PromptReco-v1/MINIAOD'
+    config.Data.inputDataset = '/DoubleMuon/Run2016G-03Feb2017-v1/MINIAOD'
     submit(config)
 
     config.General.requestName = 'DoubleMuon_Run2016H_V2'
-    config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_Prompt_v15',]
-    config.Data.inputDataset = '/DoubleMuon/Run2016H-PromptReco-v2/MINIAOD'
+    config.Data.inputDataset = '/DoubleMuon/Run2016H-03Feb2017_ver2-v1/MINIAOD'
     submit(config)
 
     config.General.requestName = 'DoubleMuon_Run2016H_V3'
-    config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_Prompt_v15',]
-    config.Data.inputDataset = '/DoubleMuon/Run2016H-PromptReco-v3/MINIAOD'
+    config.Data.inputDataset = '/DoubleMuon/Run2016H-03Feb2017_ver3-v1/MINIAOD'
     submit(config)

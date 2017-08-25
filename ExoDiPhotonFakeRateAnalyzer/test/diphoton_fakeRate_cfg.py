@@ -34,7 +34,7 @@ process.source = cms.Source(
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
         #'file:myfile.root'
-        'root://cmsxrootd.fnal.gov//store/data/Run2015D/JetHT/MINIAOD/16Dec2015-v1/50000/1E73A933-51A9-E511-B71D-A0369F7F9170.root'
+        'root://cmsxrootd.fnal.gov//store/data/Run2016H/JetHT/MINIAOD/03Feb2017_ver2-v1/50000/00BE5E70-71EB-E611-9BDC-001E67DFFB86.root'
         )
     )
 
@@ -77,6 +77,7 @@ process.diphoton = cms.EDAnalyzer(
     'ExoDiPhotonFakeRateAnalyzer',
     # photon tag
     photonsMiniAOD = cms.InputTag("slimmedPhotons"),
+    isReMINIAOD = cms.bool(True),
     # ak4 jets
     jetsMiniAOD = cms.InputTag("selectedUpdatedPatJetsUpdatedJEC"),
     jetPtThreshold = cms.double(30.),

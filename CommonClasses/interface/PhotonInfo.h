@@ -229,7 +229,7 @@ namespace ExoDiPhotons
     photonInfo.alphaHighPtID       = ExoDiPhotons::phoAlphaHighPtID(photon);
     photonInfo.kappaHighPtID       = ExoDiPhotons::phoKappaHighPtID(photon);
     photonInfo.phoEAHighPtID       = ExoDiPhotons::phoEAHighPtID(photon);
-    photonInfo.phoIsoExtraHighPtID = ExoDiPhotons::getExtra(photonInfo.scEta,rho);
+    photonInfo.phoIsoExtraHighPtID = (isMC ? ExoDiPhotons::getExtra(photonInfo.scEta,rho) : -9999.99);
     
     // electron veto and high pT ID checks
     photonInfo.passElectronVeto = photon->passElectronVeto();
