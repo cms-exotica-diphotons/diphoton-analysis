@@ -533,7 +533,7 @@ ExoDiPhotonMCFakeRateRealTemplateAnalyzer::analyze(const edm::Event& iEvent, con
 	
 	// fill photon info
 	ExoDiPhotons::FillBasicPhotonInfo(fPhotonInfo, &(*pho));
-	ExoDiPhotons::FillPhotonIDInfo(fPhotonInfo, &(*pho), rho_, fPhotonInfo.isSaturated);
+	ExoDiPhotons::FillPhotonIDInfo(fPhotonInfo, &(*pho), rho_, true, fPhotonInfo.isSaturated);
 	
 	// fill EGM ID info
 	ExoDiPhotons::FillPhotonEGMidInfo(fPhotonInfo, &(*pho), rho_, effAreaChHadrons_, effAreaNeuHadrons_, effAreaPhotons_);
@@ -542,7 +542,7 @@ ExoDiPhotonMCFakeRateRealTemplateAnalyzer::analyze(const edm::Event& iEvent, con
 	fPhotonInfo.passEGMTightID  = (*tight_id_decisions)[pho];
 	
 	// fill our tree
-	if ( ExoDiPhotons::passNumeratorCandCut(&(*pho), rho_) ) fTree->Fill();
+	if ( ExoDiPhotons::passNumeratorCandCut(&(*pho), rho_, true) ) fTree->Fill();
       }
       
     } // end if photonMatch

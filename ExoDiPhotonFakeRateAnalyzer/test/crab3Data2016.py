@@ -12,7 +12,7 @@ config.JobType.pluginName = 'Analysis'
 config.section_('Data')
 config.Data.inputDataset = '/QCD_Pt_20_30_EMEnriched_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM'
 config.Data.outputDatasetTag = ''
-config.Data.outLFNDirBase = '/store/user/skaplan/noreplica/FakeRate/WithVertexColl/'
+config.Data.outLFNDirBase = '/store/user/agarabag/noreplica/FakeRate/'
 config.Data.publication = False
 config.Data.unitsPerJob = 100
 config.Data.totalUnits = -1
