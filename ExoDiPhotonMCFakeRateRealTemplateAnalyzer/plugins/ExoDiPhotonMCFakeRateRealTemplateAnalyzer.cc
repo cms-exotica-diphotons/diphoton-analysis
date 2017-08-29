@@ -255,6 +255,8 @@ ExoDiPhotonMCFakeRateRealTemplateAnalyzer::ExoDiPhotonMCFakeRateRealTemplateAnal
 
   // vertices
   verticesToken_ = consumes<reco::VertexCollection>( edm::InputTag("offlineSlimmedPrimaryVertices") );
+
+  ExoDiPhotons::prepIsoCorrectionHistos();
 }
 
 
