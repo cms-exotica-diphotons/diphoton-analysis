@@ -307,6 +307,16 @@ namespace ExoDiPhotons{
 
     else return false;
   }
+  bool passAllButCSEV_HiggsChIso(const pat::Photon* photon, double rho, bool isMC, bool isSat, double chIso) {
+    if (
+      passHadTowerOverEmCut(photon) &&
+      passChargedHadronCut(chIso) &&
+      passSigmaIetaIetaCut(photon,isSat) &&
+      passCorPhoIsoHighPtID(photon,rho,isMC)
+    ) return true;
+
+    else return false;
+  }
 
   // must pass all cuts in the High pT ID except for the Sieie cut and chIso cut
   // NOTE: enforce chIso and sieie cuts offline depending on if this is used for numerator or fake template

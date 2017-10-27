@@ -57,11 +57,13 @@
 #include "DataFormats/EcalDetId/interface/EBDetId.h"
 #include "DataFormats/EcalDetId/interface/EEDetId.h"
 
-// for EGM ID
+// for EGM ID and for e- veto
 #include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
+#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 
-// for photons
+// for photons and electrons
 #include "DataFormats/PatCandidates/interface/Photon.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
 
 // for jets
 #include "DataFormats/PatCandidates/interface/Jet.h"
@@ -155,6 +157,12 @@ class ExoDiPhotonAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResource
 
   // beam spot token
   edm::EDGetTokenT<reco::BeamSpot> beamSpotToken_;
+
+  // electrons token
+  edm::EDGetToken electronsToken_;
+
+  // conversions token
+  edm::EDGetToken convToken_;
 
   // rho variable
   double rho_;
@@ -255,6 +263,12 @@ class ExoDiPhotonAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResource
   double SherpaWeightAll_;
   double isolationConeR_;
 
+  // parameters for the electron veto
+
+  float lxyMin_ = 2.0;
+  float probMin_ = 1e-6;
+  int nHitsBeforeVtxMax_ = 0;
+
   // number of reconstructed primary vertices
   int nPV_;
 
@@ -269,6 +283,8 @@ class ExoDiPhotonAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResource
     TRUE = 1
   };
 };
+
+
 
 //
 // constants, enums and typedefs
@@ -399,6 +415,12 @@ ExoDiPhotonAnalyzer::ExoDiPhotonAnalyzer(const edm::ParameterSet& iConfig)
   // trigger prescales
   prescalesToken_ = consumes<pat::PackedTriggerPrescales>( edm::InputTag("patTrigger","",(isMC_||isReMINIAOD_)?("PAT"):("RECO")) );
 
+  // electrons
+  electronsToken_ = consumes<std::vector<pat::Electron>>( edm::InputTag("slimmedElectrons","","PAT") );
+
+  // conversions
+  convToken_ = consumes<std::vector<reco::Conversion>>( edm::InputTag("reducedEgamma","reducedConversions","PAT") );
+
   //vertex candidiate map
   vtxCandToken_ = ( iConfig.exists("vtxCandMap") ? consumes<flashgg::VertexCandidateMap>( iConfig.getParameter<edm::InputTag>("vtxCandMap") ) : edm::EDGetToken());
 
@@ -500,11 +522,11 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   edm::Handle<reco::VertexCollection> vertices;
   iEvent.getByToken(verticesToken_,vertices);
 
-  std::cout << "vtx coll z vals:" << std::endl;
-  for(unsigned int i = 0; i < vertices->size(); i++){
-    std::cout << vertices->at(i).z() << ",  ";
-  }
-  std::cout << " " << std::endl;
+  // std::cout << "vtx coll z vals:" << std::endl;
+  // for(unsigned int i = 0; i < vertices->size(); i++){
+  //   std::cout << vertices->at(i).z() << ",  ";
+  // }
+  // std::cout << " " << std::endl;
 
   // fill vertex0
   // std::cout << "Vertex2 x,y,z = " <<vertices->at(2).x() << ", " << vertices->at(2).y() << ", " << vertices->at(2).z() << std::endl;
@@ -616,6 +638,21 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   subDetTopologyEB_ = caloTopology->getSubdetectorTopology(DetId::Ecal,EcalBarrel);
   subDetTopologyEE_ = caloTopology->getSubdetectorTopology(DetId::Ecal,EcalEndcap);
 
+
+  // =========
+  // Electrons
+  // =========
+  edm::Handle<std::vector<pat::Electron>> elecHandle;
+  iEvent.getByToken(electronsToken_,elecHandle);
+
+  // =========
+  // Conversions
+  // =========
+  edm::Handle<std::vector<reco::Conversion>> convHandle;
+  iEvent.getByToken(convToken_,convHandle);
+
+
+
   // =========
   // DIPHOTONS
   // =========
@@ -685,8 +722,8 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     iEvent.getByToken(higgsDiPhotonObjToken_,higgsDiPhotonObjsHandle);
     if (higgsPhotonsHandle->size() > 0){
       existsDiPhotonCand = true;
-      higgsVtxPtr = higgsDiPhotonObjsHandle->at(0).vtx();
-      ExoDiPhotons::FillVertexInfo(fHiggsVertexInfo,&(*higgsVtxPtr));
+      // higgsVtxPtr = higgsDiPhotonObjsHandle->at(0).vtx();
+      // ExoDiPhotons::FillVertexInfo(fHiggsVertexInfo,&(*higgsVtxPtr));
     }
   }
   // std::cout << "higgsPhotonsHandle->size() = " << higgsPhotonsHandle->size() << std::endl;
@@ -725,21 +762,48 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   double higgsChIso2;
   flashgg::PhotonIdUtils idUtil;
   if (useHiggsVertexID_ && existsDiPhotonCand){
-    const auto leadingPhoPtr = higgsPhotonsHandle->ptrAt(0);
-    const auto subLeadingPhoPtr = higgsPhotonsHandle->ptrAt(1);
+    for (unsigned int i=0; i <= higgsPhotonsHandle->size()-2; i+=2){
+      const auto leadingPhoPtr = higgsPhotonsHandle->ptrAt(i);
+      const auto subLeadingPhoPtr = higgsPhotonsHandle->ptrAt(i+1);
+      higgsVtxPtr = higgsDiPhotonObjsHandle->at(i/2).vtx();
+      
+      higgsChIso1 = idUtil.pfIsoChgWrtVtx(leadingPhoPtr,higgsVtxPtr,*(&(*vtxCandMap)),0.3,0.02,0.02,0.1);
+      higgsChIso2 = idUtil.pfIsoChgWrtVtx(subLeadingPhoPtr,higgsVtxPtr,*(&(*vtxCandMap)),0.3,0.02,0.02,0.1);
+      bool isSat1 = ExoDiPhotons::isSaturated(&(*leadingPhoPtr), &(*recHitsEB), &(*recHitsEE), &(*subDetTopologyEB_), &(*subDetTopologyEE_));
+      bool isSat2 = ExoDiPhotons::isSaturated(&(*subLeadingPhoPtr), &(*recHitsEB), &(*recHitsEE), &(*subDetTopologyEB_), &(*subDetTopologyEE_));
+
+      bool passElecVeto1 = !ConversionTools::hasMatchedPromptElectron(leadingPhoPtr->superCluster(), elecHandle, convHandle, beamSpotHandle->position(), lxyMin_, probMin_, nHitsBeforeVtxMax_);
+      bool passElecVeto2 = !ConversionTools::hasMatchedPromptElectron(subLeadingPhoPtr->superCluster(), elecHandle, convHandle, beamSpotHandle->position(), lxyMin_, probMin_, nHitsBeforeVtxMax_);
+      // leadingPhoPtr->addUserFloat("flashggCSEV",passElecVeto1);
+      // subLeadingPhoPtr->addUserFloat("flashggCSEV",passElecVeto2);
+      
+      bool passID1 = ExoDiPhotons::passAllButCSEV_HiggsChIso(&(*leadingPhoPtr), rho_, isMC_, isSat1, higgsChIso1) && passElecVeto1;
+      bool passID2 = ExoDiPhotons::passAllButCSEV_HiggsChIso(&(*subLeadingPhoPtr), rho_, isMC_, isSat2, higgsChIso2) && passElecVeto2;
+
+      std::cout << "Photon 1 pass: " << ExoDiPhotons::passCorPhoIsoHighPtID(&(*leadingPhoPtr),rho_,isMC_) << " " << ExoDiPhotons::passSigmaIetaIetaCut(&(*leadingPhoPtr),isSat1) << " " << ExoDiPhotons::passChargedHadronCut(higgsChIso1) << " " <<  ExoDiPhotons::passHadTowerOverEmCut(&(*leadingPhoPtr)) << " " << passElecVeto1 << std::endl;
+      std::cout << "Photon 2 pass: " << ExoDiPhotons::passCorPhoIsoHighPtID(&(*subLeadingPhoPtr),rho_,isMC_) << " " << ExoDiPhotons::passSigmaIetaIetaCut(&(*subLeadingPhoPtr),isSat2) << " " << ExoDiPhotons::passChargedHadronCut(higgsChIso2) << " " <<  ExoDiPhotons::passHadTowerOverEmCut(&(*subLeadingPhoPtr)) << " " << passElecVeto2 << std::endl;
+      // std::cout << "Photon1 pt, eta, phoiso, energy: " << leadingPhoPtr->pt() << ", " << leadingPhoPtr->superCluster()->eta() << ", " << leadingPhoPtr->photonIso() << ", " << leadingPhoPtr->energy() << std::endl;
+      // std::cout << "Photon2 pt, eta, phoiso, energy: " << subLeadingPhoPtr->pt() << ", " << subLeadingPhoPtr->superCluster()->eta() << ", " << subLeadingPhoPtr->photonIso() << ", " << subLeadingPhoPtr->energy() << std::endl;
+
+      if (!passID1 || !passID2)
+        continue;
+      else{
+        if (passID1) goodPhotons.push_back(leadingPhoPtr);
+        if (passID2) goodPhotons.push_back(subLeadingPhoPtr);
+        
+        ExoDiPhotons::FillVertexInfo(fHiggsVertexInfo,&(*higgsVtxPtr));
+        break; // no need to keep looping since we found a combo and we're already ordered by descending sumPt
+      } // end else bock, i.e. both photons pass
+
+    }
+    
     // std::cout << "SC1 x,y,z = " << leadingPhoPtr->superCluster()->x() << ", " << leadingPhoPtr->superCluster()->y() << ", " << leadingPhoPtr->superCluster()->z() << std::endl; 
     // std::cout << "SC1 x,y,z = " << subLeadingPhoPtr->superCluster()->x() << ", " << subLeadingPhoPtr->superCluster()->y() << ", " << subLeadingPhoPtr->superCluster()->z() << std::endl; 
     // calculate new chIso values since 4 vectors may have changed
-    higgsChIso1 = idUtil.pfIsoChgWrtVtx(leadingPhoPtr,higgsVtxPtr,*(&(*vtxCandMap)),0.3,0.02,0.02,0.1);
-    higgsChIso2 = idUtil.pfIsoChgWrtVtx(subLeadingPhoPtr,higgsVtxPtr,*(&(*vtxCandMap)),0.3,0.02,0.02,0.1);
+
     // std::cout << "old chIso 1 and 2 = " << leadingPhoPtr->chargedHadronIso() << " " << subLeadingPhoPtr->chargedHadronIso() << std::endl;
     // std::cout << "new chIso 1 and 2 = " << higgsChIso1 << " " << higgsChIso2 << std::endl;
-    bool isSat1 = ExoDiPhotons::isSaturated(&(*leadingPhoPtr), &(*recHitsEB), &(*recHitsEE), &(*subDetTopologyEB_), &(*subDetTopologyEE_));
-    bool isSat2 = ExoDiPhotons::isSaturated(&(*subLeadingPhoPtr), &(*recHitsEB), &(*recHitsEE), &(*subDetTopologyEB_), &(*subDetTopologyEE_));
-    bool passID1 = ExoDiPhotons::passHighPtID_HiggsChIso(&(*leadingPhoPtr), rho_, isMC_, isSat1, higgsChIso1);
-    bool passID2 = ExoDiPhotons::passHighPtID_HiggsChIso(&(*subLeadingPhoPtr), rho_, isMC_, isSat2, higgsChIso2);
-    if (passID1) goodPhotons.push_back(leadingPhoPtr);
-    if (passID2) goodPhotons.push_back(subLeadingPhoPtr);
+    
     // std::cout << "Photon1 pt, eta, phoiso, extra, extraExplicit: " << leadingPhoPtr->pt() << ", " << leadingPhoPtr->superCluster()->eta() << ", " << leadingPhoPtr->photonIso() << ", " << ExoDiPhotons::getExtra(leadingPhoPtr->superCluster()->eta(), rho_  ) << ", " << ExoDiPhotons::getExtra(-0.045875,rho_) << std::endl;
     // std::cout << "Photon2 pt, eta, phoiso, extra: " << subLeadingPhoPtr->pt() << ", " << subLeadingPhoPtr->superCluster()->eta() << ", " << subLeadingPhoPtr->photonIso() << ", " << ExoDiPhotons::getExtra(subLeadingPhoPtr->superCluster()->eta(), rho_  ) << std::endl;
     // std::cout << "Vertex0 x,y,z = " << fVertex0Info.vx << ", " << fVertex0Info.vy << ", " << fVertex0Info.vz << std::endl;
@@ -751,7 +815,8 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     const auto pho = photons->ptrAt(i);
     
     // print photon info
-    cout << "Photon: " << "pt = " << pho->pt() << "; eta = " << pho->eta() << "; scEta = " <<  pho->superCluster()->eta() << "; phi = " << pho->phi() << endl;
+    // cout << "Photon: " << "pt = " << pho->pt() << "; eta = " << pho->eta() << "; scEta = " <<  pho->superCluster()->eta() << "; phi = " << pho->phi() << "; energy = " << pho->energy() << "; chIso = " << pho->chargedHadronIso() << "; phoIso = " << pho->photonIso() << endl;
+    // cout << "Pass e- veto? " << !ConversionTools::hasMatchedPromptElectron(pho->superCluster(), elecHandle, convHandle, beamSpotHandle->position(), lxyMin_, probMin_, nHitsBeforeVtxMax_) << endl;
     // cout << "Photon: "<< "iso = " << pho->photonIso() << "; extraWithScEta = " << ExoDiPhotons::getExtra(pho->superCluster()->eta(),rho_)  << "; extraWithPhysEta = " << ExoDiPhotons::getExtra(pho->eta(),rho_) << endl;
     
     // check if photon is saturated
