@@ -761,6 +761,7 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   double higgsChIso1;
   double higgsChIso2;
   flashgg::PhotonIdUtils idUtil;
+  idUtil.removeOverlappingCandidates(false);
   if (useHiggsVertexID_ && existsDiPhotonCand){
     for (unsigned int i=0; i <= higgsPhotonsHandle->size()-2; i+=2){
       const auto leadingPhoPtr = higgsPhotonsHandle->ptrAt(i);
@@ -769,6 +770,7 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       
       higgsChIso1 = idUtil.pfIsoChgWrtVtx(leadingPhoPtr,higgsVtxPtr,*(&(*vtxCandMap)),0.3,0.02,0.02,0.1);
       higgsChIso2 = idUtil.pfIsoChgWrtVtx(subLeadingPhoPtr,higgsVtxPtr,*(&(*vtxCandMap)),0.3,0.02,0.02,0.1);
+      cout << "higgs iso 1,2 = " << higgsChIso1 << ", " << higgsChIso2 << endl;
       bool isSat1 = ExoDiPhotons::isSaturated(&(*leadingPhoPtr), &(*recHitsEB), &(*recHitsEE), &(*subDetTopologyEB_), &(*subDetTopologyEE_));
       bool isSat2 = ExoDiPhotons::isSaturated(&(*subLeadingPhoPtr), &(*recHitsEB), &(*recHitsEE), &(*subDetTopologyEB_), &(*subDetTopologyEE_));
 
