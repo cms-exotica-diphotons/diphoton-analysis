@@ -761,7 +761,7 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   double higgsChIso1;
   double higgsChIso2;
   flashgg::PhotonIdUtils idUtil;
-  idUtil.removeOverlappingCandidates(false);
+  idUtil.removeOverlappingCandidates(true);
   if (useHiggsVertexID_ && existsDiPhotonCand){
     for (unsigned int i=0; i <= higgsPhotonsHandle->size()-2; i+=2){
       const auto leadingPhoPtr = higgsPhotonsHandle->ptrAt(i);
