@@ -32,7 +32,7 @@ config.section_("Data")
 config.Data.inputDataset = dataset
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'FileBased'
-config.Data.unitsPerJob = 100
+config.Data.unitsPerJob = 1000
 #config.Data.outLFNDirBase = '/store/user/abuccill/DiPhotonAnalysis'
 
 config.section_("Site")

@@ -52,12 +52,24 @@ if "Run2016" in outName:
     else:
         globalTag = '80X_dataRun2_2016SeptRepro_v4'
 if "Run2017" in outName:
-    globalTag = '92X_dataRun2_Prompt_v8'
+    if "31Mar2018" in outName:
+        isReMINIAOD = True
+        globalTag = '94X_dataRun2_v6'
+        jetLabel = "updatedPatJetsUpdatedJEC"
+    else:
+        globalTag = '92X_dataRun2_Prompt_v8'
+        jetLabel = "updatedPatJetsUpdatedJEC"
+if "Run2018" in outName:
+    #globalTag = '101X_dataRun2_Prompt_v9'
+    globalTag = '101X_dataRun2_Prompt_v11'
     jetLabel = "updatedPatJetsUpdatedJEC"
 # override options for MC
 if isMC:
     version = os.getenv("CMSSW_VERSION")
-    if "CMSSW_8" in version:
+    if "CMSSW_9" in version:
+        globalTag = '94X_mc2017_realistic_v14'
+        jetLabel = "slimmedJets"
+    elif "CMSSW_8" in version:
         if "Spring16" in outName:
             globalTag = '80X_mcRun2_asymptotic_2016_miniAODv2'
         if "Summer16" in outName:
@@ -176,7 +188,7 @@ process.xsec = cms.EDAnalyzer("GenXSecAnalyzer")
 if isMC:
     process.p = cms.Path(process.egmPhotonIDSequence * process.diphoton * process.xsec)
 else:
-    if "Run2017" in outName:
+    if "Run2017" in outName or "Run2018" in outName:
         process.p = cms.Path(process.egmPhotonIDSequence * process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC * process.diphoton)
     else:
-        process.p = cms.Path(process.egmPhotonIDSequence * process.diphoton)
+        process.p = cms.Path(process.egmPhotonIDSequence * process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC * process.diphoton)

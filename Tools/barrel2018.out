@@ -1,0 +1,593 @@
+Creating histogram data_2018 for variable Minv
+Integral (data_2018): 5295
+Sum: 0
+Creating histogram ttg for variable Minv
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Creating histogram w for variable Minv
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Creating histogram vg for variable Minv
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Creating histogram dy for variable Minv
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Creating histogram jj for variable Minv
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Creating histogram gj for variable Minv
+Adding histogram: gj
+Integral (gj): 1224.5
+Sum: 1460.2
+Creating histogram gg for variable Minv
+Adding histogram: gg
+Integral (gg): 3911.79
+Sum: 5371.99
+Info in <TCanvas::Print>: pdf file plots/Minv_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/Minv_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/Minv_barrel_2018_log.pdf has been created
+Warning in <TROOT::Append>: Replacing existing TH1: sum (Potential memory leak).
+Warning in <TROOT::Append>: Replacing existing TH1: data_2018 (Potential memory leak).
+Creating histogram data_2018 for variable Photon1.pt
+Integral (data_2018): 5294
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: ttg (Potential memory leak).
+Creating histogram ttg for variable Photon1.pt
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: w (Potential memory leak).
+Creating histogram w for variable Photon1.pt
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: vg (Potential memory leak).
+Creating histogram vg for variable Photon1.pt
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: dy (Potential memory leak).
+Creating histogram dy for variable Photon1.pt
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: jj (Potential memory leak).
+Creating histogram jj for variable Photon1.pt
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Warning in <TROOT::Append>: Replacing existing TH1: gj (Potential memory leak).
+Creating histogram gj for variable Photon1.pt
+Adding histogram: gj
+Integral (gj): 1224.5
+Sum: 1460.2
+Warning in <TROOT::Append>: Replacing existing TH1: gg (Potential memory leak).
+Creating histogram gg for variable Photon1.pt
+Adding histogram: gg
+Integral (gg): 3910.8
+Sum: 5371
+Info in <TCanvas::Print>: pdf file plots/Photon1.pt_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/Photon1.pt_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/Photon1.pt_barrel_2018_log.pdf has been created
+Warning in <TROOT::Append>: Replacing existing TH1: sum (Potential memory leak).
+Warning in <TROOT::Append>: Replacing existing TH1: data_2018 (Potential memory leak).
+Creating histogram data_2018 for variable Photon2.pt
+Integral (data_2018): 5295
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: ttg (Potential memory leak).
+Creating histogram ttg for variable Photon2.pt
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: w (Potential memory leak).
+Creating histogram w for variable Photon2.pt
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: vg (Potential memory leak).
+Creating histogram vg for variable Photon2.pt
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: dy (Potential memory leak).
+Creating histogram dy for variable Photon2.pt
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: jj (Potential memory leak).
+Creating histogram jj for variable Photon2.pt
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Warning in <TROOT::Append>: Replacing existing TH1: gj (Potential memory leak).
+Creating histogram gj for variable Photon2.pt
+Adding histogram: gj
+Integral (gj): 1224.5
+Sum: 1460.2
+Warning in <TROOT::Append>: Replacing existing TH1: gg (Potential memory leak).
+Creating histogram gg for variable Photon2.pt
+Adding histogram: gg
+Integral (gg): 3911.79
+Sum: 5371.99
+Info in <TCanvas::Print>: pdf file plots/Photon2.pt_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/Photon2.pt_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/Photon2.pt_barrel_2018_log.pdf has been created
+Warning in <TROOT::Append>: Replacing existing TH1: sum (Potential memory leak).
+Warning in <TROOT::Append>: Replacing existing TH1: data_2018 (Potential memory leak).
+Creating histogram data_2018 for variable Diphoton.qt
+Integral (data_2018): 5293
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: ttg (Potential memory leak).
+Creating histogram ttg for variable Diphoton.qt
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: w (Potential memory leak).
+Creating histogram w for variable Diphoton.qt
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: vg (Potential memory leak).
+Creating histogram vg for variable Diphoton.qt
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: dy (Potential memory leak).
+Creating histogram dy for variable Diphoton.qt
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: jj (Potential memory leak).
+Creating histogram jj for variable Diphoton.qt
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Warning in <TROOT::Append>: Replacing existing TH1: gj (Potential memory leak).
+Creating histogram gj for variable Diphoton.qt
+Adding histogram: gj
+Integral (gj): 1223.27
+Sum: 1458.97
+Warning in <TROOT::Append>: Replacing existing TH1: gg (Potential memory leak).
+Creating histogram gg for variable Diphoton.qt
+Adding histogram: gg
+Integral (gg): 3910.47
+Sum: 5369.44
+Info in <TCanvas::Print>: pdf file plots/Diphoton.qt_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/Diphoton.qt_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/Diphoton.qt_barrel_2018_log.pdf has been created
+Warning in <TROOT::Append>: Replacing existing TH1: sum (Potential memory leak).
+Warning in <TROOT::Append>: Replacing existing TH1: data_2018 (Potential memory leak).
+Creating histogram data_2018 for variable Diphoton.deltaPhi
+Integral (data_2018): 5295
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: ttg (Potential memory leak).
+Creating histogram ttg for variable Diphoton.deltaPhi
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: w (Potential memory leak).
+Creating histogram w for variable Diphoton.deltaPhi
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: vg (Potential memory leak).
+Creating histogram vg for variable Diphoton.deltaPhi
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: dy (Potential memory leak).
+Creating histogram dy for variable Diphoton.deltaPhi
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: jj (Potential memory leak).
+Creating histogram jj for variable Diphoton.deltaPhi
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Warning in <TROOT::Append>: Replacing existing TH1: gj (Potential memory leak).
+Creating histogram gj for variable Diphoton.deltaPhi
+Adding histogram: gj
+Integral (gj): 1224.5
+Sum: 1460.2
+Warning in <TROOT::Append>: Replacing existing TH1: gg (Potential memory leak).
+Creating histogram gg for variable Diphoton.deltaPhi
+Adding histogram: gg
+Integral (gg): 3911.79
+Sum: 5371.99
+Info in <TCanvas::Print>: pdf file plots/Diphoton.deltaPhi_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/Diphoton.deltaPhi_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/Diphoton.deltaPhi_barrel_2018_log.pdf has been created
+Warning in <TROOT::Append>: Replacing existing TH1: sum (Potential memory leak).
+Warning in <TROOT::Append>: Replacing existing TH1: data_2018 (Potential memory leak).
+Creating histogram data_2018 for variable Diphoton.deltaEta
+Integral (data_2018): 5295
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: ttg (Potential memory leak).
+Creating histogram ttg for variable Diphoton.deltaEta
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: w (Potential memory leak).
+Creating histogram w for variable Diphoton.deltaEta
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: vg (Potential memory leak).
+Creating histogram vg for variable Diphoton.deltaEta
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: dy (Potential memory leak).
+Creating histogram dy for variable Diphoton.deltaEta
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: jj (Potential memory leak).
+Creating histogram jj for variable Diphoton.deltaEta
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Warning in <TROOT::Append>: Replacing existing TH1: gj (Potential memory leak).
+Creating histogram gj for variable Diphoton.deltaEta
+Adding histogram: gj
+Integral (gj): 1224.5
+Sum: 1460.2
+Warning in <TROOT::Append>: Replacing existing TH1: gg (Potential memory leak).
+Creating histogram gg for variable Diphoton.deltaEta
+Adding histogram: gg
+Integral (gg): 3911.79
+Sum: 5371.99
+Info in <TCanvas::Print>: pdf file plots/Diphoton.deltaEta_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/Diphoton.deltaEta_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/Diphoton.deltaEta_barrel_2018_log.pdf has been created
+Warning in <TROOT::Append>: Replacing existing TH1: sum (Potential memory leak).
+Warning in <TROOT::Append>: Replacing existing TH1: data_2018 (Potential memory leak).
+Creating histogram data_2018 for variable abs(Diphoton.cosThetaStar)
+Integral (data_2018): 5295
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: ttg (Potential memory leak).
+Creating histogram ttg for variable abs(Diphoton.cosThetaStar)
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: w (Potential memory leak).
+Creating histogram w for variable abs(Diphoton.cosThetaStar)
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: vg (Potential memory leak).
+Creating histogram vg for variable abs(Diphoton.cosThetaStar)
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: dy (Potential memory leak).
+Creating histogram dy for variable abs(Diphoton.cosThetaStar)
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: jj (Potential memory leak).
+Creating histogram jj for variable abs(Diphoton.cosThetaStar)
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Warning in <TROOT::Append>: Replacing existing TH1: gj (Potential memory leak).
+Creating histogram gj for variable abs(Diphoton.cosThetaStar)
+Adding histogram: gj
+Integral (gj): 1224.5
+Sum: 1460.2
+Warning in <TROOT::Append>: Replacing existing TH1: gg (Potential memory leak).
+Creating histogram gg for variable abs(Diphoton.cosThetaStar)
+Adding histogram: gg
+Integral (gg): 3911.79
+Sum: 5371.99
+Info in <TCanvas::Print>: pdf file plots/abs(Diphoton.cosThetaStar)_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/abs(Diphoton.cosThetaStar)_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/abs(Diphoton.cosThetaStar)_barrel_2018_log.pdf has been created
+Warning in <TROOT::Append>: Replacing existing TH1: sum (Potential memory leak).
+Warning in <TROOT::Append>: Replacing existing TH1: data_2018 (Potential memory leak).
+Creating histogram data_2018 for variable nPV
+Integral (data_2018): 5290
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: ttg (Potential memory leak).
+Creating histogram ttg for variable nPV
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: w (Potential memory leak).
+Creating histogram w for variable nPV
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: vg (Potential memory leak).
+Creating histogram vg for variable nPV
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: dy (Potential memory leak).
+Creating histogram dy for variable nPV
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: jj (Potential memory leak).
+Creating histogram jj for variable nPV
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Warning in <TROOT::Append>: Replacing existing TH1: gj (Potential memory leak).
+Creating histogram gj for variable nPV
+Adding histogram: gj
+Integral (gj): 1177.55
+Sum: 1413.25
+Warning in <TROOT::Append>: Replacing existing TH1: gg (Potential memory leak).
+Creating histogram gg for variable nPV
+Adding histogram: gg
+Integral (gg): 3903.34
+Sum: 5316.59
+Info in <TCanvas::Print>: pdf file plots/nPV_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/nPV_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/nPV_barrel_2018_log.pdf has been created
+Warning in <TROOT::Append>: Replacing existing TH1: sum (Potential memory leak).
+Warning in <TROOT::Append>: Replacing existing TH1: data_2018 (Potential memory leak).
+Creating histogram data_2018 for variable Diphoton.deltaR
+Integral (data_2018): 5295
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: ttg (Potential memory leak).
+Creating histogram ttg for variable Diphoton.deltaR
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: w (Potential memory leak).
+Creating histogram w for variable Diphoton.deltaR
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: vg (Potential memory leak).
+Creating histogram vg for variable Diphoton.deltaR
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: dy (Potential memory leak).
+Creating histogram dy for variable Diphoton.deltaR
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: jj (Potential memory leak).
+Creating histogram jj for variable Diphoton.deltaR
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Warning in <TROOT::Append>: Replacing existing TH1: gj (Potential memory leak).
+Creating histogram gj for variable Diphoton.deltaR
+Adding histogram: gj
+Integral (gj): 1224.5
+Sum: 1460.2
+Warning in <TROOT::Append>: Replacing existing TH1: gg (Potential memory leak).
+Creating histogram gg for variable Diphoton.deltaR
+Adding histogram: gg
+Integral (gg): 3911.79
+Sum: 5371.99
+Info in <TCanvas::Print>: pdf file plots/Diphoton.deltaR_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/Diphoton.deltaR_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/Diphoton.deltaR_barrel_2018_log.pdf has been created
+Warning in <TROOT::Append>: Replacing existing TH1: sum (Potential memory leak).
+Warning in <TROOT::Append>: Replacing existing TH1: data_2018 (Potential memory leak).
+Creating histogram data_2018 for variable Photon1.eta
+Integral (data_2018): 5295
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: ttg (Potential memory leak).
+Creating histogram ttg for variable Photon1.eta
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: w (Potential memory leak).
+Creating histogram w for variable Photon1.eta
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: vg (Potential memory leak).
+Creating histogram vg for variable Photon1.eta
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: dy (Potential memory leak).
+Creating histogram dy for variable Photon1.eta
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: jj (Potential memory leak).
+Creating histogram jj for variable Photon1.eta
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Warning in <TROOT::Append>: Replacing existing TH1: gj (Potential memory leak).
+Creating histogram gj for variable Photon1.eta
+Adding histogram: gj
+Integral (gj): 1224.5
+Sum: 1460.2
+Warning in <TROOT::Append>: Replacing existing TH1: gg (Potential memory leak).
+Creating histogram gg for variable Photon1.eta
+Adding histogram: gg
+Integral (gg): 3911.79
+Sum: 5371.99
+Info in <TCanvas::Print>: pdf file plots/Photon1.eta_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/Photon1.eta_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/Photon1.eta_barrel_2018_log.pdf has been created
+Warning in <TROOT::Append>: Replacing existing TH1: sum (Potential memory leak).
+Warning in <TROOT::Append>: Replacing existing TH1: data_2018 (Potential memory leak).
+Creating histogram data_2018 for variable Photon2.eta
+Integral (data_2018): 5295
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: ttg (Potential memory leak).
+Creating histogram ttg for variable Photon2.eta
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: w (Potential memory leak).
+Creating histogram w for variable Photon2.eta
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: vg (Potential memory leak).
+Creating histogram vg for variable Photon2.eta
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: dy (Potential memory leak).
+Creating histogram dy for variable Photon2.eta
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: jj (Potential memory leak).
+Creating histogram jj for variable Photon2.eta
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Warning in <TROOT::Append>: Replacing existing TH1: gj (Potential memory leak).
+Creating histogram gj for variable Photon2.eta
+Adding histogram: gj
+Integral (gj): 1224.5
+Sum: 1460.2
+Warning in <TROOT::Append>: Replacing existing TH1: gg (Potential memory leak).
+Creating histogram gg for variable Photon2.eta
+Adding histogram: gg
+Integral (gg): 3911.79
+Sum: 5371.99
+Info in <TCanvas::Print>: pdf file plots/Photon2.eta_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/Photon2.eta_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/Photon2.eta_barrel_2018_log.pdf has been created
+Warning in <TROOT::Append>: Replacing existing TH1: sum (Potential memory leak).
+Warning in <TROOT::Append>: Replacing existing TH1: data_2018 (Potential memory leak).
+Creating histogram data_2018 for variable Photon1.phi
+Integral (data_2018): 5295
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: ttg (Potential memory leak).
+Creating histogram ttg for variable Photon1.phi
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: w (Potential memory leak).
+Creating histogram w for variable Photon1.phi
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: vg (Potential memory leak).
+Creating histogram vg for variable Photon1.phi
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: dy (Potential memory leak).
+Creating histogram dy for variable Photon1.phi
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: jj (Potential memory leak).
+Creating histogram jj for variable Photon1.phi
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Warning in <TROOT::Append>: Replacing existing TH1: gj (Potential memory leak).
+Creating histogram gj for variable Photon1.phi
+Adding histogram: gj
+Integral (gj): 1224.5
+Sum: 1460.2
+Warning in <TROOT::Append>: Replacing existing TH1: gg (Potential memory leak).
+Creating histogram gg for variable Photon1.phi
+Adding histogram: gg
+Integral (gg): 3911.79
+Sum: 5371.99
+Info in <TCanvas::Print>: pdf file plots/Photon1.phi_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/Photon1.phi_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/Photon1.phi_barrel_2018_log.pdf has been created
+Warning in <TROOT::Append>: Replacing existing TH1: sum (Potential memory leak).
+Warning in <TROOT::Append>: Replacing existing TH1: data_2018 (Potential memory leak).
+Creating histogram data_2018 for variable Photon2.phi
+Integral (data_2018): 5295
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: ttg (Potential memory leak).
+Creating histogram ttg for variable Photon2.phi
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: w (Potential memory leak).
+Creating histogram w for variable Photon2.phi
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: vg (Potential memory leak).
+Creating histogram vg for variable Photon2.phi
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: dy (Potential memory leak).
+Creating histogram dy for variable Photon2.phi
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: jj (Potential memory leak).
+Creating histogram jj for variable Photon2.phi
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Warning in <TROOT::Append>: Replacing existing TH1: gj (Potential memory leak).
+Creating histogram gj for variable Photon2.phi
+Adding histogram: gj
+Integral (gj): 1224.5
+Sum: 1460.2
+Warning in <TROOT::Append>: Replacing existing TH1: gg (Potential memory leak).
+Creating histogram gg for variable Photon2.phi
+Adding histogram: gg
+Integral (gg): 3911.79
+Sum: 5371.99
+Info in <TCanvas::Print>: pdf file plots/Photon2.phi_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/Photon2.phi_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/Photon2.phi_barrel_2018_log.pdf has been created
+Warning in <TROOT::Append>: Replacing existing TH1: sum (Potential memory leak).
+Warning in <TROOT::Append>: Replacing existing TH1: data_2018 (Potential memory leak).
+Creating histogram data_2018 for variable abs(Diphoton.deltaPhi)
+Integral (data_2018): 5295
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: ttg (Potential memory leak).
+Creating histogram ttg for variable abs(Diphoton.deltaPhi)
+Adding histogram: ttg
+Integral (ttg): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: w (Potential memory leak).
+Creating histogram w for variable abs(Diphoton.deltaPhi)
+Adding histogram: w
+Integral (w): 0
+Sum: 0
+Warning in <TROOT::Append>: Replacing existing TH1: vg (Potential memory leak).
+Creating histogram vg for variable abs(Diphoton.deltaPhi)
+Adding histogram: vg
+Integral (vg): 26.5508
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: dy (Potential memory leak).
+Creating histogram dy for variable abs(Diphoton.deltaPhi)
+Adding histogram: dy
+Integral (dy): 0
+Sum: 26.5508
+Warning in <TROOT::Append>: Replacing existing TH1: jj (Potential memory leak).
+Creating histogram jj for variable abs(Diphoton.deltaPhi)
+Adding histogram: jj
+Integral (jj): 209.15
+Sum: 235.701
+Warning in <TROOT::Append>: Replacing existing TH1: gj (Potential memory leak).
+Creating histogram gj for variable abs(Diphoton.deltaPhi)
+Adding histogram: gj
+Integral (gj): 1224.5
+Sum: 1460.2
+Warning in <TROOT::Append>: Replacing existing TH1: gg (Potential memory leak).
+Creating histogram gg for variable abs(Diphoton.deltaPhi)
+Adding histogram: gg
+Integral (gg): 3911.79
+Sum: 5371.99
+Info in <TCanvas::Print>: pdf file plots/abs(Diphoton.deltaPhi)_barrel_2018_lin.pdf has been created
+Info in <TCanvas::SaveAs>: ROOT file plots/abs(Diphoton.deltaPhi)_barrel_2018.root has been created
+Info in <TCanvas::Print>: pdf file plots/abs(Diphoton.deltaPhi)_barrel_2018_log.pdf has been created

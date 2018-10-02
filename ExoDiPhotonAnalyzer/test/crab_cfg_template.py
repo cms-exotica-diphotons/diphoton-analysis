@@ -20,27 +20,46 @@ from WMCore.Configuration import Configuration
 config = Configuration()
 
 config.section_("General")
-config.General.requestName = taskname
-config.General.workArea = 'out_crab_data'
+#config.General.requestName = taskname
+#config.General.requestName = taskname+"_json_toRun2018cv3"
+#config.General.requestName = taskname+"_json_Run2018Dv2_320673-322057"
+#config.General.requestName = taskname+"_json_Run2018Dv2_322057-322381"
+#config.General.requestName = taskname+"_json_toRun2018Dv2_322381"
+config.General.requestName = taskname+"_json_Run2018Dv2_322381_322633"
+config.General.workArea = 'out_crab'
 config.General.transferLogs = False
 
 config.section_("JobType")
 config.JobType.pluginName = 'Analysis'
-#config.JobType.psetName = 'diphoton-analysis/ExoDiPhotonAnalyzer/test/diphoton_cfg.py'
-config.JobType.psetName = '/afs/cern.ch/user/c/ciperez/CMSSW_8_0_25/src/diphoton-analysis/ExoDiPhotonAnalyzer/test/diphoton_cfg.py'
+config.JobType.psetName = 'diphoton-analysis/ExoDiPhotonAnalyzer/test/diphoton_cfg.py'
+#config.JobType.psetName = '/uscms/home/cuperez/nobackup/CMSSW_10_1_1/src/diphoton-analysis/ExoDiPhotonAnalyzer/test/diphoton_cfg.py'
 config.JobType.pyCfgParams = ['nEventsSample=' + str(nevents), 'outputFile=out_' + datasetID + '.root']
 
 config.section_("Data")
 config.Data.inputDataset = dataset
 config.Data.inputDBS = 'global'
-#config.Data.outLFNDirBase = '/store/user/ciperez/DiPhotonAnalysis/Run2016Data'
-config.Data.outLFNDirBase = '/store/user/ciperez/ADDGravToGGSherpa'
+config.Data.outLFNDirBase = '/store/user/ciperez/DiPhotonAnalysis/EGammaData'
 
-if "Run2017" in taskname:
+if "Run2018" in taskname:
+    config.Data.splitting = 'LumiBased'
+    config.Data.unitsPerJob = 10
+    #config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions18/13TeV/PromptReco/Cert_314472-319851_13TeV_PromptReco_Collisions18_JSON.txt'
+    #config.Data.lumiMask = '/uscms/home/cuperez/nobackup/CMSSW_10_1_1/src/diphoton-analysis/ExoDiPhotonAnalyzer/test/json_two.json'
+    #config.Data.lumiMask = '/uscms/home/cuperez/nobackup/CMSSW_10_1_1/src/diphoton-analysis/ExoDiPhotonAnalyzer/test/json_toRun2018cv3.json' 
+    #config.Data.lumiMask = '/uscms/home/cuperez/nobackup/CMSSW_10_1_1/src/diphoton-analysis/ExoDiPhotonAnalyzer/test/json_Run2018Dv2_320673-322057.json' 
+    #config.Data.lumiMask = '/uscms/home/cuperez/nobackup/CMSSW_10_1_1/src/diphoton-analysis/ExoDiPhotonAnalyzer/test/json_Run2018Dv2_322057-322381.json'
+    #config.Data.lumiMask = '/uscms/home/cuperez/nobackup/CMSSW_10_1_1/src/diphoton-analysis/ExoDiPhotonAnalyzer/test/Cert_314472-322381_13TeV_PromptReco_Collisions18_JSON.txt'
+    #config.Data.lumiMask = '/uscms/home/cuperez/nobackup/CMSSW_10_1_1/src/diphoton-analysis/ExoDiPhotonAnalyzer/test/json_Run2018Dv2_3220673-322381.json'
+    config.Data.lumiMask = '/uscms_data/d3/cuperez/CMSSW_10_2_1/src/diphoton-analysis/ExoDiPhotonAnalyzer/test/json_Run2018Dv2_322381to322633.json'	
+    config.Data.runRange = '322381-322633' # 'Run2018Dv2 partial'
+elif "Run2017" in taskname:
     config.Data.splitting = 'LumiBased'
     config.Data.unitsPerJob = 100
-    config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/PromptReco/Cert_294927-306126_13TeV_PromptReco_Collisions17_JSON.txt'
-if "Run2016" in taskname:
+    if "31Mar2018" in taskname:
+        config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/ReReco/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt'
+    else:
+        config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/PromptReco/Cert_294927-306126_13TeV_PromptReco_Collisions17_JSON.txt'
+elif "Run2016" in taskname:
     config.Data.splitting = 'LumiBased'
     config.Data.unitsPerJob = 100
     if "Prompt" in taskname:
