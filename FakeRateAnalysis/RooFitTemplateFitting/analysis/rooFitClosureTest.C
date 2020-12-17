@@ -237,7 +237,8 @@ std::pair<double,double> rooFitClosureTest(TString sample, TString templateVaria
   }
   float xframemax = xframe->GetMaximum();
   xframe->GetYaxis()->SetRangeUser(1.e-1,1.1*xframemax);
-  xframe->GetYaxis()->SetTitle("#gamma Candidates / ( 0.0005 )");
+  //xframe->GetYaxis()->SetTitle("#gamma Candidates / ( 0.0005 )");
+  etaBin.Contains("EB") ? xframe->GetYaxis()->SetTitle("#gamma Candidates / ( 0.002 )") : xframe->GetYaxis()->SetTitle("#gamma Candidates / ( 0.004 )");
   //  xframe->GetYaxis()->SetTitleOffset(1.6);
   xframe->Draw();
 
@@ -303,7 +304,8 @@ std::pair<double,double> rooFitClosureTest(TString sample, TString templateVaria
     etaBin.Contains("EB") ? xframeClone->GetXaxis()->SetRangeUser(0.,50.) : xframeClone->GetXaxis()->SetRangeUser(0.,50.);
   }
   xframeClone->GetYaxis()->SetRangeUser(1.e-1,10.0*xframemax);
-  xframeClone->GetYaxis()->SetTitle("#gamma Candidates / ( 0.0005 )");
+  // xframeClone->GetYaxis()->SetTitle("#gamma Candidates / ( 0.0005 )");
+  etaBin.Contains("EB") ? xframe->GetYaxis()->SetTitle("#gamma Candidates / ( 0.002 )") : xframe->GetYaxis()->SetTitle("#gamma Candidates / ( 0.004 )");
   //  xframeClone->GetYaxis()->SetTitle(xframe->GetYaxis()->GetTitle());
   xframeClone->GetYaxis()->SetTitleOffset(1.2);
 
