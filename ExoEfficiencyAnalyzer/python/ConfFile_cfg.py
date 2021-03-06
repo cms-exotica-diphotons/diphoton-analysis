@@ -19,7 +19,7 @@ process.TFileService = cms.Service("TFileService",
                 fileName = cms.string("ExoEfficiency.root")
                             )
 
-process.demo = cms.EDAnalyzer('PhotonAnalyzer',
+process.demo = cms.EDAnalyzer('ExoEfficiencyAnalyzer',
     particles = cms.InputTag("prunedGenParticles")
 )
 
