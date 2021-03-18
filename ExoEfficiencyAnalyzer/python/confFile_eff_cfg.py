@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-process = cms.Process("Demo")
+process = cms.Process("exoefficiency")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
@@ -19,9 +19,14 @@ process.TFileService = cms.Service("TFileService",
                 fileName = cms.string("ExoEfficiency.root")
                             )
 
-process.demo = cms.EDAnalyzer('ExoEfficiencyAnalyzer',
-    particles = cms.InputTag("prunedGenParticles")
+process.exoeff = cms.EDAnalyzer('ExoEfficiencyAnalyzer',
+    genparticles = cms.InputTag("prunedGenParticles"),
+    genInfo = cms.InputTag("generator", "", "SIM"),
+    slimmedAddPileupInfo = cms.InputTag("slimmedAddPileupInfo", "", "PAT"),
+    BeamHaloSummary = cms.InputTag("BeamHaloSummary", "", "RECO"),
+    photonsMiniAOD = cms.InputTag("slimmedPhotons", "", "PAT"),
+    #minPhotonPt = cms.double(125.),
 )
 
 
-process.p = cms.Path(process.demo)
+process.p = cms.Path(process.exoeff)

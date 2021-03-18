@@ -1,5 +1,13 @@
 <use name="FWCore/Framework"/>
 <use name="FWCore/PluginManager"/>
 <use name="FWCore/ParameterSet"/>
-<use name="DataFormats/TrackReco"/>
+<use name="DataFormats/PatCandidates"/>
+<use name="DataFormats/EgammaCandidates"/>
+<use name="DataFormats/VertexReco"/>
+<use name="DataFormats/BeamSpot"/>
+<use name="RecoEgamma/EgammaTools"/>
+<use name="CommonTools/UtilAlgos"/>
+<use name="Geometry/CaloTopology"/>
+<use name="L1Trigger/L1TGlobal"/>
+<flags CXXFLAGS="-Wall -Werror"/>
 <flags EDM_PLUGIN="1"/>
