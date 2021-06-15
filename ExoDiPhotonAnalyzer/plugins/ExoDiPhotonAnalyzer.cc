@@ -310,7 +310,7 @@ ExoDiPhotonAnalyzer::ExoDiPhotonAnalyzer(const edm::ParameterSet& iConfig)
   // 17Jul2018 re-MINIAOD runs in the "DQM" process
   if(isReMINIAOD_) {
     if(outputFile_.Contains("17Jul2018")) processNameData_ = "DQM";
-    if(outputFile_.Contains("31Mar2018")) processNameData_ = "PAT";
+    else processNameData_ = "PAT";
   }
   // need a separate branch for sherpa photons so that k-factor reweighting can be applied
   // even if there is no RECO match

@@ -1,6 +1,6 @@
 import os
 
-def get_global_tag(dataset_name):
+def get_global_tag_EOY(dataset_name):
     '''Determine global tag to use from dataset name.'''
     globalTag = 'notset'
     if "Run2015" in dataset_name:
@@ -53,8 +53,28 @@ def get_global_tag(dataset_name):
         sys.exit()
     return globalTag
 
+def get_global_tag_legacy(dataset_name):
+    '''Return global tag appropriate for legacy re-reco'''
+    if 'Run201' in dataset_name:
+        return '106X_dataRun2_v35'
+    else:
+        if 'UL16APV' in dataset_name:
+            return '106X_mcRun2_asymptotic_preVFP_v11'
+        elif 'UL16' in dataset_name:
+            return '106X_mcRun2_asymptotic_v17'
+        elif 'UL17' in dataset_name:
+            return '106X_mc2017_realistic_v9'
+        elif 'UL18' in dataset_name:
+            return '106X_upgrade2018_realistic_v16_L1v1'
+
+def get_global_tag(dataset_name):
+    if 'UL' in dataset_name:
+        return get_global_tag_legacy(dataset_name)
+    else:
+        return get_global_tag_EOY(dataset_name)
+
 def is_reminiaod(dataset_name):
-    if '03Feb2017' in dataset_name or "17Jul2018" in dataset_name or "31Mar2018" in dataset_name or "09Aug2019" in dataset_name:
+    if '03Feb2017' in dataset_name or "17Jul2018" in dataset_name or "31Mar2018" in dataset_name or "09Aug2019" in dataset_name or "UL" in dataset_name:
         return True
     else:
         return False
@@ -91,7 +111,10 @@ def egamma_info(dataset_name):
         info['effAreaChHad'] = egm_data_dir + "Fall17/effAreaPhotons_cone03_pfChargedHadrons_90percentBased_V2.txt"
         info['effAreaNeuHad'] = egm_data_dir + "Fall17/effAreaPhotons_cone03_pfNeutralHadrons_90percentBased_V2.txt"
         info['effAreaPhoHad'] = egm_data_dir + "Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_V2.txt"
-        info['era'] = '2018-Prompt'
+        if 'UL' in dataset_name:
+            info['era'] = '2018-UL'
+        else:
+            info['era'] = '2018-Prompt'
 
     return info
 
