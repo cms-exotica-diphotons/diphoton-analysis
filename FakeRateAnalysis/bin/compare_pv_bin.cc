@@ -38,7 +38,7 @@ void compare_pv_bin(int year)
   const std::string iso("chIso5To10");
 
   std::vector<std::string> datasets = {"jetht", "doublemuon"};
-  std::vector<std::string> regions = {"EB", "EE"};
+  std::vector<std::string> regions = {"EB", "EE", "EE1", "EE2"};
   std::vector<std::string> pvCuts = {"0-22", "23-27"};
   if(year == 2016) {
     pvCuts.push_back("28-200");
@@ -61,6 +61,8 @@ void compare_pv_bin(int year)
   std::map<std::string, double> graphMax;
   graphMax["EB"] = 0.3;
   graphMax["EE"] = 0.7;
+  graphMax["EE1"] = 0.7;
+  graphMax["EE2"] = 0.7;
 
   for(auto pvCut : pvCuts) {
     for(auto region : regions) {
@@ -91,7 +93,9 @@ void compare_pv_bin(int year)
       cut.ReplaceAll("-", " #leq n_{PV} #leq ");
       label->DrawLatexNDC(0.55, 0.85, cut);
       if (region == "EB") label->DrawLatexNDC(0.55, 0.8, "ECAL barrel");
-      else label->DrawLatexNDC(0.55, 0.8, "ECAL endcap");
+      else if (region == "EE") label->DrawLatexNDC(0.55, 0.8, "ECAL endcap");
+      else if (region == "EE1") label->DrawLatexNDC(0.55, 0.8, "EE (low eta)");
+      else if (region == "EE2") label->DrawLatexNDC(0.55, 0.8, "EE (high eta)");
       label->DrawLatexNDC(0.55, 0.75, isoLabel[iso].c_str());
       TString filename(Form("plots/compare_pv_%s_%d_%s.pdf", region.c_str(), year, pvCut.c_str()));
       filename.ReplaceAll("-", "to");

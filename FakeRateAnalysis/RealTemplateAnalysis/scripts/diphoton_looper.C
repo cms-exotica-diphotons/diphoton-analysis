@@ -43,7 +43,7 @@ void diphoton_looper(int year, const std::string & sample, int nPVLow, int nPVHi
   MCFakeRateAnalysis loop(chain);
 
   // loop over all entries of our tree
-  loop.Loop(year, sample, nPVLow, nPVHigh, isClosureTest);
+  loop.Loop(std::to_string(year), sample, nPVLow, nPVHigh, isClosureTest);
 
   // stop stopwatch
   sw.Stop();

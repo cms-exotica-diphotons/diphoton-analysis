@@ -73,18 +73,28 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
   // pt spectrum of all photon objects
   TH1D phoPtEB("phoPtEB","",1000,0.,2500.);
   TH1D phoPtEE("phoPtEE","",1000,0.,2500.);
+  TH1D phoPtEE1("phoPtEE1","",1000,0.,2500.);
+  TH1D phoPtEE2("phoPtEE2","",1000,0.,2500.);
 
   // pt spectrum of all numerator objects
   TH1D phoPtEB_numerator("phoPtEB_numerator","",1000,0.,2500.);
   TH1D phoPtEE_numerator("phoPtEE_numerator","",1000,0.,2500.);
+  TH1D phoPtEE1_numerator("phoPtEE1_numerator","",1000,0.,2500.);
+  TH1D phoPtEE2_numerator("phoPtEE2_numerator","",1000,0.,2500.);
   TH1D phoPtEB_numerator_varbin("phoPtEB_numerator_varbin", "", nBins-1, ptBinArray.data());
   TH1D phoPtEE_numerator_varbin("phoPtEE_numerator_varbin", "", nBins-1, ptBinArray.data());
+  TH1D phoPtEE1_numerator_varbin("phoPtEE1_numerator_varbin", "", nBins-1, ptBinArray.data());
+  TH1D phoPtEE2_numerator_varbin("phoPtEE2_numerator_varbin", "", nBins-1, ptBinArray.data());
 
   // pt spectrum of denominator objects
   TH1D phoPtEB_denominator("phoPtEB_denominator","",1000,0.,2500.);
   TH1D phoPtEE_denominator("phoPtEE_denominator","",1000,0.,2500.);
+  TH1D phoPtEE1_denominator("phoPtEE1_denominator","",1000,0.,2500.);
+  TH1D phoPtEE2_denominator("phoPtEE2_denominator","",1000,0.,2500.);
   TH1D phoPtEB_denominator_varbin("phoPtEB_denominator_varbin", "", nBins-1, ptBinArray.data());
   TH1D phoPtEE_denominator_varbin("phoPtEE_denominator_varbin", "", nBins-1, ptBinArray.data());
+  TH1D phoPtEE1_denominator_varbin("phoPtEE1_denominator_varbin", "", nBins-1, ptBinArray.data());
+  TH1D phoPtEE2_denominator_varbin("phoPtEE2_denominator_varbin", "", nBins-1, ptBinArray.data());
 
   // pt spectrum of all objects passing fake template criteria
   // TH1D phoPtEB_faketemplate("phoPtEB_faketemplate","",1000,0.,2500.);
@@ -94,6 +104,8 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
 
   std::vector<TH1D*> phoPtEB_faketemplates; // vector of fake photon pT distributions, one for each sideband definition
   std::vector<TH1D*> phoPtEE_faketemplates;
+  std::vector<TH1D*> phoPtEE1_faketemplates;
+  std::vector<TH1D*> phoPtEE2_faketemplates;
 
   for (chIsoIt it = chIsoSidebands.begin(); it != chIsoSidebands.end(); ++it){
     double sidebandLow = it->first;
@@ -106,60 +118,100 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
     TH1D* phoPt_fake_EE = new TH1D(Form( "phoPtEE_faketemplate_chIso%dTo%d",(int)sidebandLow,(int)sidebandHigh ),"",1000,0.,2500.);
     phoPt_fake_EE->Sumw2();
     phoPtEE_faketemplates.push_back(phoPt_fake_EE);
+
+    TH1D* phoPt_fake_EE1 = new TH1D(Form( "phoPtEE1_faketemplate_chIso%dTo%d",(int)sidebandLow,(int)sidebandHigh ),"",1000,0.,2500.);
+    phoPt_fake_EE1->Sumw2();
+    phoPtEE1_faketemplates.push_back(phoPt_fake_EE1);
+
+    TH1D* phoPt_fake_EE2 = new TH1D(Form( "phoPtEE2_faketemplate_chIso%dTo%d",(int)sidebandLow,(int)sidebandHigh ),"",1000,0.,2500.);
+    phoPt_fake_EE2->Sumw2();
+    phoPtEE2_faketemplates.push_back(phoPt_fake_EE2);
     
   }
 
   phoPtEB.Sumw2();
   phoPtEE.Sumw2();
+  phoPtEE1.Sumw2();
+  phoPtEE2.Sumw2();
   phoPtEB_numerator_varbin.Sumw2();
   phoPtEE_numerator_varbin.Sumw2();
+  phoPtEE1_numerator_varbin.Sumw2();
+  phoPtEE2_numerator_varbin.Sumw2();
   phoPtEB_denominator_varbin.Sumw2();
   phoPtEE_denominator_varbin.Sumw2();
+  phoPtEE1_denominator_varbin.Sumw2();
+  phoPtEE2_denominator_varbin.Sumw2();
   // phoPtEB_faketemplate_varbin.Sumw2();
   // phoPtEE_faketemplate_varbin.Sumw2();
 
   // numerator and template histograms
   std::vector< std::vector<TH1D*> > sIeIeFakeTemplatesEB; // for each pT bin, there will be a vector of templates, one for each chIso sideband definition
   std::vector< std::vector<TH1D*> > sIeIeFakeTemplatesEE;
+  std::vector< std::vector<TH1D*> > sIeIeFakeTemplatesEE1;
+  std::vector< std::vector<TH1D*> > sIeIeFakeTemplatesEE2;
   // create empty vectors to hold all the templates.  One vector for each pT bin
   for (int i=0; i<nBins-1; i++){
     std::vector<TH1D*> ebvec;
     std::vector<TH1D*> eevec;
     sIeIeFakeTemplatesEB.push_back(ebvec);
     sIeIeFakeTemplatesEE.push_back(eevec);
+    sIeIeFakeTemplatesEE1.push_back(eevec);
+    sIeIeFakeTemplatesEE2.push_back(eevec);
   }
 
   TH1D* leadingjetPhoDrEB_numerator = new TH1D("leadingjetPhoDrEB_numerator","leadingjetPhoDrEB_numerator",500,0.,5.);
   TH1D* leadingjetPhoDrEE_numerator = new TH1D("leadingjetPhoDrEE_numerator","leadingjetPhoDrEE_numerator",500,0.,5.);
+  TH1D* leadingjetPhoDrEE1_numerator = new TH1D("leadingjetPhoDrEE1_numerator","leadingjetPhoDrEE1_numerator",500,0.,5.);
+  TH1D* leadingjetPhoDrEE2_numerator = new TH1D("leadingjetPhoDrEE2_numerator","leadingjetPhoDrEE2_numerator",500,0.,5.);
 
   TH1D* leadingjetPhoDrEB_faketemplate = new TH1D("leadingjetPhoDrEB_faketemplate","leadingjetPhoDrEB_faketemplate",500,0.,5.);
   TH1D* leadingjetPhoDrEE_faketemplate = new TH1D("leadingjetPhoDrEE_faketemplate","leadingjetPhoDrEE_faketemplate",500,0.,5.);
+  TH1D* leadingjetPhoDrEE1_faketemplate = new TH1D("leadingjetPhoDrEE1_faketemplate","leadingjetPhoDrEE1_faketemplate",500,0.,5.);
+  TH1D* leadingjetPhoDrEE2_faketemplate = new TH1D("leadingjetPhoDrEE2_faketemplate","leadingjetPhoDrEE2_faketemplate",500,0.,5.);
 
   TH1D* leadingjetPhoDrEB_denominator = new TH1D("leadingjetPhoDrEB_denominator","leadingjetPhoDrEB_denominator",500,0.,5.);
   TH1D* leadingjetPhoDrEE_denominator = new TH1D("leadingjetPhoDrEE_denominator","leadingjetPhoDrEE_denominator",500,0.,5.);
+  TH1D* leadingjetPhoDrEE1_denominator = new TH1D("leadingjetPhoDrEE1_denominator","leadingjetPhoDrEE1_denominator",500,0.,5.);
+  TH1D* leadingjetPhoDrEE2_denominator = new TH1D("leadingjetPhoDrEE2_denominator","leadingjetPhoDrEE2_denominator",500,0.,5.);
 
   TH1D* secondleadingjetPhoDrEB_numerator = new TH1D("secondleadingjetPhoDrEB_numerator","secondleadingjetPhoDrEB_numerator",500,0.,5.);
   TH1D* secondleadingjetPhoDrEE_numerator = new TH1D("secondleadingjetPhoDrEE_numerator","secondleadingjetPhoDrEE_numerator",500,0.,5.);
+  TH1D* secondleadingjetPhoDrEE1_numerator = new TH1D("secondleadingjetPhoDrEE1_numerator","secondleadingjetPhoDrEE1_numerator",500,0.,5.);
+  TH1D* secondleadingjetPhoDrEE2_numerator = new TH1D("secondleadingjetPhoDrEE2_numerator","secondleadingjetPhoDrEE2_numerator",500,0.,5.);
 
   TH1D* secondleadingjetPhoDrEB_faketemplate = new TH1D("secondleadingjetPhoDrEB_faketemplate","secondleadingjetPhoDrEB_faketemplate",500,0.,5.);
   TH1D* secondleadingjetPhoDrEE_faketemplate = new TH1D("secondleadingjetPhoDrEE_faketemplate","secondleadingjetPhoDrEE_faketemplate",500,0.,5.);
+  TH1D* secondleadingjetPhoDrEE1_faketemplate = new TH1D("secondleadingjetPhoDrEE1_faketemplate","secondleadingjetPhoDrEE1_faketemplate",500,0.,5.);
+  TH1D* secondleadingjetPhoDrEE2_faketemplate = new TH1D("secondleadingjetPhoDrEE2_faketemplate","secondleadingjetPhoDrEE2_faketemplate",500,0.,5.);
 
   TH1D* secondleadingjetPhoDrEB_denominator = new TH1D("secondleadingjetPhoDrEB_denominator","secondleadingjetPhoDrEB_denominator",500,0.,5.);
   TH1D* secondleadingjetPhoDrEE_denominator = new TH1D("secondleadingjetPhoDrEE_denominator","secondleadingjetPhoDrEE_denominator",500,0.,5.);
+  TH1D* secondleadingjetPhoDrEE1_denominator = new TH1D("secondleadingjetPhoDrEE1_denominator","secondleadingjetPhoDrEE1_denominator",500,0.,5.);
+  TH1D* secondleadingjetPhoDrEE2_denominator = new TH1D("secondleadingjetPhoDrEE2_denominator","secondleadingjetPhoDrEE2_denominator",500,0.,5.);
 
   TH1D* thirdleadingjetPhoDrEB_numerator = new TH1D("thirdleadingjetPhoDrEB_numerator","thirdleadingjetPhoDrEB_numerator",500,0.,5.);
   TH1D* thirdleadingjetPhoDrEE_numerator = new TH1D("thirdleadingjetPhoDrEE_numerator","thirdleadingjetPhoDrEE_numerator",500,0.,5.);
+  TH1D* thirdleadingjetPhoDrEE1_numerator = new TH1D("thirdleadingjetPhoDrEE1_numerator","thirdleadingjetPhoDrEE1_numerator",500,0.,5.);
+  TH1D* thirdleadingjetPhoDrEE2_numerator = new TH1D("thirdleadingjetPhoDrEE2_numerator","thirdleadingjetPhoDrEE2_numerator",500,0.,5.);
 
   TH1D* thirdleadingjetPhoDrEB_faketemplate = new TH1D("thirdleadingjetPhoDrEB_faketemplate","thirdleadingjetPhoDrEB_faketemplate",500,0.,5.);
   TH1D* thirdleadingjetPhoDrEE_faketemplate = new TH1D("thirdleadingjetPhoDrEE_faketemplate","thirdleadingjetPhoDrEE_faketemplate",500,0.,5.);
+  TH1D* thirdleadingjetPhoDrEE1_faketemplate = new TH1D("thirdleadingjetPhoDrEE1_faketemplate","thirdleadingjetPhoDrEE1_faketemplate",500,0.,5.);
+  TH1D* thirdleadingjetPhoDrEE2_faketemplate = new TH1D("thirdleadingjetPhoDrEE2_faketemplate","thirdleadingjetPhoDrEE2_faketemplate",500,0.,5.);
 
   TH1D* thirdleadingjetPhoDrEB_denominator = new TH1D("thirdleadingjetPhoDrEB_denominator","thirdleadingjetPhoDrEB_denominator",500,0.,5.);
   TH1D* thirdleadingjetPhoDrEE_denominator = new TH1D("thirdleadingjetPhoDrEE_denominator","thirdleadingjetPhoDrEE_denominator",500,0.,5.);
+  TH1D* thirdleadingjetPhoDrEE1_denominator = new TH1D("thirdleadingjetPhoDrEE1_denominator","thirdleadingjetPhoDrEE1_denominator",500,0.,5.);
+  TH1D* thirdleadingjetPhoDrEE2_denominator = new TH1D("thirdleadingjetPhoDrEE2_denominator","thirdleadingjetPhoDrEE2_denominator",500,0.,5.);
 
   std::vector<TH1D*> sIeIeNumeratorEB;
   std::vector<TH1D*> sIeIeNumeratorEE;
+  std::vector<TH1D*> sIeIeNumeratorEE1;
+  std::vector<TH1D*> sIeIeNumeratorEE2;
   std::vector<TH1D*> denomPtEB;
   std::vector<TH1D*> denomPtEE;
+  std::vector<TH1D*> denomPtEE1;
+  std::vector<TH1D*> denomPtEE2;
 
   // loop over bins increments and create histograms
   for (int i = 0; i < nBins-1; i++) {
@@ -179,6 +231,14 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
       sieieEE_faketemplate->Sumw2();
       sIeIeFakeTemplatesEE.at(i).push_back( sieieEE_faketemplate );
 
+      TH1D* sieieEE1_faketemplate = new TH1D(Form( "sieieEE1_faketemplate_pt%dTo%d_chIso%dTo%d",(int)binLowEdge,(int)binUpperEdge,(int)sidebandLow,(int)sidebandHigh ),"",200,0.,0.1);
+      sieieEE1_faketemplate->Sumw2();
+      sIeIeFakeTemplatesEE1.at(i).push_back( sieieEE1_faketemplate );
+
+      TH1D* sieieEE2_faketemplate = new TH1D(Form( "sieieEE2_faketemplate_pt%dTo%d_chIso%dTo%d",(int)binLowEdge,(int)binUpperEdge,(int)sidebandLow,(int)sidebandHigh ),"",200,0.,0.1);
+      sieieEE2_faketemplate->Sumw2();
+      sIeIeFakeTemplatesEE2.at(i).push_back( sieieEE2_faketemplate );
+
     } // end loop over sidebands
     
     // TH1D *hEB_fakeTemplate = new TH1D(Form("sieieEB_faketemplate_pt%dTo%d",(int)binLowEdge,(int)binUpperEdge),"sigmaIetaIetaEB",200,0.,0.1);
@@ -197,6 +257,14 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
     hEE_numerator->Sumw2();
     sIeIeNumeratorEE.push_back(hEE_numerator);
 
+    TH1D *hEE1_numerator = new TH1D(Form("sieieEE1_numerator_pt%dTo%d",(int)binLowEdge,(int)binUpperEdge),"sigmaIetaIetaEE1",200,0.,0.1);
+    hEE1_numerator->Sumw2();
+    sIeIeNumeratorEE1.push_back(hEE1_numerator);
+
+    TH1D *hEE2_numerator = new TH1D(Form("sieieEE2_numerator_pt%dTo%d",(int)binLowEdge,(int)binUpperEdge),"sigmaIetaIetaEE2",200,0.,0.1);
+    hEE2_numerator->Sumw2();
+    sIeIeNumeratorEE2.push_back(hEE2_numerator);
+
     // pt binned denominator histograms
     TH1D *hEB_denominator = new TH1D(Form("PtEB_denominator_pt%dTo%d",(int)binLowEdge,(int)binUpperEdge),"PtEB",100,binLowEdge,binUpperEdge);
     hEB_denominator->Sumw2();
@@ -205,6 +273,14 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
     TH1D *hEE_denominator = new TH1D(Form("PtEE_denominator_pt%dTo%d",(int)binLowEdge,(int)binUpperEdge),"PtEE",100,binLowEdge,binUpperEdge);
     hEE_denominator->Sumw2();
     denomPtEE.push_back(hEE_denominator);
+
+    TH1D *hEE1_denominator = new TH1D(Form("PtEE1_denominator_pt%dTo%d",(int)binLowEdge,(int)binUpperEdge),"PtEE1",100,binLowEdge,binUpperEdge);
+    hEE1_denominator->Sumw2();
+    denomPtEE1.push_back(hEE1_denominator);
+
+    TH1D *hEE2_denominator = new TH1D(Form("PtEE2_denominator_pt%dTo%d",(int)binLowEdge,(int)binUpperEdge),"PtEE2",100,binLowEdge,binUpperEdge);
+    hEE2_denominator->Sumw2();
+    denomPtEE2.push_back(hEE2_denominator);
 
   }
 
@@ -227,6 +303,24 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
   TH1D* phoIsoEE_pT50To70_num = new TH1D("phoIsoEE_pT50To70_num","",650,-50.,2.);
   TH1D* hOverEEE_pT50To70_num = new TH1D("hOverEEE_pT50To70_num","",100,0.,0.05);
   TH1D* sieieEE_pT50To70_num = new TH1D("sieieEE_pT50To70_num","",100,0.,0.03);
+
+  TH1D* chIsoEE1_pT50To70_denom = new TH1D("chIsoEE1_pT50To70_denom","",100,0.,50.);
+  TH1D* phoIsoEE1_pT50To70_denom = new TH1D("phoIsoEE1_pT50To70_denom","",200,-50.,50.);
+  TH1D* hOverEEE1_pT50To70_denom = new TH1D("hOverEEE1_pT50To70_denom","",100,0.,0.16);
+  TH1D* sieieEE1_pT50To70_denom = new TH1D("sieieEE1_pT50To70_denom","",100,0.,0.1);
+  TH1D* chIsoEE1_pT50To70_num = new TH1D("chIsoEE1_pT50To70_num","",100,0.,5.);
+  TH1D* phoIsoEE1_pT50To70_num = new TH1D("phoIsoEE1_pT50To70_num","",650,-50.,2.);
+  TH1D* hOverEEE1_pT50To70_num = new TH1D("hOverEEE1_pT50To70_num","",100,0.,0.05);
+  TH1D* sieieEE1_pT50To70_num = new TH1D("sieieEE1_pT50To70_num","",100,0.,0.03);
+
+  TH1D* chIsoEE2_pT50To70_denom = new TH1D("chIsoEE2_pT50To70_denom","",100,0.,50.);
+  TH1D* phoIsoEE2_pT50To70_denom = new TH1D("phoIsoEE2_pT50To70_denom","",200,-50.,50.);
+  TH1D* hOverEEE2_pT50To70_denom = new TH1D("hOverEEE2_pT50To70_denom","",100,0.,0.16);
+  TH1D* sieieEE2_pT50To70_denom = new TH1D("sieieEE2_pT50To70_denom","",100,0.,0.1);
+  TH1D* chIsoEE2_pT50To70_num = new TH1D("chIsoEE2_pT50To70_num","",100,0.,5.);
+  TH1D* phoIsoEE2_pT50To70_num = new TH1D("phoIsoEE2_pT50To70_num","",650,-50.,2.);
+  TH1D* hOverEEE2_pT50To70_num = new TH1D("hOverEEE2_pT50To70_num","",100,0.,0.05);
+  TH1D* sieieEE2_pT50To70_num = new TH1D("sieieEE2_pT50To70_num","",100,0.,0.03);
   TH1D* npv = new TH1D("npv", "", 200, 0, 200);
 
   // loop over all entries
@@ -238,6 +332,11 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
     nb = fChain->GetEntry(jentry);   nbytes += nb;
     // if (Cut(ientry) < 0) continue;
     if (jentry % 100000 == 0) std::cout << "Number of entries looped over: " << jentry << std::endl;
+
+    const double etaCutEBmax = 1.4442;
+    const double etaCutEEmin = 1.566;
+    const double etaCutEE1max = 2.033;
+    const double etaCutEEmax = 2.5;
 
     // reject beam halo
     //if (Event_beamHaloIDTight2015) continue;
@@ -334,8 +433,17 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
       bool inChIsoSideband = (sidebandLow < Photon_chargedHadIso03) && (Photon_chargedHadIso03 < sidebandHigh);
       bool isFakeTemplateObj = Photon_isNumeratorObjCand && inChIsoSideband;
 
-      if (fabs(Photon_scEta) < 1.4442 && isFakeTemplateObj) phoPtEB_faketemplates.at(i)->Fill(Photon_pt);
-      else if (1.566 < fabs(Photon_scEta) && fabs(Photon_scEta) < 2.5 && isFakeTemplateObj) phoPtEE_faketemplates.at(i)->Fill(Photon_pt);
+      if (fabs(Photon_scEta) < etaCutEBmax && isFakeTemplateObj) phoPtEB_faketemplates.at(i)->Fill(Photon_pt);
+      else if (etaCutEEmin < fabs(Photon_scEta) && fabs(Photon_scEta) < etaCutEEmax && isFakeTemplateObj) {
+	phoPtEE_faketemplates.at(i)->Fill(Photon_pt);
+	if (etaCutEEmin < fabs(Photon_scEta) && fabs(Photon_scEta) < etaCutEE1max) {
+	  phoPtEE1_faketemplates.at(i)->Fill(Photon_pt);
+	}
+	else {
+	  phoPtEE2_faketemplates.at(i)->Fill(Photon_pt);
+	}
+
+      }
     } 
 
     bool isNumeratorObj = Photon_isNumeratorObjCand && Photon_passChIso;
@@ -347,7 +455,7 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
     //   isDenomObj = Photon_isDenominatorObj && Photon_hadronicOverEm < 0.1 && Photon_passCorPhoIso; //tighten phoIso in the denominator for the endcaps
 
     // fill debug plots
-    if (fabs(Photon_scEta) < 1.4442 && Photon_pt > 50. && Photon_pt < 70.)  {
+    if (fabs(Photon_scEta) < etaCutEBmax && Photon_pt > 50. && Photon_pt < 70.)  {
       if (Photon_passHighPtID){
         chIsoEB_pT50To70_num->Fill(Photon_chargedHadIso03);
         phoIsoEB_pT50To70_num->Fill(Photon_corPhotonIso03);
@@ -361,7 +469,7 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
         sieieEB_pT50To70_denom->Fill(Photon_sigmaIetaIeta5x5);
       }
     }
-    else if (1.566 < fabs(Photon_scEta) && fabs(Photon_scEta) < 2.5 && Photon_pt > 50. && Photon_pt < 70.)  {
+    else if (etaCutEEmin < fabs(Photon_scEta) && fabs(Photon_scEta) < etaCutEEmax && Photon_pt > 50. && Photon_pt < 70.)  {
       if (Photon_passHighPtID){
         chIsoEE_pT50To70_num->Fill(Photon_chargedHadIso03);
         phoIsoEE_pT50To70_num->Fill(Photon_corPhotonIso03);
@@ -374,6 +482,34 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
         hOverEEE_pT50To70_denom->Fill(Photon_hadTowerOverEm);
         sieieEE_pT50To70_denom->Fill(Photon_sigmaIetaIeta5x5);
       }
+      if ( fabs(Photon_scEta) < etaCutEE1max ) {
+	if (Photon_passHighPtID){
+	  chIsoEE1_pT50To70_num->Fill(Photon_chargedHadIso03);
+	  phoIsoEE1_pT50To70_num->Fill(Photon_corPhotonIso03);
+	  hOverEEE1_pT50To70_num->Fill(Photon_hadTowerOverEm);
+	  sieieEE1_pT50To70_num->Fill(Photon_sigmaIetaIeta5x5);
+	}
+	else if (isDenomObj){
+	  chIsoEE1_pT50To70_denom->Fill(Photon_chargedHadIso03);
+	  phoIsoEE1_pT50To70_denom->Fill(Photon_corPhotonIso03);
+	  hOverEEE1_pT50To70_denom->Fill(Photon_hadTowerOverEm);
+	  sieieEE1_pT50To70_denom->Fill(Photon_sigmaIetaIeta5x5);
+	}
+      }
+      else {
+	if (Photon_passHighPtID){
+	  chIsoEE2_pT50To70_num->Fill(Photon_chargedHadIso03);
+	  phoIsoEE2_pT50To70_num->Fill(Photon_corPhotonIso03);
+	  hOverEEE2_pT50To70_num->Fill(Photon_hadTowerOverEm);
+	  sieieEE2_pT50To70_num->Fill(Photon_sigmaIetaIeta5x5);
+	}
+	else if (isDenomObj){
+	  chIsoEE2_pT50To70_denom->Fill(Photon_chargedHadIso03);
+	  phoIsoEE2_pT50To70_denom->Fill(Photon_corPhotonIso03);
+	  hOverEEE2_pT50To70_denom->Fill(Photon_hadTowerOverEm);
+	  sieieEE2_pT50To70_denom->Fill(Photon_sigmaIetaIeta5x5);
+	}
+      }
     }
 
     // end debug plots
@@ -382,7 +518,7 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
     // bool inChIsoSideband = (sidebandLow < Photon_chargedHadIso03) && (Photon_chargedHadIso03 < sidebandHigh);
     // bool isFakeTemplateObj = Photon_isNumeratorObjCand && inChIsoSideband;
 
-    if (fabs(Photon_scEta) < 1.4442) {
+    if (fabs(Photon_scEta) < etaCutEBmax) {
       phoPtEB.Fill( Photon_pt );
       if (isNumeratorObj){
       	phoPtEB_numerator.Fill(Photon_pt);
@@ -404,7 +540,7 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
       // }
     }
 
-    else if (1.566 < fabs(Photon_scEta) && fabs(Photon_scEta) < 2.5) {
+    else if (etaCutEEmin < fabs(Photon_scEta) && fabs(Photon_scEta) < etaCutEEmax) {
       phoPtEE.Fill( Photon_pt );
       if (isNumeratorObj){
       	phoPtEE_numerator.Fill(Photon_pt);
@@ -419,6 +555,41 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
         if (Jet_nJets >= 1) leadingjetPhoDrEE_denominator->Fill(photonLeadingJetDr);
         if (Jet_nJets >= 2) secondleadingjetPhoDrEE_denominator->Fill(photonSecondLeadingJetDr);
         if (Jet_nJets >= 3) thirdleadingjetPhoDrEE_denominator->Fill(photonThirdLeadingJetDr);
+      }
+      if ( fabs(Photon_scEta) < etaCutEE1max ) {
+	phoPtEE1.Fill( Photon_pt );
+	if (isNumeratorObj){
+	  phoPtEE1_numerator.Fill(Photon_pt);
+	  phoPtEE1_numerator_varbin.Fill(Photon_pt);
+	  if (Jet_nJets >= 1) leadingjetPhoDrEE1_numerator->Fill(photonLeadingJetDr);
+	  if (Jet_nJets >= 2) secondleadingjetPhoDrEE1_numerator->Fill(photonSecondLeadingJetDr);
+	  if (Jet_nJets >= 3) thirdleadingjetPhoDrEE1_numerator->Fill(photonThirdLeadingJetDr);
+	}
+	if (isDenomObj){
+	  phoPtEE1_denominator.Fill(Photon_pt);
+	  phoPtEE1_denominator_varbin.Fill(Photon_pt);
+	  if (Jet_nJets >= 1) leadingjetPhoDrEE1_denominator->Fill(photonLeadingJetDr);
+	  if (Jet_nJets >= 2) secondleadingjetPhoDrEE1_denominator->Fill(photonSecondLeadingJetDr);
+	  if (Jet_nJets >= 3) thirdleadingjetPhoDrEE1_denominator->Fill(photonThirdLeadingJetDr);
+	}
+      }
+      else {
+	phoPtEE2.Fill( Photon_pt );
+	if (isNumeratorObj){
+	  phoPtEE2_numerator.Fill(Photon_pt);
+	  phoPtEE2_numerator_varbin.Fill(Photon_pt);
+	  if (Jet_nJets >= 1) leadingjetPhoDrEE2_numerator->Fill(photonLeadingJetDr);
+	  if (Jet_nJets >= 2) secondleadingjetPhoDrEE2_numerator->Fill(photonSecondLeadingJetDr);
+	  if (Jet_nJets >= 3) thirdleadingjetPhoDrEE2_numerator->Fill(photonThirdLeadingJetDr);
+	}
+	if (isDenomObj){
+	  phoPtEE2_denominator.Fill(Photon_pt);
+	  phoPtEE2_denominator_varbin.Fill(Photon_pt);
+	  if (Jet_nJets >= 1) leadingjetPhoDrEE2_denominator->Fill(photonLeadingJetDr);
+	  if (Jet_nJets >= 2) secondleadingjetPhoDrEE2_denominator->Fill(photonSecondLeadingJetDr);
+	  if (Jet_nJets >= 3) thirdleadingjetPhoDrEE2_denominator->Fill(photonThirdLeadingJetDr);
+	}
+
       }
       // if (isFakeTemplateObj){
       // 	phoPtEE_faketemplate.Fill(Photon_pt);
@@ -440,7 +611,7 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
         bool isFakeTemplateObj = Photon_isNumeratorObjCand && inChIsoSideband;
 
         if ( (binLowEdge < Photon_pt) && (Photon_pt < binUpperEdge) && isFakeTemplateObj ){
-          if (fabs(Photon_scEta) < 1.4442){
+          if (fabs(Photon_scEta) < etaCutEBmax){
             sIeIeFakeTemplatesEB.at(i).at(j)->Fill( Photon_sigmaIetaIeta5x5 );
             if (sidebandLow==9.){
               if (Jet_nJets >= 1) leadingjetPhoDrEB_faketemplate->Fill(photonLeadingJetDr);
@@ -448,13 +619,30 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
               if (Jet_nJets >= 3) thirdleadingjetPhoDrEB_faketemplate->Fill(photonThirdLeadingJetDr);
             }
           }
-          else if ( (1.566 < fabs(Photon_scEta)) && (fabs(Photon_scEta) < 2.5) ){
+          else if ( (etaCutEEmin < fabs(Photon_scEta)) && (fabs(Photon_scEta) < etaCutEEmax) ){
             sIeIeFakeTemplatesEE.at(i).at(j)->Fill( Photon_sigmaIetaIeta5x5 );
             if (sidebandLow==9.){
               if (Jet_nJets >= 1) leadingjetPhoDrEE_faketemplate->Fill(photonLeadingJetDr);
               if (Jet_nJets >= 2) secondleadingjetPhoDrEE_faketemplate->Fill(photonSecondLeadingJetDr);
               if (Jet_nJets >= 3) thirdleadingjetPhoDrEE_faketemplate->Fill(photonThirdLeadingJetDr);
             }           
+	    if (fabs(Photon_scEta) < etaCutEE1max ) {
+	      sIeIeFakeTemplatesEE1.at(i).at(j)->Fill( Photon_sigmaIetaIeta5x5 );
+	      if (sidebandLow==9.){
+		if (Jet_nJets >= 1) leadingjetPhoDrEE1_faketemplate->Fill(photonLeadingJetDr);
+		if (Jet_nJets >= 2) secondleadingjetPhoDrEE1_faketemplate->Fill(photonSecondLeadingJetDr);
+		if (Jet_nJets >= 3) thirdleadingjetPhoDrEE1_faketemplate->Fill(photonThirdLeadingJetDr);
+	      }
+	    }
+	    else {
+	      sIeIeFakeTemplatesEE2.at(i).at(j)->Fill( Photon_sigmaIetaIeta5x5 );
+	      if (sidebandLow==9.){
+		if (Jet_nJets >= 1) leadingjetPhoDrEE2_faketemplate->Fill(photonLeadingJetDr);
+		if (Jet_nJets >= 2) secondleadingjetPhoDrEE2_faketemplate->Fill(photonSecondLeadingJetDr);
+		if (Jet_nJets >= 3) thirdleadingjetPhoDrEE2_faketemplate->Fill(photonThirdLeadingJetDr);
+	      }
+
+	    }
           }
         } // end if statement on fake template obj and pT bin
       } // end loop over sidebands to fill fake templates
@@ -469,16 +657,30 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
 
       // fill numerator histograms
       if ( (binLowEdge < Photon_pt) && (Photon_pt < binUpperEdge) && isNumeratorObj ){
-
-      	if (fabs(Photon_scEta) < 1.4442) sIeIeNumeratorEB.at(i)->Fill( Photon_sigmaIetaIeta5x5 );
-      	else if ( (1.566 < fabs(Photon_scEta)) && (fabs(Photon_scEta) < 2.5) ) sIeIeNumeratorEE.at(i)->Fill( Photon_sigmaIetaIeta5x5 );
-
+	if (fabs(Photon_scEta) < etaCutEBmax) sIeIeNumeratorEB.at(i)->Fill( Photon_sigmaIetaIeta5x5 );
+	else if ( (etaCutEEmin < fabs(Photon_scEta)) && (fabs(Photon_scEta) < etaCutEEmax) ) {
+	  sIeIeNumeratorEE.at(i)->Fill( Photon_sigmaIetaIeta5x5 );
+	  if (fabs(Photon_scEta) < etaCutEE1max) {
+	    sIeIeNumeratorEE1.at(i)->Fill( Photon_sigmaIetaIeta5x5 );
+	  }
+	  else {
+	    sIeIeNumeratorEE2.at(i)->Fill( Photon_sigmaIetaIeta5x5 );
+	  }
+	}
       }
 
       // fill denominator histograms
       if ( (binLowEdge < Photon_pt) && (Photon_pt < binUpperEdge) && isDenomObj ){
-        if (fabs(Photon_scEta) < 1.4442) denomPtEB.at(i)->Fill( Photon_pt );
-        else if ( (1.566 < fabs(Photon_scEta)) && (fabs(Photon_scEta) < 2.5) ) denomPtEE.at(i)->Fill( Photon_pt );
+        if (fabs(Photon_scEta) < etaCutEBmax) denomPtEB.at(i)->Fill( Photon_pt );
+        else if ( (etaCutEEmin < fabs(Photon_scEta)) && (fabs(Photon_scEta) < etaCutEEmax) ) {
+	  denomPtEE.at(i)->Fill( Photon_pt );
+	  if ( fabs(Photon_scEta) < etaCutEE1max ) {
+	    denomPtEE1.at(i)->Fill( Photon_pt );
+	  }
+	  else {
+	    denomPtEE2.at(i)->Fill( Photon_pt );
+	  }
+	}
       }
 
     } // end loop over pt bins
@@ -500,25 +702,37 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
   file_out.cd();
   phoPtEB.Write();
   phoPtEE.Write();
+  phoPtEE1.Write();
+  phoPtEE2.Write();
   phoPtEB_numerator.Write();
   phoPtEE_numerator.Write();
+  phoPtEE1_numerator.Write();
+  phoPtEE2_numerator.Write();
   phoPtEB_denominator.Write();
   phoPtEE_denominator.Write();
+  phoPtEE1_denominator.Write();
+  phoPtEE2_denominator.Write();
   // phoPtEB_faketemplate.Write();
   // phoPtEE_faketemplate.Write();
   phoPtEB_numerator_varbin.Write();
   phoPtEE_numerator_varbin.Write();
+  phoPtEE1_numerator_varbin.Write();
+  phoPtEE2_numerator_varbin.Write();
   phoPtEB_denominator_varbin.Write();
   phoPtEE_denominator_varbin.Write();
+  phoPtEE1_denominator_varbin.Write();
+  phoPtEE2_denominator_varbin.Write();
   // phoPtEB_faketemplate_varbin.Write();
   // phoPtEE_faketemplate_varbin.Write();
   for (unsigned int i=0; i < phoPtEB_faketemplates.size(); i++){
     phoPtEB_faketemplates.at(i)->Write();
     phoPtEE_faketemplates.at(i)->Write();
+    phoPtEE1_faketemplates.at(i)->Write();
+    phoPtEE2_faketemplates.at(i)->Write();
   }
 
-  std::vector<std::vector<TH1D*>> hists_to_write = {sIeIeNumeratorEB, sIeIeNumeratorEE, // numerator
-						    denomPtEB, denomPtEE}; // denominator
+  std::vector<std::vector<TH1D*>> hists_to_write = {sIeIeNumeratorEB, sIeIeNumeratorEE, sIeIeNumeratorEE1, sIeIeNumeratorEE2, // numerator
+						    denomPtEB, denomPtEE, denomPtEE1, denomPtEE2}; // denominator
 
   for(auto& hists : hists_to_write) {
     for (auto& it : hists) {
@@ -542,6 +756,8 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
     for (unsigned int j=0; j < chIsoSidebands.size(); j++){
       TH1D* tempHistEB = sIeIeFakeTemplatesEB.at(i).at(j);
       TH1D* tempHistEE = sIeIeFakeTemplatesEE.at(i).at(j);
+      TH1D* tempHistEE1 = sIeIeFakeTemplatesEE1.at(i).at(j);
+      TH1D* tempHistEE2 = sIeIeFakeTemplatesEE2.at(i).at(j);
 
       std::cout << tempHistEB->GetName() << "\t integral: " << tempHistEB->Integral() << std::endl;
       tempHistEB->Scale(1./tempHistEB->Integral());
@@ -550,6 +766,14 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
       std::cout << tempHistEE->GetName() << "\t integral: " << tempHistEE->Integral() << std::endl;
       tempHistEE->Scale(1./tempHistEE->Integral());
       tempHistEE->Write();
+
+      std::cout << tempHistEE1->GetName() << "\t integral: " << tempHistEE1->Integral() << std::endl;
+      tempHistEE1->Scale(1./tempHistEE1->Integral());
+      tempHistEE1->Write();
+
+      std::cout << tempHistEE2->GetName() << "\t integral: " << tempHistEE2->Integral() << std::endl;
+      tempHistEE2->Scale(1./tempHistEE2->Integral());
+      tempHistEE2->Write();
     }
   }
   chIsoEB_pT50To70_num->Write();
@@ -565,27 +789,53 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
   phoIsoEE_pT50To70_num->Write();
   phoIsoEE_pT50To70_denom->Write();
   hOverEEE_pT50To70_num->Write();
+  hOverEEE1_pT50To70_num->Write();
+  hOverEEE2_pT50To70_num->Write();
   hOverEEE_pT50To70_denom->Write();
+  hOverEEE1_pT50To70_denom->Write();
+  hOverEEE2_pT50To70_denom->Write();
   sieieEE_pT50To70_num->Write();
+  sieieEE1_pT50To70_num->Write();
+  sieieEE2_pT50To70_num->Write();
   sieieEE_pT50To70_denom->Write();
+  sieieEE1_pT50To70_denom->Write();
+  sieieEE2_pT50To70_denom->Write();
   leadingjetPhoDrEB_numerator->Write();
   leadingjetPhoDrEE_numerator->Write();
+  leadingjetPhoDrEE1_numerator->Write();
+  leadingjetPhoDrEE2_numerator->Write();
   leadingjetPhoDrEB_denominator->Write();
   leadingjetPhoDrEE_denominator->Write();
+  leadingjetPhoDrEE1_denominator->Write();
+  leadingjetPhoDrEE2_denominator->Write();
   leadingjetPhoDrEB_faketemplate->Write();
   leadingjetPhoDrEE_faketemplate->Write();
+  leadingjetPhoDrEE1_faketemplate->Write();
+  leadingjetPhoDrEE2_faketemplate->Write();
   secondleadingjetPhoDrEB_numerator->Write();
   secondleadingjetPhoDrEE_numerator->Write();
+  secondleadingjetPhoDrEE1_numerator->Write();
+  secondleadingjetPhoDrEE2_numerator->Write();
   secondleadingjetPhoDrEB_denominator->Write();
   secondleadingjetPhoDrEE_denominator->Write();
+  secondleadingjetPhoDrEE1_denominator->Write();
+  secondleadingjetPhoDrEE2_denominator->Write();
   secondleadingjetPhoDrEB_faketemplate->Write();
   secondleadingjetPhoDrEE_faketemplate->Write();
+  secondleadingjetPhoDrEE1_faketemplate->Write();
+  secondleadingjetPhoDrEE2_faketemplate->Write();
   thirdleadingjetPhoDrEB_numerator->Write();
   thirdleadingjetPhoDrEE_numerator->Write();
+  thirdleadingjetPhoDrEE1_numerator->Write();
+  thirdleadingjetPhoDrEE2_numerator->Write();
   thirdleadingjetPhoDrEB_denominator->Write();
   thirdleadingjetPhoDrEE_denominator->Write();
+  thirdleadingjetPhoDrEE1_denominator->Write();
+  thirdleadingjetPhoDrEE2_denominator->Write();
   thirdleadingjetPhoDrEB_faketemplate->Write();
   thirdleadingjetPhoDrEE_faketemplate->Write();
+  thirdleadingjetPhoDrEE1_faketemplate->Write();
+  thirdleadingjetPhoDrEE2_faketemplate->Write();
   npv->Write();
 
   file_out.ls();

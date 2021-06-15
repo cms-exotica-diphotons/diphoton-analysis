@@ -45,11 +45,13 @@ void MCFakeRateAnalysis::Loop(const TString& year, const std::string & sample, i
   int nbinsChIso   = 100;
 
   TString pv = Form("_nPV%i-%i", pvCutLow, pvCutHigh);
-  TString filename = "";
-  if (sample == "DiPhotonJets") filename = "diphoton_fake_rate_real_templates_DiPhotonJets_MGG-80toInf_13TeV_amcatnloFXFX_pythia8_" + year + "_" + cmssw_version(year) + pv + "_MiniAOD_histograms.root";
-  if (sample == "GGJets")       filename = "diphoton_fake_rate_real_templates_GGJets_M-all_Pt-50_13TeV-sherpa_" + year + "_" +  cmssw_version(year) + pv + "_MiniAOD_histograms.root";
-  if (sample == "GJets")        filename = "diphoton_fake_rate_real_templates_GJets_HT-all_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_" + year + "_" +  cmssw_version(year) + pv + "_MiniAOD_histograms.root";
-  if (sample == "all")          filename = "diphoton_fake_rate_real_templates_all_GGJets_GJets_" + year + "_" +  cmssw_version(year) + pv + "_MiniAOD_histograms.root";
+  std::map<TString, TString> filenameMap;
+  filenameMap["DiPhotonJets"] = "DiPhotonJets_MGG-80toInf_13TeV_amcatnloFXFX_pythia8";
+  filenameMap["GGJets"] = "GGJets_M-all_Pt-50_13TeV-sherpa";
+  filenameMap["GJets"] = "GJets_HT-all_TuneCUETP8M1_13TeV-madgraphMLM-pythia8";
+  filenameMap["all"] = "all_GGJets_GJets";
+  std::cout << "year: " << year << std::endl;
+  TString filename = "diphoton_fake_rate_real_templates_" + filenameMap[sample] + "_" + year +  pv + "_MiniAOD_histograms.root";
 
   std::cout << "\nOutput filename: " << filename << std::endl << std::endl;
 

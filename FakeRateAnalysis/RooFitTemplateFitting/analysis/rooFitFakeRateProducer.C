@@ -39,14 +39,14 @@ std::pair<double,double> rooFitFakeRateProducer(TString sample, TString template
   bool no_template_pv_binning = true;
 
   std::map<TString, TString> cmssw_version;
-  cmssw_version["2016"] = "76X";
-  cmssw_version["2017"] = "94X";
+  cmssw_version["2016"] = "2016";
+  cmssw_version["2017"] = "2017";
   cmssw_version["Run2017B"] = "94X";
   cmssw_version["Run2017C"] = "94X";
   cmssw_version["Run2017D"] = "94X";
   cmssw_version["Run2017E"] = "94X";
   cmssw_version["Run2017F"] = "94X";
-  cmssw_version["2018"] = "102X";
+  cmssw_version["2018"] = "2018";
   cmssw_version["Run2018A"] = "102X";
   cmssw_version["Run2018B"] = "102X";
   cmssw_version["Run2018C"] = "102X";
@@ -76,7 +76,7 @@ std::pair<double,double> rooFitFakeRateProducer(TString sample, TString template
   // }
 
   // for numerator, fake templates, and denominator (choose data or mc)
-  TString basefilename("root://cmseos.fnal.gov//store/user/cawest/fake_rate/");
+  TString basefilename("root://cmseos.fnal.gov//store/user/cawest/fake_rate_2EEbins/");
   TString data_filename = "";
   TString data_filename_templates = "";
   TString pvCut = "";

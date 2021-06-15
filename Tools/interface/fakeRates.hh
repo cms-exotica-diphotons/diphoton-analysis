@@ -36,7 +36,7 @@ fakeRates::fakeRates(std::string fakeRateType, int year) : m_year(year)
 
   if (!isClosureTest){
   std::vector<std::string> datasets = {"jetht", "doublemuon"};
-  std::vector<std::string> regions = {"EB", "EE"};
+  std::vector<std::string> regions = {"EB", "EE", "EE1", "EE2"};
   std::vector<std::string> pvCuts = {"0-22", "23-27"};
   if(m_year==2016) pvCuts.push_back("28-200");
   else {
@@ -78,7 +78,7 @@ else{
 // 2 = jetht
 double fakeRates::getFakeRate(double pt, int region, int nPV)
 {
-  std::vector<std::string> regions = {"EB", "EE"};
+  std::vector<std::string> regions = {"EB", "EE", "EE1", "EE2"};
   std::string pvCut = "";
   if(nPV >= 0 && nPV <= 22) pvCut = "0-22";
   else if(nPV >= 23 && nPV <= 27) pvCut = "23-27";

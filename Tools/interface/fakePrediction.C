@@ -12,6 +12,7 @@
 
 const double etaMaxBarrel = 1.4442;
 const double etaMinEndcap = 1.566;
+const double etaMaxEndcap1 = 2.033;
 const double etaMaxEndcap = 2.5;
 const double minvMin = 500;
 
@@ -25,9 +26,10 @@ void fakePrediction::Loop(int year, const std::string &dataset)
   ptCuts[2018] = 125.;
   const double ptMin = ptCuts[year];
   const double hadronicOverEmCut = 0.1;
+  const bool useTwoEEBins = true;
 
   enum diphotonEventTypes { BB = 0, BE = 1};
-  enum ecalRegions { EB = 0, EE = 1};
+  enum ecalRegions { EB = 0, EE = 1, EE1 = 2, EE2 = 3};
   const std::vector<std::string> regions = {"BB", "BE"};
 
   // define binning for input to datacard
@@ -51,7 +53,6 @@ void fakePrediction::Loop(int year, const std::string &dataset)
   TFile *output = new TFile(outputFile.c_str(), "recreate");
   output->mkdir("BB");
   output->mkdir("BE");
-
 
   TH1D *good[2], *TT[2], *FT[2], *TF[2], *FF[2];
   TH1D *qt[2], *absDeltaPhi[2], *deltaEta[2], *deltaR[2];
@@ -133,6 +134,10 @@ void fakePrediction::Loop(int year, const std::string &dataset)
 	  }
 	  else if (isBarrelEndcap(TFPhoton1_eta, TFPhoton2_eta)) {
 	    int region = TFPhoton2_isEB ? EB : EE;
+	    if (region == EE && useTwoEEBins) {
+	      if (TFPhoton2_eta < etaMaxEndcap1) region = EE1;
+	      else region = EE2;
+	    }
 	    double rate = fakeRate.getFakeRate(TFPhoton2_pt, region, nPV);
 	    TF[BE]->Fill(TFDiphoton_Minv, weight*rate);
 	    qt[BE]->Fill(TFDiphoton_qt, weight*rate);
@@ -169,6 +174,10 @@ void fakePrediction::Loop(int year, const std::string &dataset)
 	  }
 	  else if (isBarrelEndcap(FTPhoton1_eta, FTPhoton2_eta)) {
 	    int region = FTPhoton1_isEB ? EB : EE;
+	    if (region == EE && useTwoEEBins) {
+	      if (FTPhoton1_eta < etaMaxEndcap1) region = EE1;
+	      else region = EE2;
+	    }
 	    double rate = fakeRate.getFakeRate(FTPhoton1_pt, region, nPV);
 	    FT[BE]->Fill(FTDiphoton_Minv, weight*rate);
 	    qt[BE]->Fill(FTDiphoton_qt, weight*rate);
@@ -206,7 +215,15 @@ void fakePrediction::Loop(int year, const std::string &dataset)
 	  }
 	  else if (isBarrelEndcap(FFPhoton1_eta, FFPhoton2_eta)) {
 	    int region1 = FFPhoton1_isEB ? EB : EE;
+	    if (region1 == EE && useTwoEEBins) {
+	      if (FFPhoton1_eta < etaMaxEndcap1) region1 = EE1;
+	      else region1 = EE2;
+	    }
 	    int region2 = FFPhoton2_isEB ? EB : EE;
+	    if (region2 == EE && useTwoEEBins) {
+	      if (FFPhoton2_eta < etaMaxEndcap1) region2 = EE1;
+	      else region2 = EE2;
+	    }
 	    double rate = fakeRate.getFakeRate(FFPhoton1_pt, region1, nPV)*fakeRate.getFakeRate(FFPhoton2_pt, region2, nPV);
 	    FF[BE]->Fill(FFDiphoton_Minv, weight*rate);
 	    qt[BE]->Fill(FFDiphoton_qt, weight*rate);

@@ -11,5 +11,5 @@ for year in years:
         arguments = str(year) + " all " + pu
         print("real_templates.exe " + arguments)
         for dataset in datasets:
-            arguments = str(year) + " " + dataset + " " + pu
+            arguments = str(year) + " " + dataset + " " + pu + " false"
             print("fake_templates.exe " + arguments)

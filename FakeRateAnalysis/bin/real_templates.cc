@@ -5,7 +5,7 @@
 int main(int argc, char *argv[])
 {
   int data_year, nPVLow, nPVHigh;
-  std::string samples;
+  std::string samples, isClosureTestOption;
   bool isClosureTest;
 
   if(argc!=6) {
@@ -26,16 +26,19 @@ int main(int argc, char *argv[])
     }
     nPVLow = std::atoi(argv[3]);
     nPVHigh = std::atoi(argv[4]);
-    isClosureTest = argv[5];
-    if (isClosureTest != true and isClosureTest != false){
+    isClosureTestOption = argv[5];
+    if (isClosureTestOption != "true" and isClosureTestOption != "false"){
       std::cout << "Only 'true' or 'false' allowed for isClosureTest boolean value.";
       return -1;
+    }
+    else {
+      isClosureTest = (isClosureTestOption == "true");
     }
 
   }
 
   std::cout << "Closure Test Setting: " << isClosureTest << std::endl;
-  if (isClosureTest) std::cout << "Closure Test Setting " << std::endl;
+  if (isClosureTest == true) std::cout << "Closure Test Setting " << std::endl;
   else if (!isClosureTest) std::cout << "Not closure test" << std::endl;
   diphoton_looper(data_year, samples, nPVLow, nPVHigh, isClosureTest);
 
