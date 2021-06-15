@@ -121,6 +121,11 @@ def egamma_info(dataset_name):
 def get_dataset_list(dataset_type):
     datasets = [[]]
 
+    if dataset_type == "2018_data_legacy":
+        datasets.append(['/EGamma/Run2018A-UL2018_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/EGamma/Run2018B-UL2018_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/EGamma/Run2018C-UL2018_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/EGamma/Run2018D-UL2018_MiniAODv2-v1/MINIAOD'])
     if "2015_QCD" == dataset_type:
         datasets.append(['/QCD_Pt_5to10_TuneCUETP8M1_13TeV_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM'])
         datasets.append(['/QCD_Pt_10to15_TuneCUETP8M1_13TeV_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM'])
