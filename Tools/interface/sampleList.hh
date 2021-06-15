@@ -351,11 +351,16 @@ void init(bool includeUnskimmed = false, bool includeSignal = false)
   chGJ_2016->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-600ToInf_13TeV-MG-PY8__Summer16MiniAODv3-v2__MINIAODSIM/191204_194257/0000/*.root");
 
   TChain *chGJ_fake_2016 = new TChain(treeType);
-  chGJ_fake_2016->Add(old_directory + "/diphoton_fake_rate_real_templates_GJets_HT-40To100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_76X_MiniAOD_merged.root",0);
-  chGJ_fake_2016->Add(old_directory + "/diphoton_fake_rate_real_templates_GJets_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_76X_MiniAOD_merged.root",0);
-  chGJ_fake_2016->Add(old_directory + "/diphoton_fake_rate_real_templates_GJets_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_76X_MiniAOD_merged.root",0);
-  chGJ_fake_2016->Add(old_directory + "/diphoton_fake_rate_real_templates_GJets_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_76X_MiniAOD_merged.root",0);
-  chGJ_fake_2016->Add(old_directory + "/diphoton_fake_rate_real_templates_GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_76X_MiniAOD_merged.root",0);
+  chGJ_fake_2016->Add(baseDirectory + "/store/user/cawest/diphoton_fake/d41f48f/GJets_HT-40To100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-40To100_13TeV-MG-PY8__RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v2_/210608_020235/0000/*.root");
+  chGJ_fake_2016->Add(baseDirectory + "/store/user/cawest/diphoton_fake/d41f48f/GJets_HT-40To100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-40To100_13TeV-MG-PY8__RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2__MINI/210608_020140/0000/*.root");
+  chGJ_fake_2016->Add(baseDirectory + "/store/user/cawest/diphoton_fake/d41f48f/GJets_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-100To200_13TeV-MG-PY8__RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v2/210608_020438/0000/*.root");
+  chGJ_fake_2016->Add(baseDirectory + "/store/user/cawest/diphoton_fake/d41f48f/GJets_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-100To200_13TeV-MG-PY8__RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2__MIN/210608_020336/0000/*.root");
+  chGJ_fake_2016->Add(baseDirectory + "/store/user/cawest/diphoton_fake/d41f48f/GJets_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-200To400_13TeV-MG-PY8__RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v2/210608_020629/0000/*.root");
+  chGJ_fake_2016->Add(baseDirectory + "/store/user/cawest/diphoton_fake/d41f48f/GJets_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-200To400_13TeV-MG-PY8__RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2__MIN/210608_020540/0000/*.root");
+  chGJ_fake_2016->Add(baseDirectory + "/store/user/cawest/diphoton_fake/d41f48f/GJets_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-400To600_13TeV-MG-PY8__RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2__MIN/210608_020730/0000/*.root");
+  chGJ_fake_2016->Add(baseDirectory + "/store/user/cawest/diphoton_fake/d41f48f/GJets_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-400To600_13TeV-MG-PY8__RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v2/210608_020828/0000/*.root");
+  chGJ_fake_2016->Add(baseDirectory + "/store/user/cawest/diphoton_fake/d41f48f/GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-600ToInf_13TeV-MG-PY8__RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v2/210608_021025/0000/*.root");
+  chGJ_fake_2016->Add(baseDirectory + "/store/user/cawest/diphoton_fake/d41f48f/GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-600ToInf_13TeV-MG-PY8__RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2__MIN/210608_020927/0000/*.root");
 
   TChain *chJJ_2016 = new TChain(treeType);
   chJJ_2016->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_QCD_HT100to200_13TeV-MG-PY8__Summer16MiniAODv3-v1__MINIAODSIM/191204_194710/0000/*.root");
