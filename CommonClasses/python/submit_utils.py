@@ -118,6 +118,35 @@ def egamma_info(dataset_name):
 
     return info
 
+def get_good_run_JSON(taskname):
+    '''Get good run JSON appropriate for a given task, based on taskname'''
+
+    lumimask = None
+    if "Run2018" in taskname:
+        if "UL" in taskname:
+            lumimask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt'
+        else:
+            lumimask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions18/13TeV/ReReco/Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt'
+    elif "Run2017" in taskname:
+        if "UL" in taskname:
+            lumimask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt'
+        elif "31Mar2018" in taskname:
+            lumimask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions17/13TeV/ReReco/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt'
+        else:
+            lumimask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions17/13TeV/PromptReco/Cert_294927-306126_13TeV_PromptReco_Collisions17_JSON.txt'
+    elif "Run2016" in taskname:
+        if "UL" in taskname:
+            lumimask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt'
+        if "Prompt" in taskname:
+            lumimask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Final/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt'
+            # otherwise, assume Re-Reco
+        else:
+            lumimask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/ReReco/Final/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt'
+    elif "Run2015" in taskname:
+        # only use 16Dec2015 ReReco
+        lumimask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions15/13TeV/Reprocessing/Cert_13TeV_16Dec2015ReReco_Collisions15_25ns_JSON_Silver_v2.txt'
+    return lumimask
+
 def get_dataset_list(dataset_type):
     datasets = [[]]
 
