@@ -13,6 +13,7 @@ namespace ExoDiPhotons {
     double xsec = -1.0;
     if(sample.Contains("DiPhotonJets_MGG-80toInf_13TeV_amcatnloFXFX_pythia8")) xsec = 135.1;
     if(sample.Contains("DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa")) xsec = 82.81; // +/- 0.12
+    if(sample.Contains("GGJets_Pt-15_13TeV-sherpa")) xsec = 1.368e+02; // +/- 5.124e-02
     if(sample.Contains("GGJets_M-60To200_Pt-50_13TeV-sherpa")) {
       if(is2017or2018(sample)) xsec = 6.278e+00;
       else xsec = 5.785e+00;
@@ -654,6 +655,7 @@ namespace ExoDiPhotons {
       else average = 1.972643e-01;
     }
     if(sample.Contains("DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa")) average = 4.730018e-01;
+    if(sample.Contains("GGJets_Pt-15_13TeV-sherpa")) average = 461187./991295.;
 
     // Madgraph5_aMC@NLO samples at NLO have a non-zero average weight
     // that should be removed, as well as negative weights
