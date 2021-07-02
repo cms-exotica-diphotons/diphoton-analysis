@@ -48,8 +48,10 @@ if user == "cawest":
 else:
     config.Data.outLFNDirBase = '/store/user/ciperez/DiPhotonAnalysis/ExoANDiphoton'
 
-config.Data.lumiMask = submit_utils.get_good_run_JSON(taskname)
-print('Using lumiMask: ' + config.Data.lumiMask)
+good_run_JSON = submit_utils.get_good_run_JSON(taskname)
+if good_run_JSON:
+    config.Data.lumiMask = good_run_JSON
+    print('Using lumiMask: ' + config.Data.lumiMask)
 # real data always has a dataset with "Run20" in the name
 if "Run20" in taskname:
     config.Data.splitting = 'LumiBased'
