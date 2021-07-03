@@ -33,6 +33,9 @@ isMC = True
 # data always has "Run201" in its filename
 if "Run201" in outName:
     isMC = False
+isUL = False
+if "UL" in outName:
+    isUL = True
 
 globalTag = submit_utils.get_global_tag(outName)
 
@@ -105,6 +108,9 @@ setupEgammaPostRecoSeq(process,
                        era=egm_info['era'])
 
 # main analyzer and inputs
+genInfoProcess = "SIM"
+if isUL:
+    genInfoProcess = "GEN"
 process.diphoton = cms.EDAnalyzer(
     'ExoDiPhotonAnalyzer',
     # photon tag
@@ -131,7 +137,7 @@ process.diphoton = cms.EDAnalyzer(
     phoMediumIdMap = cms.InputTag("egmPhotonIDs:" + egm_info['mediumPhoId']),
     phoTightIdMap = cms.InputTag("egmPhotonIDs:" + egm_info['tightPhoId']),
     # gen event info
-    genInfo = cms.InputTag("generator", "", "SIM"),
+    genInfo = cms.InputTag("generator", "", genInfoProcess),
     # output file name
     outputFile = cms.string(outName),
     # number of events in the sample (for calculation of event weights)
