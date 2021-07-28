@@ -12,6 +12,8 @@ namespace ExoDiPhotons {
   double crossSection(const TString& sample) {
     double xsec = -1.0;
     if(sample.Contains("DiPhotonJets_MGG-80toInf_13TeV_amcatnloFXFX_pythia8")) xsec = 135.1;
+    // UL naming convention
+    if(sample.Contains("DiPhotonJetsBox_MGG-80toInf_13TeV-sherpa")) xsec = 87.5659749906; // +/-  0.00976657717338 (from GenXsecAnalyzer)
     if(sample.Contains("DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa")) xsec = 82.81; // +/- 0.12
     if(sample.Contains("GGJets_Pt-15_13TeV-sherpa")) xsec = 1.368e+02; // +/- 5.124e-02
     if(sample.Contains("GGJets_M-60To200_Pt-50_13TeV-sherpa")) {

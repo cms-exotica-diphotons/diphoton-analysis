@@ -159,6 +159,8 @@ def get_good_run_JSON(taskname):
 def get_dataset_list(dataset_type):
     datasets = [[]]
 
+    if dataset_type == "2018_mc_legacy":
+        datasets.append(['/DiPhotonJetsBox_MGG-80toInf_13TeV-sherpa/RunIISummer19UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM'])
     if dataset_type == "2018_data_legacy":
         datasets.append(['/EGamma/Run2018A-UL2018_MiniAODv2-v1/MINIAOD'])
         datasets.append(['/EGamma/Run2018B-UL2018_MiniAODv2-v1/MINIAOD'])
