@@ -657,6 +657,8 @@ namespace ExoDiPhotons {
       else average = 1.972643e-01;
     }
     if(sample.Contains("DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa")) average = 4.730018e-01;
+    // legacy samples
+    if(sample.Contains("DiPhotonJetsBox_MGG-80toInf_13TeV-sherpa")) average = 0.432438293267;
     if(sample.Contains("GGJets_Pt-15_13TeV-sherpa")) average = 461187./991295.;
 
     // Madgraph5_aMC@NLO samples at NLO have a non-zero average weight
