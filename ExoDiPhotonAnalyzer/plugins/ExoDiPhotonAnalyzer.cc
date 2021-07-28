@@ -305,7 +305,7 @@ ExoDiPhotonAnalyzer::ExoDiPhotonAnalyzer(const edm::ParameterSet& iConfig)
   fTree->Branch("Diphoton",&fDiphotonInfo,ExoDiPhotons::diphotonBranchDefString.c_str());
   fTree->Branch("GenDiphoton",&fGenDiphotonInfo,ExoDiPhotons::diphotonBranchDefString.c_str());
 
-  isSherpaDiphoton_ = outputFile_.Contains("GGJets_M");
+  isSherpaDiphoton_ = outputFile_.Contains("GGJets_M") or outputFile_.Contains("DiPhotonJets");
   processNameData_ =  "RECO";
   // 17Jul2018 re-MINIAOD runs in the "DQM" process
   if(isReMINIAOD_) {
