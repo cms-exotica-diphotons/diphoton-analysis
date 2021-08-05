@@ -30,17 +30,20 @@ TF1* kfactor(const std::string & region, const std::string & scales)
   return kfactorFunction;
 }
 
-std::string kfactorString(const std::string & region, const std::string & scales)
+std::string kfactorString(const std::string & region, const std::string & scales, const std::string& reweightVariable = "qscale")
 {
   TF1 *kfactorFunction = kfactor(region, scales);
 
+  const std::string squared = reweightVariable + "*" + reweightVariable;
+  const std::string cubed = squared + "*" + reweightVariable;
+
   TString kfactorWeight;
-  if(region == "BB") kfactorWeight = Form("(%6.6e + %6.6e*Diphoton.Minv + %6.6e*Diphoton.Minv*Diphoton.Minv + %6.6e*Diphoton.Minv*Diphoton.Minv*Diphoton.Minv)",
-					  kfactorFunction->GetParameter(0), kfactorFunction->GetParameter(1),
-					  kfactorFunction->GetParameter(2),  kfactorFunction->GetParameter(3));
-  else kfactorWeight = Form("(%6.6e + %6.6e*Diphoton.Minv + %6.6e*Diphoton.Minv*Diphoton.Minv + %6.6e*Diphoton.Minv*Diphoton.Minv*Diphoton.Minv)", 
-			    kfactorFunction->GetParameter(0), kfactorFunction->GetParameter(1),
-			    kfactorFunction->GetParameter(2),  kfactorFunction->GetParameter(3));
+  if(region == "BB") kfactorWeight = Form("(%6.6e + %6.6e*%s + %6.6e*%s + %6.6e*%s)",
+					  kfactorFunction->GetParameter(0), kfactorFunction->GetParameter(1), reweightVariable.c_str(),
+					  kfactorFunction->GetParameter(2),  squared.c_str(), kfactorFunction->GetParameter(3), cubed.c_str());
+  else kfactorWeight = Form("(%6.6e + %6.6e*%s + %6.6e*%s + %6.6e*%s)",
+			    kfactorFunction->GetParameter(0), kfactorFunction->GetParameter(1), reweightVariable.c_str(),
+			    kfactorFunction->GetParameter(2),  squared.c_str(), kfactorFunction->GetParameter(3), cubed.c_str());
   
   return kfactorWeight.Data();
 }
