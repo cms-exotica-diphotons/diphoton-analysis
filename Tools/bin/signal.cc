@@ -61,6 +61,10 @@ void oneSignal(int ned, int kk, bool bkgSub)
 
   TString barrelCut("weightAll*isGood*(Diphoton.Minv>230 && Photon1.pt>75 && Photon2.pt>75 && abs(Photon1.eta)<1.4442 && abs(Photon2.eta)<1.4442)");
   if(bkgSub) barrelCut = "weightAll*isGood*(Diphoton.Minv>500 && Photon1.pt>75 && Photon2.pt>75 && abs(Photon1.eta)<1.4442 && abs(Photon2.eta)<1.4442)";
+  // gluon-gluon contributions should not be included in the background subtraction
+  if(year == 2017 or year == 2018) {
+    barrelCut+="*(pdf_id1 != 21 && pdf_id2 != 21)";
+  }
   std::vector<int> stringScales = {3000, 3500, 4000, 4500, 5000, 5500, 6000};
   // samples beyond 6 TeV not available for Hewett- convention
   if(!(ned==2 && kk==4)) {
