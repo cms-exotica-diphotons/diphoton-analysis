@@ -161,6 +161,22 @@ def get_dataset_list(dataset_type):
 
     if dataset_type == "2018_mc_legacy":
         datasets.append(['/DiPhotonJetsBox_MGG-80toInf_13TeV-sherpa/RunIISummer19UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM'])
+    if dataset_type == "2016_data_legacy":
+        datasets.append(['/DoubleEG/Run2016B-ver1_HIPM_UL2016_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/DoubleEG/Run2016B-ver2_HIPM_UL2016_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/DoubleEG/Run2016C-HIPM_UL2016_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/DoubleEG/Run2016D-HIPM_UL2016_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/DoubleEG/Run2016E-HIPM_UL2016_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/DoubleEG/Run2016F-UL2016_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/DoubleEG/Run2016F-HIPM_UL2016_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/DoubleEG/Run2016G-UL2016_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/DoubleEG/Run2016H-UL2016_MiniAODv2-v1/MINIAOD'])
+    if dataset_type == "2017_data_legacy":
+        datasets.append(['/DoubleEG/Run2017B-UL2017_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/DoubleEG/Run2017C-UL2017_MiniAODv2-v2/MINIAOD'])
+        datasets.append(['/DoubleEG/Run2017D-UL2017_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/DoubleEG/Run2017E-UL2017_MiniAODv2-v1/MINIAOD'])
+        datasets.append(['/DoubleEG/Run2017F-UL2017_MiniAODv2-v2/MINIAOD'])
     if dataset_type == "2018_data_legacy":
         datasets.append(['/EGamma/Run2018A-UL2018_MiniAODv2-v1/MINIAOD'])
         datasets.append(['/EGamma/Run2018B-UL2018_MiniAODv2-v1/MINIAOD'])
