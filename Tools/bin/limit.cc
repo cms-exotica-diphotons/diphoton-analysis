@@ -256,6 +256,10 @@ void oneLimit(int ned, int kk, const std::string &directory)
   }
 
   drawHeader();
-  if(ned == 0) c->Print(Form("plots/limits_ADDGravToGG_NegInt-%d.pdf", kk));
-  else c->Print(Form("plots/limits_ADDGravToGG_NED-%d_KK-%d.pdf", ned, kk));
+
+  std::vector<std::string> extensions = {"pdf", "png"};
+  for (const auto& extension : extensions) {
+    if(ned == 0) c->Print(Form("plots/limits_ADDGravToGG_NegInt-%d.%s", kk, extension.c_str()));
+    else c->Print(Form("plots/limits_ADDGravToGG_NED-%d_KK-%d.%s", ned, kk, extension.c_str()));
+  }
 }
