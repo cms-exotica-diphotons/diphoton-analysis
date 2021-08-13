@@ -64,6 +64,12 @@ DATASETS.append('EGamma__Run2018D-22Jan2019-v2')
 #DATASETS.append('Run2017E-09Aug2019_UL2017-v1')
 #DATASETS.append('Run2017F-09Aug2019_UL2017-v1')
 
+DATASETS.append('DoubleEG__Run2017B-UL2017_MiniAODv2-v1')
+DATASETS.append('DoubleEG__Run2017C-UL2017_MiniAODv2-v2')
+DATASETS.append('DoubleEG__Run2017D-UL2017_MiniAODv2-v1')
+DATASETS.append('DoubleEG__Run2017E-UL2017_MiniAODv2-v1')
+DATASETS.append('DoubleEG__Run2017F-UL2017_MiniAODv2-v2')
+
 for dataset in DATASETS:
     json = "json/processedLumis_" + dataset + ".json"
     normtag = ''
