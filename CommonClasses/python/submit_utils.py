@@ -25,7 +25,7 @@ def get_global_tag_EOY(dataset_name):
         if "17Sep2018" in dataset_name:
             globalTag = '102X_dataRun2_v11'
         else:
-            globalTag = '102X_dataRun2_Prompt_v14'
+            globalTag = '102X_dataRun2_Prompt_v16'
 # otherwise it is MC
     elif "Run201" not in dataset_name: 
         version = os.getenv("CMSSW_VERSION")
