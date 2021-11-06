@@ -249,10 +249,10 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
       if( sample.find(year) == std::string::npos ) continue;
     }
     // enable for testing only!
-    // if( sample.find("ADDGravToGG_NegInt-0_LambdaT-9000") == std::string::npos
-    // and sample.find("ADDGravToGG_MS-9000_NED-4_KK-1") == std::string::npos
-    // //	) continue;
-    // and sample.find("gg") == std::string::npos) continue;
+    //if( sample.find("ADDGravToGG_NegInt-0_LambdaT-9000") == std::string::npos
+    //and sample.find("ADDGravToGG_MS-9000_NED-4_KK-1") == std::string::npos
+    //	) continue;
+    //and sample.find("gg") == std::string::npos) continue;
 
     // add additional sample-specific cuts (MC weights or year-dependent trigger)
     std::string sampleCut = addCutsPerSample(cuts[region], sample, region, year);

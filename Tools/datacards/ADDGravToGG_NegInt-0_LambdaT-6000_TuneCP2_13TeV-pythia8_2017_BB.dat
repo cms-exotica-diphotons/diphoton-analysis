@@ -1,0 +1,82 @@
+imax 1 number of channels
+jmax 5 number of backgrounds
+kmax 68 number of nuisance parameters
+-------------------
+shapes * BB datacards/Minv_histos_$CHANNEL_2017.root $CHANNEL/$PROCESS $CHANNEL/$PROCESS_$SYSTEMATIC
+-------------------
+bin          BB   
+observation  1422 
+-------------------
+bin            BB    BB    BB    BB    BB    BB    
+process    0    1    2    3    4    5    
+process    ADDGravToGG_NegInt-0_LambdaT-6000_TuneCP2_13TeV-pythia8    gg    gj    vg    dy    ttg    
+rate        -10.6374    1437.28    232.715    31.3379    2.353    2.09658    
+-------------------
+kfactorStat0      shape  - 1 - - - - 
+kfactorStat1      shape  - 1 - - - - 
+kfactorStat2      shape  - 1 - - - - 
+kfactorStat3      shape  - 1 - - - - 
+diphotonkfactorScalesBB      shape  - 1 - - - - 
+diphotonkfactorScalesBE      shape  - - - - - - 
+diphotonNormBE      lnU  - 1.5 - - - - 
+diphotonNormBB_dummy      lnU  - - - - - - 
+lumi      lnN  1.023000 1.023000 - 1.023000 1.023000 1.023000 
+fake_sample      shape  - - 1.0 - - - 
+eff      lnN  1.1 1.1 1.05 1.1 - - 
+xsec_vg      lnN  - - - 1.5 - - 
+xsec_dy      lnN  - - - - 1.5 - 
+xsec_ttg      lnN  - - - - - 1.5 
+energyScaleStat      shape  - 1 - 1 1 1 
+energyScaleSyst      shape  - 1 - 1 1 1 
+energyScaleGain      shape  - 1 - 1 1 1 
+energySigma      shape  - 1 - 1 1 1 
+pdf1      shape  - 1 - - - - 
+pdf2      shape  - 1 - - - - 
+pdf3      shape  - 1 - - - - 
+pdf4      shape  - 1 - - - - 
+pdf5      shape  - 1 - - - - 
+pdf6      shape  - 1 - - - - 
+pdf7      shape  - 1 - - - - 
+pdf8      shape  - 1 - - - - 
+pdf9      shape  - 1 - - - - 
+pdf10      shape  - 1 - - - - 
+pdf11      shape  - 1 - - - - 
+pdf12      shape  - 1 - - - - 
+pdf13      shape  - 1 - - - - 
+pdf14      shape  - 1 - - - - 
+pdf15      shape  - 1 - - - - 
+pdf16      shape  - 1 - - - - 
+pdf17      shape  - 1 - - - - 
+pdf18      shape  - 1 - - - - 
+pdf19      shape  - 1 - - - - 
+pdf20      shape  - 1 - - - - 
+pdf21      shape  - 1 - - - - 
+pdf22      shape  - 1 - - - - 
+pdf23      shape  - 1 - - - - 
+pdf24      shape  - 1 - - - - 
+pdf25      shape  - 1 - - - - 
+pdf26      shape  - 1 - - - - 
+pdf27      shape  - 1 - - - - 
+pdf28      shape  - 1 - - - - 
+pdf29      shape  - 1 - - - - 
+pdf30      shape  - 1 - - - - 
+pdf31      shape  - 1 - - - - 
+pdf32      shape  - 1 - - - - 
+pdf33      shape  - 1 - - - - 
+pdf34      shape  - 1 - - - - 
+pdf35      shape  - 1 - - - - 
+pdf36      shape  - 1 - - - - 
+pdf37      shape  - 1 - - - - 
+pdf38      shape  - 1 - - - - 
+pdf39      shape  - 1 - - - - 
+pdf40      shape  - 1 - - - - 
+pdf41      shape  - 1 - - - - 
+pdf42      shape  - 1 - - - - 
+pdf43      shape  - 1 - - - - 
+pdf44      shape  - 1 - - - - 
+pdf45      shape  - 1 - - - - 
+pdf46      shape  - 1 - - - - 
+pdf47      shape  - 1 - - - - 
+pdf48      shape  - 1 - - - - 
+pdf49      shape  - 1 - - - - 
+pdf50      shape  - 1 - - - - 

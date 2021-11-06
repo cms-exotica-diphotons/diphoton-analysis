@@ -1,0 +1,28 @@
+imax 1 number of channels
+jmax 5 number of backgrounds
+kmax 14 number of nuisance parameters
+-------------------
+shapes * BE datacards/Minv_histos_$CHANNEL_2018.root $CHANNEL/$PROCESS $CHANNEL/$PROCESS_$SYSTEMATIC
+-------------------
+bin          BE   
+observation  2491 
+-------------------
+bin            BE    BE    BE    BE    BE    BE    
+process    0    1    2    3    4    5    
+process    ADDGravToGG_MS-5500_NED-2_KK-4    gg    gj    vg    dy    ttg    
+rate        -0.500666    2266.51    1027.3    45.2518    6.90233    2.00925    
+-------------------
+diphotonfactorScalesBB      shape  - - - - - - 
+diphotonkfactorScalesBE      shape  - 1 - - - - 
+diphotonNormBB      lnU  - 1.5 - - - - 
+diphotonNormBE_dummy      lnU  - - - - - - 
+lumi      lnN  1.025000 1.025000 - 1.025000 1.025000 1.025000 
+fake_sample      shape  - - 1.0 - - - 
+eff      lnN  1.1 1.1 1.05 1.1 - - 
+xsec_vg      lnN  - - - 1.5 - - 
+xsec_dy      lnN  - - - - 1.5 - 
+xsec_ttg      lnN  - - - - - 1.5 
+energyScaleStat      shape  - 1 - 1 1 1 
+energyScaleSyst      shape  - 1 - 1 1 1 
+energyScaleGain      shape  - 1 - 1 1 1 
+energySigma      shape  - 1 - 1 1 1 

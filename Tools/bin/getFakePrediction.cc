@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
   if(source=="data_2016") year = 2016;
   if(source=="data_2017") year = 2017;
   if(source=="data_2018") year = 2018;
-  
+
   init();
   TChain *ch = chains[source];
   fakePrediction f(ch);

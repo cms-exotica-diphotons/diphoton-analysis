@@ -14,6 +14,7 @@
   <bin file="signal.cc" name="signal.exe"/>
   <bin file="efficiency.cc" name="efficiency.exe"/>
   <bin file="makeHistograms.cc" name="makeHistograms.exe"/>
+  <bin file="makeHistsUnparticles.cc" name="makeHistsUnparticles.exe"/>
   <bin file="makeDatacards.cc" name="makeDatacards.exe"/>
   <bin file="getFakeRates.cc" name="getFakeRates.exe"/>
   <bin file="getFakePrediction.cc" name="getFakePrediction.exe"/>

@@ -295,10 +295,10 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
     output << "observation  ";
     output << getYield(region, "data_obs", datacardYear, yieldError) << " " ;
     output << "\n";
-    
+
     output << "-------------------" << std::endl;
     output << "bin            ";
-    
+
     for(auto iprocess : processes) {
       output << region << "    ";
     }
@@ -310,11 +310,11 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
     }
     output << "\n";
     output << "process    ";
-    
+
     for(auto iprocess : processes) {
       output << iprocess << "    ";
     }
-    
+
     output << "\n";
     // output rates
     output << "rate        ";
@@ -322,7 +322,7 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
       output << getYield(region, iprocess, datacardYear, yieldError) << "    ";
     }
     output << "\n-------------------" << std::endl;
-    
+
     // output systematics
     for(auto inuisance : allNuisances) {
       output << inuisance.m_syst  << "      " << inuisance.m_distribution << "  ";
@@ -362,7 +362,7 @@ double getYield(const std::string& region, const std::string& sample, const std:
     }
     TFile *input = TFile::Open(filename);
     histName+=sample;
-    
+
     std::cout << "Getting histogram " << histName << std::endl;
     TH1D *hist = static_cast<TH1D*>(input->Get(histName.c_str()));
     // take max to avoid negative entries arising from
