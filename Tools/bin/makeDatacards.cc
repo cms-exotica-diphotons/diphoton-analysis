@@ -35,6 +35,7 @@ std::string datacardYear;
 int main(int argc, char *argv[])
 {
   bool usePythiaADD = true;
+  bool usePythiaUnparticles = true;
 
   std::string interferenceType("");
 
@@ -48,6 +49,7 @@ int main(int argc, char *argv[])
     return -1;
   }
   datacardYear = argv[1];
+
   if(argc >= 3) {
     std::string whichADD(argv[2]);
     if(whichADD == "old") usePythiaADD = false;
@@ -120,6 +122,38 @@ int main(int argc, char *argv[])
 	}
       }
     }
+  }
+
+  if (usePythiaUnparticles){
+
+    std::vector<std::string> spins = {"0", "2"};
+    std::vector<std::string> dus = {"1p1", "1p5", "1p9"};
+    std::map<std::string, std::vector<int>> lambdaUmap = {{"Spin0_du1p1", {10000, 4000, 8000}},
+                                                    {"Spin0_du1p5", {2000, 2500, 3500}},
+                                                    {"Spin0_du1p9", {2000, 2500, 3500}},
+                                                    {"Spin2_du1p1", {2000, 2500, 3000}},
+                                                    {"Spin2_du1p5", {2000, 2500, 3000}},
+                                                    {"Spin2_du1p9", {2000, 2500, 3500}}
+                                                   };
+      std::string pointName;
+      for(const auto& spin: spins){
+        for(const auto& du: dus){
+          std::string spin_du = "Spin" + spin + "_du" + du;
+          std::vector<int> lambdaUs = lambdaUmap[spin_du];
+          for (auto& lambdaU: lambdaUs ){
+            pointName = "UnparToGG_";
+            pointName += spin_du;
+            pointName += "_LambdaU-";
+            pointName += std::to_string(lambdaU);
+            pointName += "_TuneCP2_13TeV_pythia8";
+            // std::cout << pointName << std::endl;
+            makeOneDatacard(pointName, "BB", datacardYear, interferenceType);
+            makeOneDatacard(pointName, "BE", datacardYear, interferenceType);
+          }
+        }
+      }
+
+
   }
 }
 

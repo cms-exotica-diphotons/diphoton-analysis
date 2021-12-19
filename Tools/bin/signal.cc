@@ -164,13 +164,13 @@ void plotUnpar_fix_du(int year, int spin, std::string du, bool bkgSub){
   TString barrelCut("weightAll*isGood*(Diphoton.Minv>230 && Photon1.pt>75 && Photon2.pt>75 && abs(Photon1.eta)<1.4442 && abs(Photon2.eta)<1.4442)");
   if(bkgSub) barrelCut = "weightAll*isGood*(Diphoton.Minv>500 && Photon1.pt>75 && Photon2.pt>75 && abs(Photon1.eta)<1.4442 && abs(Photon2.eta)<1.4442)";
 
-  if(year == 2017 or year == 2018) {
-    // It rejects gluon-initiated contributions to the GG background,
-    // as those contributions are not included in ADD samples.
-    // If included, then at low invariant masses, the (S + interference + B)_ADD - B_GG contribution will be negative.
-    // (?) Is this necessary for the unparticles
-    barrelCut+="*(pdf_id1 != 21 && pdf_id2 != 21)";
-  }
+  // if(year == 2017 or year == 2018) {
+  //   // It rejects gluon-initiated contributions to the GG background,
+  //   // as those contributions are not included in ADD samples.
+  //   // If included, then at low invariant masses, the (S + interference + B)_ADD - B_GG contribution will be negative.
+  //   // (?) Is this necessary for the unparticles
+  //   barrelCut+="*(pdf_id1 != 21 && pdf_id2 != 21)";
+  // }
 
   TCanvas *c = new TCanvas;
   c->SetLogy();
@@ -213,7 +213,7 @@ void plotUnpar_fix_du(int year, int spin, std::string du, bool bkgSub){
 
  TString outputFilename(Form("plots/UnparToGG_%s_TuneCP2_13TeV_pythia8_%d.pdf", spin_du.c_str(), year));
  if(bkgSub) {
-   outputFilename = Form("plots/UnparToGG_%s_TuneCP2_13TeV_pythia8_%d.pdf", spin_du.c_str(), year);
+   outputFilename = Form("plots/UnparToGG_%s_TuneCP2_13TeV_pythia8_%d_bkg_sub.pdf", spin_du.c_str(), year);
  }
  c->Print(outputFilename);
 

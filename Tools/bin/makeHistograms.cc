@@ -291,7 +291,7 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
   // subtract nonresonant background
   for(auto histogram : histograms) {
     std::string title(histogram.second->GetTitle());
-    if(title.find("ADDGravToGG_") != std::string::npos) {
+    if(title.find("ADDGravToGG_") != std::string::npos || title.find("UnparToGG") != std::string::npos) {
       std::size_t systPosition = title.find("_energy");
       std::string syst;
       if(systPosition != std::string::npos) {
