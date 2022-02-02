@@ -187,9 +187,9 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
   nuisance diphotonkfactorScalesBB_dummy("diphotonfactorScalesBB", "shape", {"-", "-", "-", "-", "-", "-"});
   nuisance diphotonkfactorScalesBE("diphotonkfactorScalesBE", "shape", {"-", "1", "-", "-", "-", "-"});
   nuisance diphotonkfactorScalesBE_dummy("diphotonkfactorScalesBE", "shape", {"-", "-", "-", "-", "-", "-"});
-  nuisance diphotonNormBB("diphotonNormBB", "lnU", {"-", "1.5", "-", "-", "-", "-"});
+  nuisance diphotonNormBB("diphotonNormBB", "lnU", {"-", "1.25", "-", "-", "-", "-"});
   nuisance diphotonNormBB_dummy("diphotonNormBB_dummy", "lnU", {"-", "-", "-", "-", "-", "-"});
-  nuisance diphotonNormBE("diphotonNormBE", "lnU", {"-", "1.5", "-", "-", "-", "-"});
+  nuisance diphotonNormBE("diphotonNormBE", "lnU", {"-", "1.25", "-", "-", "-", "-"});
   nuisance diphotonNormBE_dummy("diphotonNormBE_dummy", "lnU", {"-", "-", "-", "-", "-", "-"});
   std::string lumiError = std::to_string(1 + luminosityErrorFrac[datacardYear]);
   nuisance lumi("lumi", "lnN", {lumiError, lumiError, "-", lumiError, lumiError, lumiError});
@@ -385,8 +385,9 @@ double getYield(const std::string& region, const std::string& sample, const std:
 
 std::string getDiphotonYieldVariations(const std::string& region, const std::string& variation)
 {
-  // barrel-endcap covariance matrix not positive definite
-  if(region == "BE") return std::to_string(1);
+  TString histID("id1");
+  // barrel-endcap fit has a different histogram ID
+  if(region == "BE") histID = "id15";
 
   TString histogramFile(Form("datacards/Minv_histos_%s_%s.root", region.c_str(), datacardYear.c_str()));
   // put dummy values here for now
@@ -405,7 +406,7 @@ std::string getDiphotonYieldVariations(const std::string& region, const std::str
     TString fitFunc("pol3");
     TString filename="data/kfactor_" + region + "_R1F1_125GeV_NNPDF.root";
     TFile *file = TFile::Open(filename);
-    TFitResult* fitResult = static_cast<TFitResult*>(file->Get(Form("TFitResult-id1-%s",fitFunc.Data())));
+    TFitResult* fitResult = static_cast<TFitResult*>(file->Get(Form("TFitResult-%s-%s", histID.Data(), fitFunc.Data())));
 
     TF1 *kfactorStatUp = eigenvectorVariation(true, parameter, kfactorFunction, fitResult);
     TF1 *kfactorStatDown = eigenvectorVariation(false, parameter, kfactorFunction, fitResult);
