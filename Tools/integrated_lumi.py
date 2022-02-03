@@ -9,7 +9,7 @@ OFFSITE = False
 # http://cms-service-lumi.web.cern.ch/cms-service-lumi/brilwsdoc.html#prerequisite
 os.environ["PATH"] = os.environ["HOME"] + "/.local/bin:/cvmfs/cms-bril.cern.ch/brilconda/bin:" + os.environ["PATH"]
 
-CMD_BASE = "brilcalc lumi -u /fb"
+CMD_BASE = "brilcalc lumi -u /fb -c web"
 NORMTAGS = {'2015': "/afs/cern.ch/user/l/lumipro/public/normtag_file/OfflineNormtagV3_DCSOnly.json",
             '2016': "/afs/cern.ch/user/l/lumipro/public/Normtags/normtag_DATACERT.json",
             '2017': "/cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json",
