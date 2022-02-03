@@ -59,8 +59,8 @@ void oneSignal(int ned, int kk, bool bkgSub)
   double xMin = 0.0;
   double xMax = 13000.;
 
-  TString barrelCut("weightAll*isGood*(Diphoton.Minv>230 && Photon1.pt>75 && Photon2.pt>75 && abs(Photon1.eta)<1.4442 && abs(Photon2.eta)<1.4442)");
-  if(bkgSub) barrelCut = "weightAll*isGood*(Diphoton.Minv>500 && Photon1.pt>75 && Photon2.pt>75 && abs(Photon1.eta)<1.4442 && abs(Photon2.eta)<1.4442)";
+  TString barrelCut("weightAll*isGood*(Diphoton.Minv>230 && Photon1.pt>75 && Photon2.pt>75 && Photon1.isEB && Photon2.isEB)");
+  if(bkgSub) barrelCut = "weightAll*isGood*(Diphoton.Minv>500 && Photon1.pt>75 && Photon2.pt>75 && Photon1.isEB && Photon2.isEB)";
   // gluon-gluon contributions should not be included in the background subtraction
   if(year == 2017 or year == 2018) {
     barrelCut+="*(pdf_id1 != 21 && pdf_id2 != 21)";
