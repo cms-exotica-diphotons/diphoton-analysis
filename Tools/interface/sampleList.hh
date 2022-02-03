@@ -23,7 +23,7 @@
 
 // 20.3 fb^-1 were acquired in 2018 before loss of HEM15/HEM16
 // 59.97 fb^-1 are validated but only 59.28 fb^-1 available in EGamma dataset
-std::map<std::string, double> luminosity { {"2015", 2.62}, {"2016", 35.9}, {"2017", 41.527}, {"2018", 59.67}, {"2018_legacy", 59.83}, {"2018_newjson", 14.00}, {"2018ABC_prompt", 28.04}, {"2018ABC_rereco", 28.04}, {"2018AB", 14.00+7.10}, {"2018ABC", 14.00+7.10+6.94}, {"2018CD", 6.94+31.93}, {"2018D", 31.93}};
+std::map<std::string, double> luminosity { {"2015", 2.62}, {"2016", 35.9}, {"2016_legacy", 34.71263}, {"2017", 41.527}, {"2017_legacy", 41.46}, {"2018", 59.67}, {"2018_legacy", 59.83}, {"2018_newjson", 14.00}, {"2018ABC_prompt", 28.04}, {"2018ABC_rereco", 28.04}, {"2018AB", 14.00+7.10}, {"2018ABC", 14.00+7.10+6.94}, {"2018CD", 6.94+31.93}, {"2018D", 31.93}};
 //std::map<std::string, double> luminosity { {"2015", 2.62}, {"2016", 35.9}, {"2017", 41.527}, {"2018", 59.67}, {"2018_newjson", 14.00}, {"2018ABC_prompt", 28.04}, {"2018ABC_rereco", 28.04}, {"2018AB", 14.00+7.10}, {"2018ABC", 14.00+7.10+6.94}, {"2018CD", 6.94+31.93}, {"2018D", 31.93}};
 std::map<std::string, double> luminosityErrorFrac { {"2015", 0.023}, {"2016", 0.025}, {"2017", 0.023}, {"2018", 0.025}, {"2018_newjson", 0.025}, {"2018ABC_prompt", 0.025}, {"2018ABC_rereco", 0.025}, {"2018AB", 0.025}, {"2018ABC", 0.025}, {"2018CD", 0.025}, {"2018D", 0.025}};
 
@@ -181,6 +181,13 @@ void init(bool includeUnskimmed = false, bool includeSignal = false)
   chData->Add(filestring("DoubleEG__Run2015D"));
   chData->Add(filestring("DoubleEG__Run2015C_25ns"));
 
+  TChain *chData2017_legacy = new TChain(treeType);
+  chData2017_legacy->Add(baseDirectory + "/store/user/cawest/diphoton/9159835/DoubleEG/crab_DoubleEG__Run2017B-UL2017_MiniAODv2-v1__MINIAOD/210808_193425/Run2017B_v1_0.root");
+  chData2017_legacy->Add(baseDirectory + "/store/user/cawest/diphoton/9159835/DoubleEG/crab_DoubleEG__Run2017C-UL2017_MiniAODv2-v2__MINIAOD/210808_193452/Run2017C_v2_0.root");
+  chData2017_legacy->Add(baseDirectory + "/store/user/cawest/diphoton/9159835/DoubleEG/crab_DoubleEG__Run2017D-UL2017_MiniAODv2-v1__MINIAOD/210808_193519/Run2017D_v1_0.root");
+  chData2017_legacy->Add(baseDirectory + "/store/user/cawest/diphoton/9159835/DoubleEG/crab_DoubleEG__Run2017E-UL2017_MiniAODv2-v1__MINIAOD/210808_193546/Run2017E_v1_0.root");
+  chData2017_legacy->Add(baseDirectory + "/store/user/cawest/diphoton/9159835/DoubleEG/crab_DoubleEG__Run2017F-UL2017_MiniAODv2-v2__MINIAOD/210808_193612/Run2017F_v2_0.root");
+
   TChain *chData2017_unskimmed = new TChain(treeType);
   if(includeUnskimmed) {
     chData2017_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/DoubleEG/crab_DoubleEG__Run2017B-31Mar2018-v1__MINIAOD/191204_035400/0000/*.root");
@@ -225,6 +232,16 @@ void init(bool includeUnskimmed = false, bool includeSignal = false)
   chData2016->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/DoubleEG/crab_DoubleEG__Run2016F-17Jul2018-v1__MINIAOD/191204_035805/*.root");
   chData2016->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/DoubleEG/crab_DoubleEG__Run2016G-17Jul2018-v1__MINIAOD/191204_035827/*.root");
   chData2016->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/DoubleEG/crab_DoubleEG__Run2016C-17Jul2018-v1__MINIAOD/191204_035636/*.root");
+
+  TChain *chData2016_legacy = new TChain(treeType);
+  chData2016_legacy->Add(baseDirectory + "/store/user/cawest/diphoton/acbc6e8/DoubleEG/crab_DoubleEG__Run2016B-ver2_HIPM_UL2016_MiniAODv2-v1__MINIAOD/210815_152200/Run2016B_ve_0.root");
+  chData2016_legacy->Add(baseDirectory + "/store/user/cawest/diphoton/acbc6e8/DoubleEG/crab_DoubleEG__Run2016C-HIPM_UL2016_MiniAODv2-v1__MINIAOD/210815_152228/Run2016C_v1_0.root");
+  chData2016_legacy->Add(baseDirectory + "/store/user/cawest/diphoton/acbc6e8/DoubleEG/crab_DoubleEG__Run2016D-HIPM_UL2016_MiniAODv2-v1__MINIAOD/210815_152254/Run2016D_v1_0.root");
+  chData2016_legacy->Add(baseDirectory + "/store/user/cawest/diphoton/acbc6e8/DoubleEG/crab_DoubleEG__Run2016E-HIPM_UL2016_MiniAODv2-v1__MINIAOD/210815_152320/Run2016E_v1_0.root");
+  chData2016_legacy->Add(baseDirectory + "/store/user/cawest/diphoton/acbc6e8/DoubleEG/crab_DoubleEG__Run2016F-HIPM_UL2016_MiniAODv2-v1__MINIAOD/210815_152414/Run2016F_v1_0.root");
+  chData2016_legacy->Add(baseDirectory + "/store/user/cawest/diphoton/acbc6e8/DoubleEG/crab_DoubleEG__Run2016F-UL2016_MiniAODv2-v1__MINIAOD/210815_152347/Run2016F_v1_0.root");
+  chData2016_legacy->Add(baseDirectory + "/store/user/cawest/diphoton/acbc6e8/DoubleEG/crab_DoubleEG__Run2016G-UL2016_MiniAODv2-v1__MINIAOD/210818_161240/Run2016G_v1_0.root");
+  chData2016_legacy->Add(baseDirectory + "/store/user/cawest/diphoton/acbc6e8/DoubleEG/crab_DoubleEG__Run2016H-UL2016_MiniAODv2-v1__MINIAOD/210815_152441/Run2016H_v1_0.root");
 
   TChain *chData2017_2018 = new TChain(treeType);
   chData2017_2018->Add(chData2017);
@@ -613,8 +630,10 @@ void init(bool includeUnskimmed = false, bool includeSignal = false)
   // }
 
   chains["data_2015"] = chData;
+  chains["data_2016_legacy"] = chData2016_legacy;
   chains["data_2016"] = chData2016;
   chains["data_2016_unskimmed"] = chData2016_unskimmed;
+  chains["data_2017_legacy"] = chData2017_legacy;
   chains["data_2017"] = chData2017;
   chains["data_2017_unskimmed"] = chData2017_unskimmed;
   chains["data_2018_legacy"] = chData2018_legacy;
