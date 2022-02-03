@@ -63,13 +63,14 @@ int main(int argc, char *argv[])
   // define samples to be used in histograms
   sample data("data", "Data", data_year, trigger);
   data.isData = true;
-  sample gg("gg", "#gamma#gamma", data_year, kfactor);
-  sample gj("gj", "#gamma + jets", data_year);
-  sample jj("jj", "QCD", data_year);
-  sample vg("vg", "V#gamma", data_year);
-  sample w("w", "W", data_year);
-  sample dy("dy", "DY", data_year);
-  sample ttg("ttg", "t#bar{t}#gamma", data_year);
+  TString weights(Form("(%s*%s)", scale_factor_cut(atoi(data_year.c_str()), 0).Data(), npv_reweight_str(atoi(data_year.c_str()), 0).Data()));
+  sample gg("gg", "#gamma#gamma", data_year, kfactor + std::string("*") + weights.Data());
+  sample gj("gj", "#gamma + jets", data_year, weights.Data());
+  sample jj("jj", "QCD", data_year, weights.Data());
+  sample vg("vg", "V#gamma", data_year, weights.Data());
+  sample w("w", "W", data_year, weights.Data());
+  sample dy("dy", "DY", data_year, weights.Data());
+  sample ttg("ttg", "t#bar{t}#gamma", data_year, weights.Data());
   std::vector<sample> samples;
   samples.push_back(data);
   samples.push_back(ttg);

@@ -23,5 +23,6 @@
   <bin file="plot_eta_phi.cc" name="plot_eta_phi.exe"/>
   <bin file="plot_pdf_uncert.cc" name="plot_pdf_uncert.exe"/>
   <bin file="skim.cc" name="skim.exe"/>
+  <bin file="plot_syst.cc" name="plot_syst.exe"/>
 </environment>
 <flags CXXFLAGS="-Wall -Werror -g"/>
