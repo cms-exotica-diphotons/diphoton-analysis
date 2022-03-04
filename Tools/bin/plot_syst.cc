@@ -40,7 +40,9 @@ void plot_syst(const std::string & syst_type = "egm")
 
   std::vector<TCanvas*> canvases;
 
-  for (int year : {2016, 2017, 2018}) {
+  for (int year : {2017}) {
+  // for (int year : {2016, 2017, 2018}) {
+
     for (bool endcap : {true, false} ) {
       canvases.push_back(new TCanvas(std::to_string(year).c_str(), std::to_string(year).c_str(), (int)((1./0.7)*600)));
 

@@ -37,6 +37,15 @@ TString scale_factor_cut(const int year, double sigma_from_mean)
   etaCuts[1] = "(abs(Photon1.scEta)>0.8&&abs(Photon1.scEta)<1.4442)";
   etaCuts[2] = "(abs(Photon1.scEta)>1.566&&abs(Photon1.scEta)<2.5)";
 
+  const char *cmssw_base = getenv("CMSSW_BASE");
+  if(cmssw_base==nullptr) {
+    std::cout << "Please issue cmsenv before running" << std::endl;
+    exit(-1);
+  }
+
+  string sf_fileName = cmssw_base + "/src/diphoton-analysis/Tools/data/SF_2017.txt"
+  ifstream f(sf_fileName.c_str());
+
   TString cutString1;
   for(int etaBin : {0, 1, 2}) {
     functions.push_back(eff_scale_factor(year, etaBin));
