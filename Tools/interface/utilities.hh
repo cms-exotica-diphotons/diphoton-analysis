@@ -11,6 +11,7 @@
 #include "TF1.h"
 #include "TH1.h"
 #include <string>
+#include <fstream>
 
 TF1* eff_scale_factor(const int year, const int etaBinNumber)
 {
@@ -43,16 +44,23 @@ TString scale_factor_cut(const int year, double sigma_from_mean)
     exit(-1);
   }
 
-  string sf_fileName = cmssw_base + "/src/diphoton-analysis/Tools/data/SF_2017.txt"
-  ifstream f(sf_fileName.c_str());
+  std::string cmssw(cmssw_base);
+  std::string sf_fileName = cmssw + "/src/diphoton-analysis/Tools/data/SF_" + std::to_string(year) + ".txt";
+  std::ifstream sf_file(sf_fileName.c_str());
+  std::string tmp;
+  double etamin[3], etamax[3], SF_125[3], unc_125[3], SF_200[3], unc_200[3], unc_extra[3];
+  getline(sf_file,tmp);
+  for(int etaBin : {0, 1, 2}) {
+    sf_file >> etamin[etaBin] >> etamax[etaBin] >> SF_125[etaBin] >> unc_125[etaBin] >> SF_200[etaBin] >> unc_200[etaBin] >> unc_extra[etaBin];
+    std::cout << etamin[etaBin] << " " << etamax[etaBin] << " " << SF_125[etaBin] << " " << unc_125[etaBin] << " "
+              << SF_200[etaBin] << " " << unc_200[etaBin]<< " " << unc_extra[etaBin] << std::endl;
+  }
 
   TString cutString1;
   for(int etaBin : {0, 1, 2}) {
-    functions.push_back(eff_scale_factor(year, etaBin));
-    double intercept = functions.back()->GetParameter(0);
-    double slope = functions.back()->GetParameter(1);
-    double slopeError = sigma_from_mean * functions.back()->GetParError(1);
-    cutString1 += Form("(%6.6e + (%6.6e + %6.6e *(1+(Photon1.pT>300)) )* (Photon1.pT-200.))*(%s)", intercept, slope, slopeError, etaCuts[etaBin].Data());
+    cutString1 += Form("(%s)*((Photon1.pt>125 && Photon1.pt<200)*(%6.6e + %6.6e * %6.6e) + (Photon1.pt>200)*(%6.6e+(sqrt(%6.6e^2+(%6.6e*(Photon1.pt-200))^2))*%6.6e))",
+                       etaCuts[etaBin].Data(), SF_125[etaBin], unc_125[etaBin], sigma_from_mean, SF_200[etaBin], unc_200[etaBin], unc_extra[etaBin], sigma_from_mean);
+
     if (etaBin != 2) {
       cutString1 += "+";
     }
@@ -134,11 +142,11 @@ std::string kfactorString(const std::string & region, const std::string & scales
 
   TString kfactorWeight;
   if(region == "BB") kfactorWeight = Form("(%6.6e + %6.6e*%s + %6.6e*%s + %6.6e*%s)",
-					  kfactorFunction->GetParameter(0), kfactorFunction->GetParameter(1), reweightVariable.c_str(),
-					  kfactorFunction->GetParameter(2),  squared.c_str(), kfactorFunction->GetParameter(3), cubed.c_str());
+                                          kfactorFunction->GetParameter(0), kfactorFunction->GetParameter(1), reweightVariable.c_str(),
+                                          kfactorFunction->GetParameter(2),  squared.c_str(), kfactorFunction->GetParameter(3), cubed.c_str());
   else kfactorWeight = Form("(%6.6e + %6.6e*%s + %6.6e*%s + %6.6e*%s)",
-			    kfactorFunction->GetParameter(0), kfactorFunction->GetParameter(1), reweightVariable.c_str(),
-			    kfactorFunction->GetParameter(2),  squared.c_str(), kfactorFunction->GetParameter(3), cubed.c_str());
+                            kfactorFunction->GetParameter(0), kfactorFunction->GetParameter(1), reweightVariable.c_str(),
+                            kfactorFunction->GetParameter(2),  squared.c_str(), kfactorFunction->GetParameter(3), cubed.c_str());
   
   return kfactorWeight.Data();
 }
