@@ -369,9 +369,11 @@ void plot::output(const std::string& outputDirectory, const std::string& extraSt
   ratio->Draw("same");
 
   c->Print(Form("%s/%s_%s_lin.pdf", outputDirectory.c_str(), variable().c_str(), extraString.c_str()));
+  c->Print(Form("%s/%s_%s_lin.png", outputDirectory.c_str(), variable().c_str(), extraString.c_str()));
   c->Print(Form("%s/%s_%s.root", outputDirectory.c_str(), variable().c_str(), extraString.c_str()));
   pad1->SetLogy();
   c->Print(Form("%s/%s_%s_log.pdf", outputDirectory.c_str(), variable().c_str(), extraString.c_str()));
+  c->Print(Form("%s/%s_%s_log.png", outputDirectory.c_str(), variable().c_str(), extraString.c_str()));
 }
 
 TString reformat(TString input)

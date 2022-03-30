@@ -150,6 +150,8 @@ void plot_blinded(const std::string& years_to_plot)
     }
     histName += ".pdf";
     canvases[region]->Print(histName.c_str());
+    histName.replace(histName.find(".pdf"), histName.size(), ".png");
+    canvases[region]->Print(histName.c_str());
   }
 }
 
