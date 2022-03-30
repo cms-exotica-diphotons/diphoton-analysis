@@ -25,18 +25,13 @@ int main()
 
   // use "ned" to encode year and
   // "kk" to encode positive and negative interference
-  oneSignal(2017, 1, false);
-  oneSignal(2018, 1, false);
-
-  oneSignal(2017, 0, false);
-  oneSignal(2018, 0, false);
-
-  oneSignal(2017, 1, true);
-  oneSignal(2018, 1, true);
-
-  oneSignal(2017, 0, true);
-  oneSignal(2018, 0, true);
-
+  for(int year : {2016, 2017, 2018}) {
+    for(int interference : {0, 1}) {
+      for(bool bkg_sub : {true, false}) {
+	oneSignal(year, interference, bkg_sub);
+      }
+    }
+  }
 }
 
 TString prettyNameADD(const TString& name)
@@ -53,7 +48,8 @@ TString prettyNameADD(const TString& name)
 void oneSignal(int ned, int kk, bool bkgSub)
 {
   int year = ned;
-  if(ned != 2017 && ned != 2018) year = 2016;
+  bool pythia = ned > 2010;
+  if(!pythia) year = 2016;
 
   int nBins = 260;
   double xMin = 0.0;
@@ -62,7 +58,7 @@ void oneSignal(int ned, int kk, bool bkgSub)
   TString barrelCut("weightAll*isGood*(Diphoton.Minv>230 && Photon1.pt>75 && Photon2.pt>75 && Photon1.isEB && Photon2.isEB)");
   if(bkgSub) barrelCut = "weightAll*isGood*(Diphoton.Minv>500 && Photon1.pt>75 && Photon2.pt>75 && Photon1.isEB && Photon2.isEB)";
   // gluon-gluon contributions should not be included in the background subtraction
-  if(year == 2017 or year == 2018) {
+  if(pythia) {
     barrelCut+="*(pdf_id1 != 21 && pdf_id2 != 21)";
   }
   std::vector<int> stringScales = {3000, 3500, 4000, 4500, 5000, 5500, 6000};
@@ -81,11 +77,16 @@ void oneSignal(int ned, int kk, bool bkgSub)
   l->SetFillStyle(0);
   // draw SM background first
   TH1F *histSM = new TH1F("gg70", "gg70", nBins, xMin, xMax);
-  chains["gg70_" + std::to_string(year)]->Project("gg70", "Diphoton.Minv", barrelCut);
+  if(pythia) {
+    chains["gg70_" + std::to_string(year)]->Project("gg70", "Diphoton.Minv", barrelCut);
+  }
+  else {
+    chains["gg70_sherpa_2016"]->Project("gg70", "Diphoton.Minv", barrelCut);
+  }
   TLatex * lat = new TLatex;
   for(size_t i=0; i<stringScales.size(); i++) {
     TString sample(Form("ADDGravToGG_MS-%d_NED-%d_KK-%d", stringScales.at(i), ned, kk));
-    if(year == 2017 || year == 2018) {
+    if(pythia) {
       sample = Form("ADDGravToGG_NegInt-%d_LambdaT-%d_TuneCP2_13TeV-pythia8_%d", kk, stringScales.at(i), ned);
       if(stringScales.at(i) < 4000) continue;
     }
@@ -102,7 +103,7 @@ void oneSignal(int ned, int kk, bool bkgSub)
       lat->DrawLatexNDC(0.6, 0.87, Form("N_{ED} = %d, KK = %d", ned, kk));
     }
     else hist->Draw("same");  
-    if(year == 2017 || year == 2018) l->AddEntry(sample, Form("#Lambda_{T} = %d GeV", stringScales.at(i)), "EP");
+    if(pythia) l->AddEntry(sample, Form("#Lambda_{T} = %d GeV", stringScales.at(i)), "EP");
     else l->AddEntry(sample, Form("M_{S} = %d GeV", stringScales.at(i)), "EP");
   }
   l->Draw();

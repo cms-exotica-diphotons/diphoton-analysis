@@ -11,7 +11,7 @@ std::string getSampleBase(const std::string & sampleName, const std::string & ye
 std::string getBase(const std::string & sampleName);
 void addFakePrediction(const std::string &region, const std::string &year, TFile * output);
 std::string addCutsPerSample(const std::string &cut, const std::string &sample, const std::string &region, const std::string &year);
-std::map<std::string, std::string> reweightingList();
+std::map<std::string, std::string> reweightingList(std::vector<std::string> &postfixes);
 void addTheoryUncertanties(std::map<std::string, TH1F*> &histograms, const std::string &region, TFile * output);
 void overflowToLastBin(TH1F* histogram);
 
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
   // include signal samples but not unskimmed data samples
   init(false, true);
 
-  TFile *output = new TFile(Form("datacards/Minv_histos_%s_%s.root", region.c_str(), year.c_str()), "recreate");
+  TFile *output = new TFile(Form("datacards/Minv_histos_%s_%s_test2016.root", region.c_str(), year.c_str()), "recreate");
   output->mkdir(region.c_str());
 
   // add fake rate prediction histograms
@@ -86,6 +86,10 @@ std::string addCutsPerSample(const std::string &cut, const std::string &sample, 
   }
   if( sample.find("data") == std::string::npos ) {
     sampleCut+="*weightAll*" + std::to_string(luminosity[year]);
+    // add photon efficiency scale factor, zero sigma from mean
+    sampleCut+="*" + std::string(scale_factor_cut(atoi(year.c_str()), 0).Data());
+    // add pileup weights, zero sigma from mean
+    sampleCut+="*" + std::string(npv_reweight_str(atoi(year.c_str()), 0).Data());
     if( sample.find("gg70_2017") != std::string::npos
 	or sample.find("gg70_2018") != std::string::npos) {
       // GG Pythia samples include box diagram but signal does not
@@ -260,15 +264,29 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
     // add reweightings for energy scale systematics
     std::vector<std::string> postfixes;
     std::map<std::string, std::string> reweightings = reweightingList(postfixes);
+    postfixes.push_back("_effUp");
+    postfixes.push_back("_effDown");
+    postfixes.push_back("_pileupUp");
+    postfixes.push_back("_pileupDown");
 
     //    TEntryList *elist;
     for(const auto& postfix : postfixes) {
       std::string baseName(getSampleBase(sample, year));
       baseName += postfix;
+      // do not perform energy scale variations on k-factor scale variations
+      if(baseName.find("diphotonkfactorScale") != std::string::npos and
+	 baseName.find("energy") != std::string::npos) {
+	continue;
+      }
       TH1F *hist = new TH1F(baseName.c_str(), baseName.c_str(), nBins, xMin, xMax);
       histograms[baseName] = hist;
       std::string varname("Diphoton.Minv");
-      varname += reweightings[postfix];
+      // efficiency scale factors are applied to the cut rather than the plotting variable
+      bool eff_scale_factor = postfix.find("_eff") != std::string::npos
+	or postfix.find("_pileup") != std::string::npos;
+      if(!eff_scale_factor) {
+	varname += reweightings[postfix];
+      }
       std::string cut("*(");
       cut += varname;
       std::string minv_cut("500");
@@ -278,6 +296,27 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
       cut += ">" + minv_cut + ")";
       std::string fullCut(sampleCut);
       fullCut += cut;
+
+      // do not apply reweightings to data, only MC
+      if( sample.find("data") == std::string::npos ) {
+	int year_int = atoi(year.c_str());
+	if(postfix == "_effUp") {
+	  std::string old_str(scale_factor_cut(year_int, 0).Data());
+	  fullCut.replace(fullCut.find(old_str), old_str.size(), scale_factor_cut(year_int, 1).Data());
+	}
+	else if(postfix == "_effDown") {
+	  std::string old_str(scale_factor_cut(year_int, 0).Data());
+	  fullCut.replace(fullCut.find(old_str), old_str.size(), scale_factor_cut(year_int, -1).Data());
+	}
+	else if(postfix == "_pileupUp") {
+	  std::string old_str(npv_reweight_str(year_int, 0).Data());
+	  fullCut.replace(fullCut.find(old_str), old_str.size(), npv_reweight_str(year_int, 1).Data());
+	}
+	else if(postfix == "_pileupDown") {
+	  std::string old_str(npv_reweight_str(year_int, 0).Data());
+	  fullCut.replace(fullCut.find(old_str), old_str.size(), npv_reweight_str(year_int, -1).Data());
+	}
+      }
       std::cout << "Making histograms for sample " << hist->GetName()
 		<< " with basename " << baseName
 		<< " with cut\n" << fullCut
@@ -297,6 +336,14 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
       if(systPosition != std::string::npos) {
 	syst = title.substr(systPosition);
       }
+      systPosition = title.find("_pileup");
+      if(systPosition != std::string::npos) {
+	syst = title.substr(systPosition);
+      }
+      systPosition = title.find("_eff");
+      if(systPosition != std::string::npos) {
+	syst = title.substr(systPosition);
+      }
       std::string histName;
       if(title.find("ADDGravToGG_NegInt") != std::string::npos) {
 	if (year == "2017" or year == "2018") {
@@ -306,14 +353,14 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
 	else histName = "gg70_2017";
       }
       else {
-	histName = "gg70_2016";
+	histName = "gg70_sherpa_2016";
       }
       if(!syst.empty()) {
 	histName += syst;
       }
       histogram.second->Add(histograms[histName], -1);
     }
-    //    histogram.second->Write();
+    histogram.second->Write();
   }
 
   // add PDF uncertainty histograms
