@@ -174,28 +174,27 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
     processes.insert(processes.begin()+1, signalPointInt);
   }
 
-  bool isBB = region == "BB";
-  std::string diphotonkfactorStatValue0 = isBB ? getDiphotonYieldVariations(region, "kfactorStat0") : "-";
+  std::string diphotonkfactorStatValue0 = getDiphotonYieldVariations(region, "kfactorStat0");
   nuisance diphotonkfactorStat0("kfactorStat0", "shape", {"-", diphotonkfactorStatValue0, "-", "-", "-", "-"});
-  std::string diphotonkfactorStatValue1 = isBB ? getDiphotonYieldVariations(region, "kfactorStat1") : "-";
+  std::string diphotonkfactorStatValue1 = getDiphotonYieldVariations(region, "kfactorStat1");
   nuisance diphotonkfactorStat1("kfactorStat1", "shape", {"-", diphotonkfactorStatValue1, "-", "-", "-", "-"});
-  std::string diphotonkfactorStatValue2 = isBB ? getDiphotonYieldVariations(region, "kfactorStat2") : "-";
+  std::string diphotonkfactorStatValue2 = getDiphotonYieldVariations(region, "kfactorStat2");
   nuisance diphotonkfactorStat2("kfactorStat2", "shape", {"-", diphotonkfactorStatValue2, "-", "-", "-", "-"});
-  std::string diphotonkfactorStatValue3 = isBB ? getDiphotonYieldVariations(region, "kfactorStat3") : "-";
+  std::string diphotonkfactorStatValue3 = getDiphotonYieldVariations(region, "kfactorStat3");
   nuisance diphotonkfactorStat3("kfactorStat3", "shape", {"-", diphotonkfactorStatValue3, "-", "-", "-", "-"});
   nuisance diphotonkfactorScalesBB("diphotonkfactorScalesBB", "shape", {"-", "1", "-", "-", "-", "-"});
   nuisance diphotonkfactorScalesBB_dummy("diphotonfactorScalesBB", "shape", {"-", "-", "-", "-", "-", "-"});
   nuisance diphotonkfactorScalesBE("diphotonkfactorScalesBE", "shape", {"-", "1", "-", "-", "-", "-"});
   nuisance diphotonkfactorScalesBE_dummy("diphotonkfactorScalesBE", "shape", {"-", "-", "-", "-", "-", "-"});
-  nuisance diphotonNormBB("diphotonNormBB", "lnU", {"-", "1.25", "-", "-", "-", "-"});
+  nuisance diphotonNormBB("diphotonNormBB", "lnU", {"-", "1.75", "-", "-", "-", "-"});
   nuisance diphotonNormBB_dummy("diphotonNormBB_dummy", "lnU", {"-", "-", "-", "-", "-", "-"});
-  nuisance diphotonNormBE("diphotonNormBE", "lnU", {"-", "1.25", "-", "-", "-", "-"});
+  nuisance diphotonNormBE("diphotonNormBE", "lnU", {"-", "1.5", "-", "-", "-", "-"});
   nuisance diphotonNormBE_dummy("diphotonNormBE_dummy", "lnU", {"-", "-", "-", "-", "-", "-"});
   std::string lumiError = std::to_string(1 + luminosityErrorFrac[datacardYear]);
   nuisance lumi("lumi", "lnN", {lumiError, lumiError, "-", lumiError, lumiError, lumiError});
-  nuisance pileup("pileup", "lnN", {"1.05", "1.05", "-", "1.05", "-", "-"});
+  nuisance pileup("pileup", "shape", {"-", "1", "-", "1", "1", "1"});
   nuisance fake_sample("fake_sample", "shape", {"-", "-", "1.0", "-", "-", "-"});
-  nuisance eff("eff", "lnN", {"1.1", "1.1", "1.05", "1.1", "-", "-"});
+  nuisance eff("eff", "shape", {"-", "1", "-", "1", "1", "1"});
   //  nuisance xsec_minor_bkg("xsec_minor_bkg", "lnN", {"-", "-", "-", "1.5"});
   nuisance xsec_vg("xsec_vg", "lnN", {"-", "-", "-", "1.5", "-", "-"});
   nuisance xsec_dy("xsec_dy", "lnN", {"-", "-", "-", "-", "1.5", "-"});
@@ -233,7 +232,7 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
     }
   }
   allNuisances.push_back(lumi);
-  //  allNuisances.push_back(pileup);
+  allNuisances.push_back(pileup);
   allNuisances.push_back(fake_sample);
   allNuisances.push_back(eff);
   //  allNuisances.push_back(xsec_minor_bkg);
