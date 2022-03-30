@@ -219,16 +219,16 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
     allNuisances.push_back(diphotonkfactorScalesBB);
     allNuisances.push_back(diphotonkfactorScalesBE_dummy);
     if(scaleRegionNorm) {
-      allNuisances.push_back(diphotonNormBE);
-      allNuisances.push_back(diphotonNormBB_dummy);
+      allNuisances.push_back(diphotonNormBB);
+      allNuisances.push_back(diphotonNormBE_dummy);
     }
   }
   else {
     allNuisances.push_back(diphotonkfactorScalesBB_dummy);
     allNuisances.push_back(diphotonkfactorScalesBE);
     if(scaleRegionNorm) {
-      allNuisances.push_back(diphotonNormBB);
-      allNuisances.push_back(diphotonNormBE_dummy);
+      allNuisances.push_back(diphotonNormBE);
+      allNuisances.push_back(diphotonNormBB_dummy);
     }
   }
   allNuisances.push_back(lumi);
