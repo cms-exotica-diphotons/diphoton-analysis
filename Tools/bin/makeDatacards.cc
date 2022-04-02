@@ -189,21 +189,19 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
   nuisance lumi("lumi", "lnN", {lumiError, lumiError, "-", lumiError, lumiError, lumiError});
   nuisance pileup("pileup", "shape", {"-", "1", "-", "1", "1", "1"});
   nuisance fake_sample("fake_sample", "shape", {"-", "-", "1.0", "-", "-", "-"});
+  //  nuisance fake_closure("fake_closure", "lnN", {"-", "-", "1.3", "-", "-", "-"});
   nuisance eff("eff", "shape", {"-", "1", "-", "1", "1", "1"});
   //  nuisance xsec_minor_bkg("xsec_minor_bkg", "lnN", {"-", "-", "-", "1.5"});
   nuisance xsec_vg("xsec_vg", "lnN", {"-", "-", "-", "1.5", "-", "-"});
   nuisance xsec_dy("xsec_dy", "lnN", {"-", "-", "-", "-", "1.5", "-"});
   nuisance xsec_ttg("xsec_ttg", "lnN", {"-", "-", "-", "-", "-", "1.5"});
-  // this would be used only for an overall scaling
-  // but we subdivide further
+  // "energyScale" would be used only for an overall scaling
+  // but we subdivide EGM systematic uncertainties further
   //  nuisance energyScale("energyScale", "shape", {"1", "1", "-", "1"});
-  // for technical reasons, exclude EGM systematic uncertainties
-  // on signal and 2016 datasets
-  std::string useEGMSyst(datacardYear == "2016" ? "-" : "1");
-  nuisance energyScaleStat("energyScaleStat", "shape", {"-", useEGMSyst, "-", useEGMSyst, useEGMSyst, useEGMSyst});
-  nuisance energyScaleSyst("energyScaleSyst", "shape", {"-", useEGMSyst, "-", useEGMSyst, useEGMSyst, useEGMSyst});
-  nuisance energyScaleGain("energyScaleGain", "shape", {"-", useEGMSyst, "-", useEGMSyst, useEGMSyst, useEGMSyst});
-  nuisance energySigma("energySigma", "shape", {"-", useEGMSyst, "-", useEGMSyst, useEGMSyst, useEGMSyst});
+  nuisance energyScaleStat("energyScaleStat", "shape", {"-", "1", "-", "1", "1", "1"});
+  nuisance energyScaleSyst("energyScaleSyst", "shape", {"-", "1", "-", "1", "1", "1"});
+  nuisance energyScaleGain("energyScaleGain", "shape", {"-", "1", "-", "1", "1", "1"});
+  nuisance energySigma("energySigma", "shape", {"-", "1", "-", "1", "1", "1"});
 
   std::vector<nuisance> allNuisances;
   allNuisances.push_back(diphotonkfactorStat0);
