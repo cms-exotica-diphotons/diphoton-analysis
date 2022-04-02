@@ -611,10 +611,10 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
 
     // this sample contains an ad-hoc modification of the weights from TuneCUETPM1 to TuneCP2
     TChain *chGG70_2016 = new TChain(treeType);
-    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/9205c6c/GG_M-500To1000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220325_172106/output.root");
-    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/8e010ef/GG_M-1000To2000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-1000To2000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220228_152825//output.root");
-    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/9205c6c/GG_M-500To1000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220325_172106/output.root");
-    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/8e010ef/GG_M-4000To13000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-4000To13000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220311_193622/reweighted/output.root");
+    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/9205c6c/GG_M-500To1000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220325_172106/output_no_gg.root");
+    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/8e010ef/GG_M-1000To2000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-1000To2000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220228_152825/output_no_gg.root");
+    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/8e010ef/GG_M-2000To4000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-2000To4000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220228_152847/output_no_gg.root");
+    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/8e010ef/GG_M-4000To13000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-4000To13000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220311_193622/output_no_gg.root");
 
     TChain *chGG70_2017 = new TChain(treeType);
     chGG70_2017->Add(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8__Fall17_PU2017-v1__MINIAODSIM/210715_233628/0000/*.root");
