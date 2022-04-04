@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
   output->mkdir(region.c_str());
 
   // add fake rate prediction histograms
-  addFakePrediction(region, year, output);
+  // addFakePrediction(region, year, output);
 
   // loop over all other samples
   allSamples(region, year, output);
@@ -272,7 +272,7 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
       std::string cut("*(");
       cut += varname;
       std::string minv_cut("500");
-      if(sample.find("ADDGravToGG") != std::string::npos or sample.find("gg70") != std::string::npos) {
+      if(sample.find("ADDGravToGG") != std::string::npos or sample.find("gg70") != std::string::npos or sample.find("UnparToGG") != std::string::npos) {
 	minv_cut = "600";
       }
       cut += ">" + minv_cut + ")";
@@ -291,13 +291,15 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
   // subtract nonresonant background
   for(auto histogram : histograms) {
     std::string title(histogram.second->GetTitle());
-    if(title.find("ADDGravToGG_") != std::string::npos || title.find("UnparToGG") != std::string::npos) {
+    //if(title.find("ADDGravToGG_") != std::string::npos or title.find("UnparToGG") != std::string::npos) {
+    if(title.find("ADDGravToGG_") != std::string::npos) {
       std::size_t systPosition = title.find("_energy");
       std::string syst;
       if(systPosition != std::string::npos) {
 	syst = title.substr(systPosition);
       }
       std::string histName;
+      //if(title.find("ADDGravToGG_NegInt") != std::string::npos or title.find("UnparToGG") != std::string::npos) {
       if(title.find("ADDGravToGG_NegInt") != std::string::npos) {
 	if (year == "2017" or year == "2018") {
 	histName = "gg70_" + year;
@@ -317,7 +319,7 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
   }
 
   // add PDF uncertainty histograms
-  addTheoryUncertanties(histograms, region, output);
+  // addTheoryUncertanties(histograms, region, output);
 
   // move overflow to last bin
   for(auto histogram : histograms) {
