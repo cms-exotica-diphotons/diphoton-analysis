@@ -23,7 +23,6 @@ public:
 };
 
 double getYield(const std::string& region, const std::string& sample, const std::string& datacardYear, double& yieldError, const TF1 * scaleFactor = nullptr);
-std::string getDiphotonYieldVariations(const std::string& region, const std::string& variation);
 void makeOneDatacard(const std::string& signalPoint, const std::string& region, const std::string& datacardYear, const std::string& interferenceType);
 
 bool positiveInterference;
@@ -208,42 +207,35 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
     processes.insert(processes.begin()+1, signalPointInt);
   }
 
-  bool isBB = region == "BB";
-  std::string diphotonkfactorStatValue0 = isBB ? getDiphotonYieldVariations(region, "kfactorStat0") : "-";
-  nuisance diphotonkfactorStat0("kfactorStat0", "shape", {"-", diphotonkfactorStatValue0, "-", "-", "-", "-"});
-  std::string diphotonkfactorStatValue1 = isBB ? getDiphotonYieldVariations(region, "kfactorStat1") : "-";
-  nuisance diphotonkfactorStat1("kfactorStat1", "shape", {"-", diphotonkfactorStatValue1, "-", "-", "-", "-"});
-  std::string diphotonkfactorStatValue2 = isBB ? getDiphotonYieldVariations(region, "kfactorStat2") : "-";
-  nuisance diphotonkfactorStat2("kfactorStat2", "shape", {"-", diphotonkfactorStatValue2, "-", "-", "-", "-"});
-  std::string diphotonkfactorStatValue3 = isBB ? getDiphotonYieldVariations(region, "kfactorStat3") : "-";
-  nuisance diphotonkfactorStat3("kfactorStat3", "shape", {"-", diphotonkfactorStatValue3, "-", "-", "-", "-"});
+  nuisance diphotonkfactorStat0("kfactorStat0", "shape", {"-", "1", "-", "-", "-", "-"});
+  nuisance diphotonkfactorStat1("kfactorStat1", "shape", {"-", "1", "-", "-", "-", "-"});
+  nuisance diphotonkfactorStat2("kfactorStat2", "shape", {"-", "1", "-", "-", "-", "-"});
+  nuisance diphotonkfactorStat3("kfactorStat3", "shape", {"-", "1", "-", "-", "-", "-"});
   nuisance diphotonkfactorScalesBB("diphotonkfactorScalesBB", "shape", {"-", "1", "-", "-", "-", "-"});
   nuisance diphotonkfactorScalesBB_dummy("diphotonfactorScalesBB", "shape", {"-", "-", "-", "-", "-", "-"});
   nuisance diphotonkfactorScalesBE("diphotonkfactorScalesBE", "shape", {"-", "1", "-", "-", "-", "-"});
   nuisance diphotonkfactorScalesBE_dummy("diphotonkfactorScalesBE", "shape", {"-", "-", "-", "-", "-", "-"});
-  nuisance diphotonNormBB("diphotonNormBB", "lnU", {"-", "1.5", "-", "-", "-", "-"});
+  nuisance diphotonNormBB("diphotonNormBB", "lnU", {"-", "1.75", "-", "-", "-", "-"});
   nuisance diphotonNormBB_dummy("diphotonNormBB_dummy", "lnU", {"-", "-", "-", "-", "-", "-"});
   nuisance diphotonNormBE("diphotonNormBE", "lnU", {"-", "1.5", "-", "-", "-", "-"});
   nuisance diphotonNormBE_dummy("diphotonNormBE_dummy", "lnU", {"-", "-", "-", "-", "-", "-"});
   std::string lumiError = std::to_string(1 + luminosityErrorFrac[datacardYear]);
   nuisance lumi("lumi", "lnN", {lumiError, lumiError, "-", lumiError, lumiError, lumiError});
-  nuisance pileup("pileup", "lnN", {"1.05", "1.05", "-", "1.05", "-", "-"});
+  nuisance pileup("pileup", "shape", {"-", "1", "-", "1", "1", "1"});
   nuisance fake_sample("fake_sample", "shape", {"-", "-", "1.0", "-", "-", "-"});
-  nuisance eff("eff", "lnN", {"1.1", "1.1", "1.05", "1.1", "-", "-"});
+  //  nuisance fake_closure("fake_closure", "lnN", {"-", "-", "1.3", "-", "-", "-"});
+  nuisance eff("eff", "shape", {"-", "1", "-", "1", "1", "1"});
   //  nuisance xsec_minor_bkg("xsec_minor_bkg", "lnN", {"-", "-", "-", "1.5"});
   nuisance xsec_vg("xsec_vg", "lnN", {"-", "-", "-", "1.5", "-", "-"});
   nuisance xsec_dy("xsec_dy", "lnN", {"-", "-", "-", "-", "1.5", "-"});
   nuisance xsec_ttg("xsec_ttg", "lnN", {"-", "-", "-", "-", "-", "1.5"});
-  // this would be used only for an overall scaling
-  // but we subdivide further
+  // "energyScale" would be used only for an overall scaling
+  // but we subdivide EGM systematic uncertainties further
   //  nuisance energyScale("energyScale", "shape", {"1", "1", "-", "1"});
-  // for technical reasons, exclude EGM systematic uncertainties
-  // on signal and 2016 datasets
-  std::string useEGMSyst(datacardYear == "2016" ? "-" : "1");
-  nuisance energyScaleStat("energyScaleStat", "shape", {"-", useEGMSyst, "-", useEGMSyst, useEGMSyst, useEGMSyst});
-  nuisance energyScaleSyst("energyScaleSyst", "shape", {"-", useEGMSyst, "-", useEGMSyst, useEGMSyst, useEGMSyst});
-  nuisance energyScaleGain("energyScaleGain", "shape", {"-", useEGMSyst, "-", useEGMSyst, useEGMSyst, useEGMSyst});
-  nuisance energySigma("energySigma", "shape", {"-", useEGMSyst, "-", useEGMSyst, useEGMSyst, useEGMSyst});
+  nuisance energyScaleStat("energyScaleStat", "shape", {"-", "1", "-", "1", "1", "1"});
+  nuisance energyScaleSyst("energyScaleSyst", "shape", {"-", "1", "-", "1", "1", "1"});
+  nuisance energyScaleGain("energyScaleGain", "shape", {"-", "1", "-", "1", "1", "1"});
+  nuisance energySigma("energySigma", "shape", {"-", "1", "-", "1", "1", "1"});
 
   std::vector<nuisance> allNuisances;
   allNuisances.push_back(diphotonkfactorStat0);
@@ -254,20 +246,20 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
     allNuisances.push_back(diphotonkfactorScalesBB);
     allNuisances.push_back(diphotonkfactorScalesBE_dummy);
     if(scaleRegionNorm) {
-      allNuisances.push_back(diphotonNormBE);
-      allNuisances.push_back(diphotonNormBB_dummy);
+      allNuisances.push_back(diphotonNormBB);
+      allNuisances.push_back(diphotonNormBE_dummy);
     }
   }
   else {
     allNuisances.push_back(diphotonkfactorScalesBB_dummy);
     allNuisances.push_back(diphotonkfactorScalesBE);
     if(scaleRegionNorm) {
-      allNuisances.push_back(diphotonNormBB);
-      allNuisances.push_back(diphotonNormBE_dummy);
+      allNuisances.push_back(diphotonNormBE);
+      allNuisances.push_back(diphotonNormBB_dummy);
     }
   }
   allNuisances.push_back(lumi);
-  //  allNuisances.push_back(pileup);
+  allNuisances.push_back(pileup);
   allNuisances.push_back(fake_sample);
   allNuisances.push_back(eff);
   //  allNuisances.push_back(xsec_minor_bkg);
@@ -415,60 +407,4 @@ double getYield(const std::string& region, const std::string& sample, const std:
   }
 
   return integral;
-}
-
-std::string getDiphotonYieldVariations(const std::string& region, const std::string& variation)
-{
-  // barrel-endcap covariance matrix not positive definite
-  if(region == "BE") return std::to_string(1);
-
-  TString histogramFile(Form("datacards/Minv_histos_%s_%s.root", region.c_str(), datacardYear.c_str()));
-  // put dummy values here for now
-  if(variation.find("kfactorStat") != std::string::npos) {
-    int parameter = 0;
-    if(strcmp(variation.c_str(), "kfactorStat1")==0) parameter = 1;
-    if(strcmp(variation.c_str(), "kfactorStat2")==0) parameter = 2;
-    if(strcmp(variation.c_str(), "kfactorStat3")==0) parameter = 3;
-    TFile *input = TFile::Open(histogramFile);
-    TH1D* diphoton = static_cast<TH1D*>(input->Get(Form("%s/gg", region.c_str())));
-    // TH1D* diphotonStatUp = static_cast<TH1D*>(diphoton->Clone(Form("%s/diphotonStat%dUp", region.c_str(), parameter)));
-    // TH1D* diphotonStatDown = static_cast<TH1D*>(diphoton->Clone(Form("%s/diphotonStat%dDown", region.c_str(), parameter)));
-    TH1D* diphotonStatUp = static_cast<TH1D*>(diphoton->Clone(Form("gg_kfactorStat%dUp", parameter)));
-    TH1D* diphotonStatDown = static_cast<TH1D*>(diphoton->Clone(Form("gg_kfactorStat%dDown", parameter)));
-    TF1 *kfactorFunction = kfactor(region, "R1F1_125GeV_NNPDF");
-    TString fitFunc("pol3");
-    TString filename="data/kfactor_" + region + "_R1F1_125GeV_NNPDF.root";
-    TFile *file = TFile::Open(filename);
-    TFitResult* fitResult = static_cast<TFitResult*>(file->Get(Form("TFitResult-id1-%s",fitFunc.Data())));
-
-    TF1 *kfactorStatUp = eigenvectorVariation(true, parameter, kfactorFunction, fitResult);
-    TF1 *kfactorStatDown = eigenvectorVariation(false, parameter, kfactorFunction, fitResult);
-    for(int i=0; i <= diphotonStatUp->GetNbinsX(); i++) {
-      float binContent = diphoton->GetBinContent(i);
-      float binCenter = diphoton->GetBinCenter(i);
-      float statUp = kfactorStatUp->Eval(binCenter)/kfactorFunction->Eval(binCenter);
-      float statDown = kfactorStatDown->Eval(binCenter)/kfactorFunction->Eval(binCenter);
-      diphotonStatUp->SetBinContent(i, binContent*statUp);
-      diphotonStatDown->SetBinContent(i, binContent*statDown);
-    }
-
-    TFile *statErrorFile = new TFile(Form("datacards/stat_error_%s_%s.root", region.c_str(), datacardYear.c_str()), "update");
-    bool exists = statErrorFile->cd(region.c_str());
-    if(!exists) {
-      statErrorFile->mkdir(region.c_str());
-      statErrorFile->cd(region.c_str());
-    }
-    diphotonStatUp->Write();
-    diphotonStatDown->Write();
-    statErrorFile->Write();
-    statErrorFile->Close();
-
-    input->Close();
-    return "1";
-  }
-
-  std::cout << "Systematic variation not found!" << std::endl;
-  exit(-1);
-
-  return "";
 }

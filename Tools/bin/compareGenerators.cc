@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
 
   bool endcap = (region=="endcap");
 
-  std::string cut("Photon1.pt>75&&Photon2.pt>75 && abs(Photon1.eta)<1.4442 && abs(Photon2.eta)<1.4442 && Diphoton.Minv > 230 && Diphoton.Minv < 1000 && isGood");
-  if(endcap) cut = "Photon1.pt>75&&Photon2.pt>75 && Diphoton.Minv > 320 && Diphoton.Minv < 1000 && isGood && ( !(abs(Photon1.eta)<1.4442 && abs(Photon2.eta)<1.4442) && ((abs(Photon1.eta)<1.4442 && (abs(Photon2.eta)>1.56&&abs(Photon2.eta)<2.5)) || (abs(Photon2.eta)<1.4442 && (abs(Photon1.eta)>1.56&&abs(Photon1.eta)<2.5))))";
+  std::string cut("Photon1.pt>75&&Photon2.pt>75 && Photon1.isEB && Photon2.isEB && Diphoton.Minv > 230 && Diphoton.Minv < 1000 && isGood");
+  if(endcap) cut = "Photon1.pt>75&&Photon2.pt>75 && Diphoton.Minv > 320 && Diphoton.Minv < 1000 && isGood && ( (Photon1.isEB && Photon2.isEE) || (Photon2.isEB && Photon1.isEE) )";
   int nbins=100;
   double xmin=0.0; // GeV
   double xmax=2000; // GeV

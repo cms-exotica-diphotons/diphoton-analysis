@@ -1,8 +1,10 @@
 ## Template file for CRAB submission. The script generate_crab_config.py 
 ## replaces the following two lines with the appropriate values
 ## Do not edit manually!
+import importlib
 import os
 import subprocess
+submit_utils = importlib.import_module("diphoton-analysis.CommonClasses.submit_utils")
 
 dataset = 'DATASETNAME'
 nevents = NEVENTS
@@ -41,32 +43,20 @@ cmssw_base = os.environ['CMSSW_BASE']
 commit_hash = subprocess.check_output(['git', '--git-dir=' + cmssw_base + '/src/diphoton-analysis/.git',  'rev-parse', '--short', 'HEAD']).replace('\n', '')
 config.Data.outLFNDirBase = '/store/user/' + user + '/diphoton_fake/' + commit_hash
 
-if "Run2018" in taskname:
+good_run_JSON = submit_utils.get_good_run_JSON(taskname)
+if good_run_JSON:
+    config.Data.lumiMask = good_run_JSON
+    print('Using lumiMask: ' + config.Data.lumiMask)
+# real data always has a dataset with "Run20" in the name
+if "Run20" in taskname:
     config.Data.splitting = 'LumiBased'
+if "Run2018" in taskname:
     config.Data.unitsPerJob = 10
     if "Run2018D" in taskname:
         config.Data.unitsPerJob = 15
-    config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions18/13TeV/ReReco/Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt'
-elif "Run2017" in taskname:
-    config.Data.splitting = 'LumiBased'
+# covers 2015, 2016 and 2017
+elif "Run201" in taskname:
     config.Data.unitsPerJob = 100
-    if "31Mar2018" in taskname:
-        config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/ReReco/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt'
-    else:
-        config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/PromptReco/Cert_294927-306126_13TeV_PromptReco_Collisions17_JSON.txt'
-elif "Run2016" in taskname:
-    config.Data.splitting = 'LumiBased'
-    config.Data.unitsPerJob = 100
-    if "Prompt" in taskname:
-        config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Final/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt'
-    # otherwise, assume Re-Reco
-    else:
-        config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/ReReco/Final/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt'
-elif "Run2015" in taskname:
-    config.Data.splitting = 'LumiBased'
-    config.Data.unitsPerJob = 100
-    # only use 16Dec2015 ReReco
-    config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/Reprocessing/Cert_13TeV_16Dec2015ReReco_Collisions15_25ns_JSON_Silver_v2.txt'
 else:
     config.Data.splitting = 'FileBased'
     config.Data.unitsPerJob = 5

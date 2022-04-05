@@ -43,10 +43,9 @@ int main(int argc, char *argv[])
   std::string hlt_cut("HLT_DoublePhoton70 > 0");
   if(data_year == "2016") hlt_cut = "HLT_DoublePhoton60 > 0";
   std::string kinematic_cuts("Photon1.pt>" + pt_cut + " && Photon2.pt>" + pt_cut + "&&" + minv_cut);
-  std::string id_cuts("Photon1.r9_5x5 > 0.8 && Photon2.r9_5x5 > 0.8");
-  std::string eta_cuts_BB("abs(Photon1.scEta)<1.4442 && abs(Photon2.scEta)<1.4442");
-  std::string eta_cuts_BE("( !(abs(Photon1.scEta)<1.4442 && abs(Photon2.scEta)<1.4442) && ((abs(Photon1.scEta)<1.4442 && (abs(Photon2.scEta)>1.566&&abs(Photon2.scEta)<2.5)) || (abs(Photon2.scEta)<1.4442 && (abs(Photon1.scEta)>1.566&&abs(Photon1.scEta)<2.5))))");
-  std::string basic_cuts = hlt_cut + "&&" + kinematic_cuts + "&&" + id_cuts + "&& isGood";
+  std::string eta_cuts_BB("Photon1.isEB && Photon2.isEB");
+  std::string eta_cuts_BE("( (Photon1.isEB && Photon2.isEE) || (Photon2.isEB && Photon1.isEE) )");
+  std::string basic_cuts = hlt_cut + "&&" + kinematic_cuts + "&& isGood";
   std::string cut_no_Minv(basic_cuts + "&&" + eta_cuts_BB);
   if(endcap) cut_no_Minv = basic_cuts + "&&" + eta_cuts_BE;
   std::string cut(cut_no_Minv);
@@ -63,13 +62,14 @@ int main(int argc, char *argv[])
   // define samples to be used in histograms
   sample data("data", "Data", data_year, trigger);
   data.isData = true;
-  sample gg("gg", "#gamma#gamma", data_year, kfactor);
-  sample gj("gj", "#gamma + jets", data_year);
-  sample jj("jj", "QCD", data_year);
-  sample vg("vg", "V#gamma", data_year);
-  sample w("w", "W", data_year);
-  sample dy("dy", "DY", data_year);
-  sample ttg("ttg", "t#bar{t}#gamma", data_year);
+  TString weights(Form("(%s*%s)", scale_factor_cut(atoi(data_year.c_str()), 0).Data(), npv_reweight_str(atoi(data_year.c_str()), 0).Data()));
+  sample gg("gg", "#gamma#gamma", data_year, kfactor + std::string("*") + weights.Data());
+  sample gj("gj", "#gamma + jets", data_year, weights.Data());
+  sample jj("jj", "QCD", data_year, weights.Data());
+  sample vg("vg", "V#gamma", data_year, weights.Data());
+  sample w("w", "W", data_year, weights.Data());
+  sample dy("dy", "DY", data_year, weights.Data());
+  sample ttg("ttg", "t#bar{t}#gamma", data_year, weights.Data());
   std::vector<sample> samples;
   samples.push_back(data);
   samples.push_back(ttg);

@@ -91,8 +91,8 @@ void limit(const std::string &directory)
 std::string kkconvention(int ned, int kk)
 {
   if(ned == 0) {
-    if(kk == 0) return "Hewett-";
-    else if(kk == 1)  return "GRW";
+    if(kk == 0) return "Neg. Int.";
+    else if(kk == 1)  return "Pos. Int.";
   }
   else {
     if(kk == 1) return "HLZ";

@@ -327,6 +327,11 @@ namespace ExoDiPhotons {
     if(sample.Contains("GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8")) xsec = 1.357e-02;
     if(sample.Contains("GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8")) xsec = 6.736e-04;
     if(sample.Contains("GG_M-4000To13000_Pt70_TuneCP2_13TeV-pythia8")) xsec = 8.627e-06;
+    // 500To1000 xsec calculated on partial dataset, ~ 81% complete
+    if(sample.Contains("GG_M-500To1000_Pt70_TuneCUEP8M1_13TeV-pythia8")) xsec = 0.109534;
+    if(sample.Contains("GG_M-1000To2000_Pt70_TuneCUEP8M1_13TeV-pythia8")) xsec = 0.0101229;
+    if(sample.Contains("GG_M-2000To4000_Pt70_TuneCUEP8M1_13TeV-pythia8")) xsec = 0.000474448;
+    if(sample.Contains("GG_M-4000To13000_Pt70_TuneCUEP8M1_13TeV-pythia8")) xsec = 5.505e-06;
     // from XSDB
     if(sample.Contains("RSGravToGG_kMpl-001_M-1000_TuneCUEP8M1_13TeV-pythia8")) xsec = 0.01208;
     if(sample.Contains("RSGravToGG_kMpl-001_M-1250_TuneCUEP8M1_13TeV-pythia8")) xsec = 0.003731;
