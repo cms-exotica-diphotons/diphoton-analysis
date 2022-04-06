@@ -28,6 +28,7 @@ do2017dataUL = False
 do2017dataJetHT = False
 do2016data = False
 do2016data03FEB2017rereco = False
+do2016dataJetHT = False
 do2015data = False
 # Background MC
 do2018mc = False
@@ -177,6 +178,15 @@ if do2016data:
   DATASETS.append(["/DoubleEG/Run2016F-17Jul2018-v1/MINIAOD"])
   DATASETS.append(["/DoubleEG/Run2016G-17Jul2018-v1/MINIAOD"])
   DATASETS.append(["/DoubleEG/Run2016H-17Jul2018-v1/MINIAOD"])
+if do2016dataJetHT:
+  DATASETS.append(["/JetHT/Run2016B-17Jul2018_ver1-v1/MINIAOD"])
+  DATASETS.append(["/JetHT/Run2016B-17Jul2018_ver2-v2/MINIAOD"])
+  DATASETS.append(["/JetHT/Run2016C-17Jul2018-v1/MINIAOD"])
+  DATASETS.append(["/JetHT/Run2016D-17Jul2018-v1/MINIAOD"])
+  DATASETS.append(["/JetHT/Run2016E-17Jul2018-v1/MINIAOD"])
+  DATASETS.append(["/JetHT/Run2016F-17Jul2018-v1/MINIAOD"])
+  DATASETS.append(["/JetHT/Run2016G-17Jul2018-v1/MINIAOD"])
+  DATASETS.append(["/JetHT/Run2016H-17Jul2018-v1/MINIAOD"])
 
 if do2018mc:
   DATASETS.append(["/GGJets_M-60To200_Pt-50_13TeV-sherpa/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM"])
