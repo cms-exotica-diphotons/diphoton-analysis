@@ -227,6 +227,17 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
       chData2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/DoubleEG/crab_DoubleEG__Run2016C-17Jul2018-v1__MINIAOD/191204_035636/0000/*.root");
     }
 
+    TChain *chDataJetHT2016_unskimmed = new TChain(treeType);
+    if(includeUnskimmed) {
+      chDataJetHT2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/29a96da/JetHT/crab_JetHT__Run2016B-17Jul2018_ver2-v2__MINIAOD/220406_205243/0000/*.root");
+      chDataJetHT2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/29a96da/JetHT/crab_JetHT__Run2016C-17Jul2018-v1__MINIAOD/220406_223530/0000/*.root");
+      chDataJetHT2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/29a96da/JetHT/crab_JetHT__Run2016D-17Jul2018-v1__MINIAOD/220406_223554/0000/*.root");
+      chDataJetHT2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/29a96da/JetHT/crab_JetHT__Run2016E-17Jul2018-v1__MINIAOD/220406_223824/0000/*.root");
+      chDataJetHT2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/29a96da/JetHT/crab_JetHT__Run2016F-17Jul2018-v1__MINIAOD/220406_223850/0000/*.root");
+      chDataJetHT2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/29a96da/JetHT/crab_JetHT__Run2016G-17Jul2018-v1__MINIAOD/220406_224118/0000/*.root");
+      chDataJetHT2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/29a96da/JetHT/crab_JetHT__Run2016H-17Jul2018-v1__MINIAOD/220406_224144/0000/*.root");
+    }
+
     TChain *chData2016 = new TChain(treeType);
     chData2016->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/DoubleEG/crab_DoubleEG__Run2016B-17Jul2018_ver2-v1__MINIAOD/191204_035607/*.root");
     chData2016->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/DoubleEG/crab_DoubleEG__Run2016H-17Jul2018-v1__MINIAOD/191204_035845/*.root");
@@ -651,6 +662,7 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
     chains["data_2018ABC"] = chData2018ABC_rereco;
     chains["data_2018CD"] = chData2018CD;
     chains["data_2018D"] = chData2018D;
+    chains["data_jetht_2016_unskimmed"] = chDataJetHT2016_unskimmed;
     chains["data_jetht_2017_unskimmed"] = chDataJetHT2017_unskimmed;
     chains["data_jetht_2018_unskimmed"] = chDataJetHT2018_unskimmed;
     chains["data_2018_unskimmed"] = chData2018_unskimmed;
