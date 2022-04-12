@@ -83,9 +83,9 @@ int main(int argc, char *argv[])
   plot p4(samples, "Diphoton.deltaEta", cut, 50, -5, 5);
   plot p5(samples, "Diphoton.deltaR", cut, 60, 0, 6);
   plot p6(samples, "Photon1.scEta", cut, 25, -2.5, 2.5);
-  plot p7(samples, "Photon1.phi", cut, 50, -TMath::Pi(), TMath::Pi());
+  plot p7(samples, "Photon1.phi", cut, 25, -TMath::Pi(), TMath::Pi());
   plot p8(samples, "Photon2.scEta", cut, 25, -2.5, 2.5);
-  plot p9(samples, "Photon2.phi", cut, 50, -TMath::Pi(), TMath::Pi());
+  plot p9(samples, "Photon2.phi", cut, 25, -TMath::Pi(), TMath::Pi());
   plot p10(samples, "Diphoton.qt", cut, 50, 0, 1000);
 
   std::string extraFilenameInfo(region);

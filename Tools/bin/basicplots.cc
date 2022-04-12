@@ -91,8 +91,8 @@ int main(int argc, char *argv[])
   plot p8(samples, "Diphoton.deltaR", cut, 60, 0, 6);
   plot p9(samples, "Photon1.scEta", cut, nbins/2, -5, 5);
   plot p10(samples, "Photon2.scEta", cut, nbins/2, -5, 5);
-  plot p11(samples, "Photon1.phi", cut, nbins/2, -TMath::Pi(), TMath::Pi());
-  plot p12(samples, "Photon2.phi", cut, nbins/2, -TMath::Pi(), TMath::Pi());
+  plot p11(samples, "Photon1.phi", cut, nbins/4, -TMath::Pi(), TMath::Pi());
+  plot p12(samples, "Photon2.phi", cut, nbins/4, -TMath::Pi(), TMath::Pi());
   plot p13(samples, "abs(Diphoton.deltaPhi)", cut, nbins/4, 0, TMath::Pi());
   plot p14(samples, "Photon1.sigmaIphiIphi5x5", cut, 40, 0, 0.04);
   plot p15(samples, "Photon2.sigmaIphiIphi5x5", cut, 40, 0, 0.04);
