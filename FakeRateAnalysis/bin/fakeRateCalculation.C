@@ -409,7 +409,8 @@ int main(int argc, char *argv[])
     TLatex *t_label = new TLatex();
     t_label->SetTextAlign(12);
     t_label->DrawLatexNDC(0.50,0.75,"ECAL barrel");
-    t_label->DrawLatexNDC(0.50,0.70,label);
+    // remove the sideband labels, as some have found these confusing
+    //    t_label->DrawLatexNDC(0.50,0.70,label);
 
     c.SaveAs("plots/fake_rate_" + sample + "_" + era + "_EB"+postFix+ pvCut + ".pdf");
   }
@@ -451,7 +452,8 @@ int main(int argc, char *argv[])
     TLatex *t_label = new TLatex();
     t_label->SetTextAlign(12);
     t_label->DrawLatexNDC(0.50,0.75,"ECAL endcap");
-    t_label->DrawLatexNDC(0.50,0.70,label);
+    // remove the sideband labels, as some have found these confusing
+    //    t_label->DrawLatexNDC(0.50,0.70,label);
 
     c.SaveAs("plots/fake_rate_" + sample + "_" + era + "_EE"+postFix+ pvCut + ".pdf");
 

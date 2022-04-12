@@ -88,7 +88,7 @@ void compare_numerator()
       label->DrawLatexNDC(0.55, 0.85, cut);
       if (region == "EB") label->DrawLatexNDC(0.55, 0.8, "ECAL barrel");
       else label->DrawLatexNDC(0.55, 0.8, "ECAL endcap");
-      label->DrawLatexNDC(0.55, 0.75, isoLabel[iso].c_str());
+      //      label->DrawLatexNDC(0.55, 0.75, isoLabel[iso].c_str());
       TString filename(Form("plots/compare_numerator_%s_%s.pdf", region.c_str(), pvCut.c_str()));
       filename.ReplaceAll("-", "to");
       canvases.back()->Print(filename);
