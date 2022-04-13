@@ -182,6 +182,26 @@ def get_dataset_list(dataset_type):
         datasets.append(['/EGamma/Run2018B-UL2018_MiniAODv2-v1/MINIAOD'])
         datasets.append(['/EGamma/Run2018C-UL2018_MiniAODv2-v1/MINIAOD'])
         datasets.append(['/EGamma/Run2018D-UL2018_MiniAODv2-v1/MINIAOD'])
+    if dataset_type == "2016_data_singlemuon":
+        datasets.append(["/SingleMuon/Run2016B-17Jul2018_ver1-v1/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2016B-17Jul2018_ver2-v1/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2016C-17Jul2018-v1/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2016D-17Jul2018-v1/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2016E-17Jul2018-v1/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2016F-17Jul2018-v1/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2016G-17Jul2018-v1/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2016H-17Jul2018-v1/MINIAOD"])
+    if dataset_type == "2017_data_singlemuon":
+        datasets.append(["/SingleMuon/Run2017B-31Mar2018-v1/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2017C-31Mar2018-v1/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2017D-31Mar2018-v1/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2017E-31Mar2018-v1/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2017F-31Mar2018-v1/MINIAOD"])
+    if dataset_type == "2018_data_singlemuon":
+        datasets.append(["/SingleMuon/Run2018A-17Sep2018-v2/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2018B-17Sep2018-v1/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2018C-17Sep2018-v1/MINIAOD"])
+        datasets.append(["/SingleMuon/Run2018D-PromptReco-v2/MINIAOD"])
     if "2015_QCD" == dataset_type:
         datasets.append(['/QCD_Pt_5to10_TuneCUETP8M1_13TeV_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM'])
         datasets.append(['/QCD_Pt_10to15_TuneCUETP8M1_13TeV_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM'])
