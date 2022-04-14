@@ -180,6 +180,14 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
       chDataJetHT2018_unskimmed->Add(baseDirectory + "/store/user/cawest/JetHT/crab_JetHT__Run2018D-PromptReco-v2__MINIAOD/181109_025928/0009/*.root");
     }
 
+    TChain *chDataSingleMuon2018_unskimmed = new TChain(treeType);
+    if(includeUnskimmed) {
+      chDataSingleMuon2018_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2018A-17Sep2018-v2__MINIAOD/220413_045331/0000/*.root");
+      chDataSingleMuon2018_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2018B-17Sep2018-v1__MINIAOD/220413_045401/0000/*.root");
+      chDataSingleMuon2018_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2018C-17Sep2018-v1__MINIAOD/220413_045425/0000/*.root");
+      chDataSingleMuon2018_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2018D-PromptReco-v2__MINIAOD/220413_045452/0000/*.root");
+    }
+
     TChain *chData = new TChain(treeType);
     chData->Add(filestring("DoubleEG__Run2015D"));
     chData->Add(filestring("DoubleEG__Run2015C_25ns"));
@@ -216,6 +224,15 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
       chDataJetHT2017_unskimmed->Add(baseDirectory + "/store/user/cawest/JetHT/crab_JetHT__Run2017F-31Mar2018-v1__MINIAOD/181109_153620/0000/*.root");
     }
 
+    TChain *chDataSingleMuon2017_unskimmed = new TChain(treeType);
+    if(includeUnskimmed) {
+      chDataSingleMuon2017_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2017B-31Mar2018-v1__MINIAOD/220413_045122/0000/*.root");
+      chDataSingleMuon2017_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2017C-31Mar2018-v1__MINIAOD/220413_045147/0000/*.root");
+      chDataSingleMuon2017_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2017D-31Mar2018-v1__MINIAOD/220413_045212/0000/*.root");
+      chDataSingleMuon2017_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2017E-31Mar2018-v1__MINIAOD/220413_045241/0000/*.root");
+      chDataSingleMuon2017_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2017F-31Mar2018-v1__MINIAOD/220413_045307/0000/*.root");
+    }
+
     TChain *chData2016_unskimmed = new TChain(treeType);
     if(includeUnskimmed) {
       chData2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/DoubleEG/crab_DoubleEG__Run2016B-17Jul2018_ver2-v1__MINIAOD/191204_035607/0000/*.root");
@@ -236,6 +253,17 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
       chDataJetHT2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/29a96da/JetHT/crab_JetHT__Run2016F-17Jul2018-v1__MINIAOD/220406_223850/0000/*.root");
       chDataJetHT2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/29a96da/JetHT/crab_JetHT__Run2016G-17Jul2018-v1__MINIAOD/220406_224118/0000/*.root");
       chDataJetHT2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/29a96da/JetHT/crab_JetHT__Run2016H-17Jul2018-v1__MINIAOD/220406_224144/0000/*.root");
+    }
+
+    TChain *chDataSingleMuon2016_unskimmed = new TChain(treeType);
+    if(includeUnskimmed) {
+      chDataSingleMuon2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2016B-17Jul2018_ver2-v1__MINIAOD/220413_044721/0000/*.root");
+      chDataSingleMuon2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2016C-17Jul2018-v1__MINIAOD/220413_044747/0000/*.root");
+      chDataSingleMuon2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2016D-17Jul2018-v1__MINIAOD/220413_044812/0000/*.root");
+      chDataSingleMuon2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2016E-17Jul2018-v1__MINIAOD/220413_044838/0000/*.root");
+      chDataSingleMuon2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2016F-17Jul2018-v1__MINIAOD/220413_044903/0000/*.root");
+      chDataSingleMuon2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2016G-17Jul2018-v1__MINIAOD/220413_044927/0000/*.root");
+      chDataSingleMuon2016_unskimmed->Add(baseDirectory + "/store/user/cawest/diphoton/53c6be9/SingleMuon/crab_SingleMuon__Run2016H-17Jul2018-v1__MINIAOD/220413_041006/0000/*.root");
     }
 
     TChain *chData2016 = new TChain(treeType);
