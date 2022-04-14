@@ -1,22 +1,21 @@
 #include "diphoton-analysis/Tools/interface/sampleList.hh"
 
+#include "TCanvas.h"
 #include "THStack.h"
+#include "TLegend.h"
+
+void gg_bkg_sub();
+
+int main()
+{
+  gg_bkg_sub();
+
+  return 0;
+}
 
 void gg_bkg_sub()
 {
   init(false, true);
-
-  // TChain *chGG = new TChain("diphoton/fTree");
-  // chGG->Add("/eos/uscms/store/user/cawest/diphoton/cba3996/GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213601/0000/*.root");
-  // chGG->Add("/eos/uscms/store/user/cawest/diphoton/cba3996/GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213628/0000/*.root");
-  // chGG->Add("/eos/uscms/store/user/cawest/diphoton/cba3996/GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213653/0000/*.root");
-  // chGG->Add("/eos/uscms/store/user/cawest/diphoton/cba3996/GG_M-4000To13000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-4000To13000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213719/0000/*.root");
-
-  // TChain *chADD = new TChain("diphoton/fTree");
-  // chADD->Add("/eos/uscms/store/user/cawest/diphoton/969aff9/ADDGravToGG_NegInt-1_LambdaT-11000_M-500To1000_TuneCP2_13TeV-pythia8/crab_ADDGravToGG_NegInt-1_LambdaT-11000_M-500To1000_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/191203_192641/0000/*.root");
-  // chADD->Add("/eos/uscms/store/user/cawest/diphoton/969aff9/ADDGravToGG_NegInt-1_LambdaT-11000_M-1000To2000_TuneCP2_13TeV-pythia8/crab_ADDGravToGG_NegInt-1_LambdaT-11000_M-1000To2000_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/191203_192428/0000/*.root");
-  // chADD->Add("/eos/uscms/store/user/cawest/diphoton/969aff9/ADDGravToGG_NegInt-1_LambdaT-11000_M-2000To4000_TuneCP2_13TeV-pythia8/crab_ADDGravToGG_NegInt-1_LambdaT-11000_M-2000To4000_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/191203_192458/0000/*.root");
-  // chADD->Add("/eos/uscms/store/user/cawest/diphoton/969aff9/ADDGravToGG_NegInt-1_LambdaT-11000_M-4000To11000_TuneCP2_13TeV-pythia8/crab_ADDGravToGG_NegInt-1_LambdaT-11000_M-4000To11000_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/191203_192558/0000/*.root");
 
   TChain* chADD = chains["ADDGravToGG_NegInt-1_LambdaT-11000_TuneCP2_13TeV-pythia8_2018"];
   TChain* chGG70 = chains["gg70_2018"];
