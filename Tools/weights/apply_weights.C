@@ -4,6 +4,15 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 
+#include "TLorentzVector.h"
+
+bool apply_weights::isEBEBGen()
+{
+  const double eta_max_EB = 1.4442;
+
+  return abs(GenPhoton1_eta) < eta_max_EB and abs(GenPhoton2_eta) < eta_max_EB;
+}
+
 void apply_weights::Loop()
 {
   TFile *weights = new TFile("tune_ratio.root");
@@ -54,10 +63,11 @@ void apply_weights::Loop()
       if(jentry % 1000 == 0) {
 	std::cout << jentry << std::endl;
       }
-      // outside range of 500-6000 GeV, set to nearest value in range [500., 6000.]
-      double qscale = Event_qscale >= 5999.99 ? 5999.99 : Event_qscale;
-      qscale = qscale <= 500.01 ? 500.01 : qscale;
-      double sampleWeight = Diphoton_isEBEB ? ratio_BB->GetBinContent(ratio_BB->FindBin(qscale)) : ratio_BE->GetBinContent(ratio_BE->FindBin(qscale));
+      TLorentzVector p1, p2;
+      p1.SetPtEtaPhiM(GenPhoton1_pt, GenPhoton1_eta, GenPhoton1_phi, 0.);
+      p2.SetPtEtaPhiM(GenPhoton2_pt, GenPhoton2_eta, GenPhoton2_phi, 0.);
+      double q2 = (p1 + p2).M();
+      double sampleWeight = Diphoton_isEBEB ? ratio_BB->GetBinContent(ratio_BB->FindBin(q2)) : ratio_BE->GetBinContent(ratio_BE->FindBin(q2));
       Event_weightAll *= sampleWeight;
       outTree->Fill();
 
