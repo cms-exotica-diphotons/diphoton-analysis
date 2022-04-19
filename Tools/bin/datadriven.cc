@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
   bool endcap = (region=="endcap");
 
   std::string kfactor;
-  if(data_year == "2015" or data_year == "2016" ) {
+  if(data_year == "2015") {
     kfactor = endcap ? kfactorString("BE", "R1F1_125GeV_CT10") : kfactorString("BB", "R1F1_125GeV_CT10");
   }
   else {
