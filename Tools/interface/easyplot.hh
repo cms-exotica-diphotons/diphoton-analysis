@@ -385,10 +385,12 @@ TString reformat(TString input)
   output.ReplaceAll("Photon1.pt", "p_{T1}");
   output.ReplaceAll("Photon1.phi", "#phi_{1}");
   output.ReplaceAll("Photon1.eta", "#eta_{1}");
+  output.ReplaceAll("Photon1.scEta", "#eta_{SC,1}");
   output.ReplaceAll("nPV", "n_{PV}");
   output.ReplaceAll("Photon2.pt", "p_{T2}");
   output.ReplaceAll("Photon2.phi", "#phi_{2}");
   output.ReplaceAll("Photon2.eta", "#eta_{2}");
+  output.ReplaceAll("Photon2.scEta", "#eta_{SC,2}");
   output.ReplaceAll("Diphoton.qt", "q_{T,#gamma#gamma}");
   output.ReplaceAll("Diphoton.deltaPhi", "#Delta#phi_{#gamma#gamma}");
   output.ReplaceAll("Diphoton.deltaEta", "#Delta#eta_{#gamma#gamma}");

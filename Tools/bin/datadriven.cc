@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
   bool endcap = (region=="endcap");
 
   std::string kfactor;
-  if(data_year == "2015" or data_year == "2016" ) {
+  if(data_year == "2015") {
     kfactor = endcap ? kfactorString("BE", "R1F1_125GeV_CT10") : kfactorString("BB", "R1F1_125GeV_CT10");
   }
   else {
@@ -58,14 +58,15 @@ int main(int argc, char *argv[])
   // define samples to be used in histograms
   sample data("data", "Data", data_year, trigger);
   data.isData = true;
-  sample gg("gg", "#gamma#gamma", data_year, kfactor);
-  sample gj("gj", "#gamma + jets", data_year);
+  TString weights(Form("(%s*%s)", scale_factor_cut(atoi(data_year.c_str()), 0).Data(), npv_reweight_str(atoi(data_year.c_str()), 0).Data()));
+  sample gg("gg", "#gamma#gamma", data_year, kfactor + std::string("*") + weights.Data());
+  sample gj("gj", "#gamma + jets", data_year, weights.Data());
   if(region == "barrel") gj.isDataDrivenBarrel = true;
   if(region == "endcap") gj.isDataDrivenEndcap = true;
-  sample vg("vg", "V#gamma", data_year);
-  sample w("w", "W", data_year);
-  sample dy("dy", "DY", data_year);
-  sample ttg("ttg", "t#bar{t}#gamma", data_year);
+  sample vg("vg", "V#gamma", data_year, weights.Data());
+  sample w("w", "W", data_year, weights.Data());
+  sample dy("dy", "DY", data_year, weights.Data());
+  sample ttg("ttg", "t#bar{t}#gamma", data_year, weights.Data());
   std::vector<sample> samples;
   samples.push_back(data);
   samples.push_back(ttg);
@@ -82,9 +83,9 @@ int main(int argc, char *argv[])
   plot p4(samples, "Diphoton.deltaEta", cut, 50, -5, 5);
   plot p5(samples, "Diphoton.deltaR", cut, 60, 0, 6);
   plot p6(samples, "Photon1.scEta", cut, 25, -2.5, 2.5);
-  plot p7(samples, "Photon1.phi", cut, 50, -TMath::Pi(), TMath::Pi());
+  plot p7(samples, "Photon1.phi", cut, 25, -TMath::Pi(), TMath::Pi());
   plot p8(samples, "Photon2.scEta", cut, 25, -2.5, 2.5);
-  plot p9(samples, "Photon2.phi", cut, 50, -TMath::Pi(), TMath::Pi());
+  plot p9(samples, "Photon2.phi", cut, 25, -TMath::Pi(), TMath::Pi());
   plot p10(samples, "Diphoton.qt", cut, 50, 0, 1000);
 
   std::string extraFilenameInfo(region);

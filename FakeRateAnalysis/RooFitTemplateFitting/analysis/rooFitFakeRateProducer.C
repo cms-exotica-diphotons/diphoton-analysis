@@ -233,7 +233,7 @@ std::pair<double,double> rooFitFakeRateProducer(TString sample, TString template
   if (etaBin == "EB") t_label->DrawLatexNDC(0.55,0.60,"ECAL barrel");
   else t_label->DrawLatexNDC(0.55,0.60,"ECAL endcap");
   t_label->     DrawLatexNDC(0.55,0.55,label_pt_bin + " GeV");
-  t_label->     DrawLatexNDC(0.55,0.50,sideband_string);
+  //  t_label->     DrawLatexNDC(0.55,0.50,sideband_string);
   t_label->DrawLatexNDC(0.17, 0.975, "#font[62]{CMS} #scale[0.8]{#font[52]{Preliminary}}");
   t_label->SetTextFont(42);
   t_label->DrawLatexNDC(0.70, 0.975, Form("%1.1f fb^{-1} (13 TeV)", luminosity[era.Data()]));

@@ -99,7 +99,7 @@ void compare_pv(int year)
       else if (region == "EE") label->DrawLatexNDC(0.55, 0.8, "ECAL endcap");
       else if (region == "EE1") label->DrawLatexNDC(0.55, 0.8, "EE (low eta)");
       else if (region == "EE2") label->DrawLatexNDC(0.55, 0.8, "EE (high eta)");
-      label->DrawLatexNDC(0.55, 0.75, isoLabel[iso].c_str());
+      //      label->DrawLatexNDC(0.55, 0.75, isoLabel[iso].c_str());
       canvases.back()->Print(Form("plots/compare_pv_%s_%d_%s.pdf", region.c_str(), year, dataset.c_str()));
     }
   }    
