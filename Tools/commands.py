@@ -8,7 +8,7 @@ regions = ["BB", "BE"]
 regions_alternate = ["barrel", "endcap"]
 for year in years:
     for dataset in datasets:
-            arguments = "data_" + str(year) +  " " + dataset
+            arguments = "data " + str(year) +  " " + dataset
             print("getFakePrediction.exe " + arguments)
 
 for year in years:
