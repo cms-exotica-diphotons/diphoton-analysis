@@ -94,7 +94,9 @@ namespace ExoDiPhotons {
        or sample.Contains("QCD_HT2000toInf_TuneCP5_13TeV-madgraph-pythia8")) xsec = 2.019e+01;
     if(sample.Contains("WGJets_MonoPhoton_PtG-40to130_TuneCUETP8M1_13TeV-madgraph")) xsec = 1.270e+01; // +/- 4.610e-03
     if(sample.Contains("WGJets_MonoPhoton_PtG-130_TuneCUETP8M1_13TeV-madgraph")) xsec = 6.565e-01; // +/- 7.876e-04
-    if(sample.Contains("WGJets_MonoPhoton_PtG-40to130_TuneCP5_13TeV-madgraph")) xsec = 7.163e-01; // +/- 2.925e-04
+    // the following cross section is taken from GenXsecAnalyzer on the v3 dataset; the number given in the XSDB is for the invalid
+    // v2 dataset
+    if(sample.Contains("WGJets_MonoPhoton_PtG-40to130_TuneCP5_13TeV-madgraph")) xsec = 1.293e+01; // +/- 4.640e-03
     if(sample.Contains("WGJets_MonoPhoton_PtG-130_TuneCP5_13TeV-madgraph")) xsec = 7.152e-01; // +/- 2.628e-04
     if(sample.Contains("TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8")) xsec = 4.108e+00; // +/- 8.777e-03
     if(sample.Contains("DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8")) xsec = 6.491e+03; // +/- 1.045e+01
