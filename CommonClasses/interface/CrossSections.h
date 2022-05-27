@@ -195,6 +195,14 @@ namespace ExoDiPhotons {
     if(sample.Contains("TTGamma_SingleLept_ptGamma200inf_TuneCP5_PSweights_13TeV-madgraph-pythia8")) xsec = 2.703e-02; // +- 2.555e-06 pb
     if(sample.Contains("GGGJets_13TeV-sherpa")) xsec = 1.814e-01;
     if(sample.Contains("GGGJets_TuneCUETP8M1_13TeV_madgraphMLM_pythia8")) xsec = 1.720e+00;
+    if(sample.Contains("TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8")) xsec = 0.01731; // +/- 3.715e-05
+    if(sample.Contains("TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8")) xsec = 1.687e-02; // +/- 3.619e-05
+    if(sample.Contains("WGGJets_TuneCUETP8M1_13TeV_madgraphMLM_pythia8")) xsec = 1.711e+00; // +/- 1.753e-03
+    if(sample.Contains("WGGJets_TuneCP5_13TeV_madgraphMLM_pythia8")) xsec = 1.693e+00; // +/- 1.569e-03
+    if(sample.Contains("ZGGJets_ZToHadOrNu_5f_LO_madgraph_pythia8")) xsec = 3.571e-01; // +/- 4.098e-04
+    if(sample.Contains("ZGGTonunuGG_5f_TuneCP5_13TeV-amcatnlo-pythia8")) xsec = 7.623e-02; // +/- 3.069e-04
+    if(sample.Contains("ZGGToLLGG_5f_TuneCUETP8M1_13TeV-amcatnlo-pythia8")) xsec = 6.289e-01; // +/- 1.580e-05
+    if(sample.Contains("ZGGToLLGG_5f_TuneCP5_13TeV-amcatnlo-pythia8")) xsec = 6.832e-01; // +/- 7.437e-04
     // from running GenXsecAnalyzer on full sample
     if(sample.Contains("ADDGravToGG_MS-3000_NED-2_KK-1_M-1000To2000_13TeV-sherpa")) xsec = 9.139e-02;
     if(sample.Contains("ADDGravToGG_MS-3000_NED-2_KK-1_M-2000To3000_13TeV-sherpa")) xsec = 1.160e-02;
@@ -699,6 +707,12 @@ namespace ExoDiPhotons {
     if(sample.Contains("WToLNu_1J_13TeV-amcatnloFXFX-pythia8")) average = 9.293282e+04*5.323924e-01;
     if(sample.Contains("WToLNu_2J_13TeV-amcatnloFXFX-pythia8")) average = 7.667901e+04*3.120579e-01;
     if(sample.Contains("TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8")) average = 2.115439e+01*3.198633e-01;
+
+    if(sample.Contains("TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8")) average = (25098.8/1.45852e+06)*(1-2.278e-01);
+    if(sample.Contains("TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8")) average = (25145.5/1.496e+06)*(1-2.258e-01); 
+    if(sample.Contains("ZGGTonunuGG_5f_TuneCP5_13TeV-amcatnlo-pythia8")) average = (74835.3/984000)*(1-1.151e-01); 
+    if(sample.Contains("ZGGToLLGG_5f_TuneCUETP8M1_13TeV-amcatnlo-pythia8")) average = (629990./997272)*(1-1.330e-01);
+    if(sample.Contains("ZGGToLLGG_5f_TuneCP5_13TeV-amcatnlo-pythia8")) average = (684104./1e+06)*(1-6.832e-01); 
 
     // 2017 samples
     if(sample.Contains("TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8")) average = (3.29523e+07/4.62334e+06)*3.88374434527382240e-01;
