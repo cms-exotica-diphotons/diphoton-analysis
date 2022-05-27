@@ -110,11 +110,11 @@ void plotOneType(int histType, const TString& region, const TString& scale)
 
     if(useMCFM) {
       if(histType==1) {
-	std::string base("/afs/cern.ch/user/c/cawest/work/CMSSW_8_0_7_patch2/mcfm_nnpdf/MCFM-8.0/Bin");
-	std::string baseNNLO("/afs/cern.ch/user/c/cawest/work/CMSSW_8_0_7_patch2/mcfm_nnpdf/MCFM-8.0/Bin");
+	std::string base("/afs/cern.ch/user/c/cawest/work/public/CMSSW_8_0_7_patch2/mcfm_nnpdf/MCFM-8.0/Bin");
+	std::string baseNNLO("/afs/cern.ch/user/c/cawest/work/public/CMSSW_8_0_7_patch2/mcfm_nnpdf/MCFM-8.0/Bin");
 	if(region=="BE") {
-	  base = "/afs/cern.ch/user/c/cawest/work/CMSSW_8_0_7_patch2/mcfm_witheta_nnpdf/MCFM-8.0/Bin";
-	  baseNNLO = "/afs/cern.ch/user/c/cawest/work/CMSSW_8_0_7_patch2/mcfm_witheta_nnpdf/MCFM-8.0/Bin";
+	  base = "/afs/cern.ch/user/c/cawest/work/public/CMSSW_8_0_7_patch2/mcfm_witheta_nnpdf/MCFM-8.0/Bin";
+	  baseNNLO = "/afs/cern.ch/user/c/cawest/work/public/CMSSW_8_0_7_patch2/mcfm_witheta_nnpdf/MCFM-8.0/Bin";
 	}
 	if(scale == "R0p5F0p5") {
 	  averages.push_back(getHistsMCFM(base, "gamgam_lo_NNPDF30_0.50_0.50_lo_NNPDF30_lo_as_0118"));
