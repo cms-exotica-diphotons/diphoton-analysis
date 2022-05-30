@@ -189,7 +189,7 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
   nuisance lumi("lumi", "lnN", {lumiError, lumiError, "-", lumiError, lumiError, lumiError});
   nuisance pileup("pileup", "shape", {"-", "1", "-", "1", "1", "1"});
   nuisance fake_sample("fake_sample", "shape", {"-", "-", "1.0", "-", "-", "-"});
-  //  nuisance fake_closure("fake_closure", "lnN", {"-", "-", "1.3", "-", "-", "-"});
+  nuisance fake_closure("fake_closure", "lnN", {"-", "-", "1.3", "-", "-", "-"});
   nuisance eff("eff", "shape", {"-", "1", "-", "1", "1", "1"});
   //  nuisance xsec_minor_bkg("xsec_minor_bkg", "lnN", {"-", "-", "-", "1.5"});
   nuisance xsec_vg("xsec_vg", "lnN", {"-", "-", "-", "1.5", "-", "-"});
@@ -227,7 +227,9 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
   allNuisances.push_back(lumi);
   allNuisances.push_back(pileup);
   allNuisances.push_back(fake_sample);
+  allNuisances.push_back(fake_closure);
   allNuisances.push_back(eff);
+  // use separate nuisance parameters for vg, dy and ttg xsec
   //  allNuisances.push_back(xsec_minor_bkg);
   allNuisances.push_back(xsec_vg);
   allNuisances.push_back(xsec_dy);
@@ -242,6 +244,24 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
     pdf_nuisances.push_back(new nuisance("pdf" + std::to_string(i), "shape", {"-", "1", "-", "-", "-", "-"}));
     pdf_nuisances.push_back(new nuisance("pdf" + std::to_string(i), "shape", {"-", "1", "-", "-", "-", "-"}));
     allNuisances.push_back(*(pdf_nuisances.back()));
+  }
+
+  nuisance xsec_wgg("xsec_wgg", "lnN", {"-", "-", "-", "-", "-", "-", "1.5", "-", "-"});
+  nuisance xsec_zgg("xsec_zgg", "lnN", {"-", "-", "-", "-", "-", "-", "-", "1.5", "-"});
+  nuisance xsec_ttgg("xsec_ttgg", "lnN", {"-", "-", "-", "-", "-", "-", "-", "-", "1.5"});
+  // this flag determines if (W, Z, TT) + gamma gamma contributions should be included
+  bool includeGGX = false;
+  if(includeGGX) {
+    for(auto& allNuisance : allNuisances) {
+      // other nuisance parameters are not relevant for (W, Z, TT) + gamma gamma
+      for([[maybe_unused]] int i : {0, 1, 2}) {
+	const std::string not_relevant("-");
+	allNuisance.m_contribution.push_back(not_relevant);
+      }
+      allNuisances.push_back(xsec_wgg);
+      allNuisances.push_back(xsec_zgg);
+      allNuisances.push_back(xsec_ttgg);
+    }
   }
 
   unsigned int nchannels = 1;

@@ -89,7 +89,7 @@ std::vector<std::string> getSampleList()
 
 void init(bool includeUnskimmed = false, bool includeSignal = false, bool includeNonSignal = true)
 {
-  std::vector<std::string> sampleNames = {"data", "data_2015", "data_2016", "data_2017", "data_2018", "data_2018_newjson", "data_2017_2018", "gg", "gj", "jj", "vg", "w", "dy", "ttg", "gg70", "gg_2016", "gj_2016"};
+  std::vector<std::string> sampleNames = {"data", "data_2015", "data_2016", "data_2017", "data_2018", "data_2018_newjson", "data_2017_2018", "gg", "gj", "jj", "vg", "w", "dy", "ttg", "wgg", "zgg", "ttgg", "gg70", "gg_2016", "gj_2016"};
 
   TString treeType("diphoton/fTree");
   TString baseDirectory("root://cmseos.fnal.gov/");
@@ -594,6 +594,37 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
     chTTG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/b399c31/TTGamma_Dilept_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8/crab_TTGamma_Dilept_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8__Autumn18-v1__MINIAODSIM/200206_034106/0000/*.root");
     chTTG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/b399c31/TTGamma_Dilept_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8/crab_TTGamma_Dilept_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8__Autumn18-v1__MINIAODSIM/200207_162720/0000/*.root");
 
+    TChain *chWGG_2016 = new TChain(treeType);
+    chWGG_2016->Add(baseDirectory + "/store/user/cawest/diphoton/33adbe7/WGGJets_TuneCUETP8M1_13TeV_madgraphMLM_pythia8/crab_WGGJets_TuneCUETP8M1_13TeV_madgraphMLM_pythia8__Summer16MiniAODv3-v1__MINIAODSIM/220528_142711/0000/*.root");
+
+    TChain *chWGG_2017 = new TChain(treeType);
+    chWGG_2017->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/WGGJets_TuneCP5_13TeV_madgraphMLM_pythia8/crab_WGGJets_TuneCP5_13TeV_madgraphMLM_pythia8__Fall17_PU2017-v1__MINIAODSIM/220527_071609/0000/*.root");
+
+    TChain *chWGG_2018 = new TChain(treeType);
+    chWGG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/WGGJets_TuneCP5_13TeV_madgraphMLM_pythia8/crab_WGGJets_TuneCP5_13TeV_madgraphMLM_pythia8__Autumn18-v1__MINIAODSIM/220527_071636/0000/*.root");
+
+    TChain *chZGG_2016 = new TChain(treeType);
+    chZGG_2016->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/ZGGJets_ZToHadOrNu_5f_LO_madgraph_pythia8/crab_ZGGJets_ZToHadOrNu_5f_LO_madgraph_pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220527_071757/0000/*.root");
+    chZGG_2016->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/ZGGToLLGG_5f_TuneCUETP8M1_13TeV-amcatnlo-pythia8/crab_ZGGToLLGG_5f_TuneCUETP8M1_13TeV-amcatnlo-pythia8__Summer16MiniAODv3-v1__MINIAODSIM/220527_071907/0000/*.root");
+
+    TChain *chZGG_2017 = new TChain(treeType);
+    chZGG_2017->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/ZGGJets_ZToHadOrNu_5f_LO_madgraph_pythia8/crab_ZGGJets_ZToHadOrNu_5f_LO_madgraph_pythia8__Fall17_PU2017-v1__MINIAODSIM/220527_071823/0000/*.root");
+    chZGG_2017->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/ZGGToLLGG_5f_TuneCP5_13TeV-amcatnlo-pythia8/crab_ZGGToLLGG_5f_TuneCP5_13TeV-amcatnlo-pythia8__Fall17_PU2017-v1__MINIAODSIM/220527_072534/0000/*.root");
+
+    TChain *chZGG_2018 = new TChain(treeType);
+    // there is no ZGG -> hadrons sample for 2018
+    chZGG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/ZGGTonunuGG_5f_TuneCP5_13TeV-amcatnlo-pythia8/crab_ZGGTonunuGG_5f_TuneCP5_13TeV-amcatnlo-pythia8__Autumn18-v1__MINIAODSIM/220527_071845/0000/*.root");
+    chZGG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/ZGGToLLGG_5f_TuneCP5_13TeV-amcatnlo-pythia8/crab_ZGGToLLGG_5f_TuneCP5_13TeV-amcatnlo-pythia8__Autumn18-v1__MINIAODSIM/220527_073601/0000/*.root");
+
+    TChain *chTTGG_2016 = new TChain(treeType);
+    chTTGG_2016->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8/crab_TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8__Summer16MiniAODv3-v1__MINIAODSIM/220527_070616/0000/*.root");
+
+    TChain *chTTGG_2017 = new TChain(treeType);
+    chTTGG_2017->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8/crab_TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8__Fall17_PU2017-v2__MINIAODSIM/220527_070849/0000/*.root");
+
+    TChain *chTTGG_2018 = new TChain(treeType);
+    chTTGG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8/crab_TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8__Autumn18-v3__MINIAODSIM/220527_071016/0000/*.root");
+
     // sum of minor backgrounds for use in limit setting
     TChain *chOther_2016 = new TChain(treeType);
     chOther_2016->Add(chVG_2016);
@@ -744,6 +775,15 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
     chains["ttg_nlo_2018"] = chTTG_NLO_2018;
     chains["ttg_nlo_2017"] = chTTG_NLO_2017;
     chains["ttg_nlo_2016"] = chTTG_NLO_2016;
+    chains["wgg_2016"] = chWGG_2016;
+    chains["wgg_2017"] = chWGG_2017;
+    chains["wgg_2018"] = chWGG_2018;
+    chains["zgg_2016"] = chZGG_2016;
+    chains["zgg_2017"] = chZGG_2017;
+    chains["zgg_2018"] = chZGG_2018;
+    chains["ttgg_2016"] = chTTGG_2016;
+    chains["ttgg_2017"] = chTTGG_2017;
+    chains["ttgg_2018"] = chTTGG_2018;
     chains["gg70_2018"] = chGG70_2018;
     chains["gg70_2017"] = chGG70_2017;
     chains["gg70_2016"] = chGG70_2016;
@@ -780,6 +820,9 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
   fillColors["w"] = kBlack;
   fillColors["dy"] = kYellow;
   fillColors["ttg"] = kMagenta;
+  fillColors["wgg"] = kBlack;
+  fillColors["zgg"] = kYellow+1;
+  fillColors["ttgg"] = kMagenta+1;
   fillColors["gg70"] = kCyan;
 
   prettyName["data"]="Data";
@@ -800,6 +843,9 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
   prettyName["w"]="W";
   prettyName["dy"]="DY";
   prettyName["ttg"]="t#bar{t}#gamma";
+  prettyName["wgg"]="W#gamma#gamma";
+  prettyName["zgg"]="Z#gamma#gamma";
+  prettyName["ttgg"]="t#bar{t}#gamma#gamma";
   prettyName["gg70"]="Diphoton, p_{T,#gamma} > 70";
 
   setTDRStyle();
