@@ -160,7 +160,9 @@ void makeTable(const std::string& region)
 
 void makeOneDatacard(const std::string& signalPoint, const std::string& region, const std::string& datacardYear, const std::string& interferenceType)
 {
-  const bool scaleRegionNorm = true;
+  // If useRateParam is set, the diphoton normalizations will be set using rateParam parameters.
+  // Otherwise, the older behavior of using a diphotonNormB* nuisance parameter will be used.
+  const bool useRateParam = true;
 
   //  makeTable(region);
 
@@ -211,7 +213,7 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
   if(region == "BB") {
     allNuisances.push_back(diphotonkfactorScalesBB);
     allNuisances.push_back(diphotonkfactorScalesBE_dummy);
-    if(scaleRegionNorm) {
+    if(!useRateParam) {
       allNuisances.push_back(diphotonNormBB);
       allNuisances.push_back(diphotonNormBE_dummy);
     }
@@ -219,7 +221,7 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
   else {
     allNuisances.push_back(diphotonkfactorScalesBB_dummy);
     allNuisances.push_back(diphotonkfactorScalesBE);
-    if(scaleRegionNorm) {
+    if(!useRateParam) {
       allNuisances.push_back(diphotonNormBE);
       allNuisances.push_back(diphotonNormBB_dummy);
     }
@@ -342,6 +344,10 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
 	output << icontrib << " ";
       }
       output << "\n";
+    }
+    if(useRateParam) {
+      output << "diphotonNormBB rateParam BB_20* gg 1\n";
+      output << "diphotonNormBE rateParam BE_20* gg 1" << std::endl;
     }
   } // closes is_open()
   else {
