@@ -30,7 +30,7 @@ void kfactorStatError(const TString& fitFunc="pol3", const TString& region="BB",
   double mmax = 4000;
 
 
-  TString filename(Form("data/kfactor_%s_%s.root", region.Data(), scales.Data()));
+  TString filename(Form("data/kfactor_%s_%s_125GeV_NNPDF.root", region.Data(), scales.Data()));
   TFile *file = TFile::Open(filename);
   TString fitName(Form("TFitResult-id1-%s",fitFunc.Data()));
   // barrel-endcap has different indexing, for technical reasons

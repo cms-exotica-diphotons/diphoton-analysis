@@ -187,7 +187,7 @@ std::cout << "Original Binning (50 GeV bins): " << useOriginalBinning << std::en
 
             makeOneDatacard(pointName, "BB", datacardYear, interferenceType, useShapeBased=false, 1800);
             makeOneDatacard(pointName, "BE", datacardYear, interferenceType, useShapeBased=false, 1800);
-            
+
             // makeOneDatacard(pointName, "BB", datacardYear, interferenceType, useShapeBased=false, 2500);
             // makeOneDatacard(pointName, "BE", datacardYear, interferenceType, useShapeBased=false, 2500);
 
@@ -256,7 +256,9 @@ void makeTable(const std::string& region)
 
 void makeOneDatacard(const std::string& signalPoint, const std::string& region, const std::string& datacardYear, const std::string& interferenceType, const bool useShapeBased, const int masscut)
 {
-  const bool scaleRegionNorm = true;
+  // If useRateParam is set, the diphoton normalizations will be set using rateParam parameters.
+  // Otherwise, the older behavior of using a diphotonNormB* nuisance parameter will be used.
+  const bool useRateParam = true;
 
   //  makeTable(region);
 
@@ -269,11 +271,11 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
     processes.insert(processes.begin()+1, signalPointInt);
   }
 
-
   std::vector<nuisance> allNuisances;
   std::vector<nuisance*> pdf_nuisances;
 
   if (useShapeBased){
+
     nuisance diphotonkfactorStat0("kfactorStat0", "shape", {"-", "1", "-", "-", "-", "-"});
     nuisance diphotonkfactorStat1("kfactorStat1", "shape", {"-", "1", "-", "-", "-", "-"});
     nuisance diphotonkfactorStat2("kfactorStat2", "shape", {"-", "1", "-", "-", "-", "-"});
@@ -352,9 +354,11 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
         (*inuisance).m_contribution.insert((*inuisance).m_contribution.begin()+1, (*inuisance).m_contribution.front());
       }
     }
-  } //shapeBased nuisances
+  } //end shapeBased nuisances
 
   else if (!useShapeBased){
+
+    // FIXME: Need to recalculate cut and count systematics
 
     nuisance diphotonNormBB("diphotonNormBB", "lnU", {"-", "1.75", "-", "-", "-", "-"});
     nuisance diphotonNormBB_dummy("diphotonNormBB_dummy", "lnU", {"-", "-", "-", "-", "-", "-"});
@@ -469,6 +473,10 @@ void makeOneDatacard(const std::string& signalPoint, const std::string& region, 
 	output << icontrib << " ";
       }
       output << "\n";
+    }
+    if(useRateParam) {
+      output << "diphotonNormBB rateParam BB_20* gg 1\n";
+      output << "diphotonNormBE rateParam BE_20* gg 1" << std::endl;
     }
   } // closes is_open()
   else {

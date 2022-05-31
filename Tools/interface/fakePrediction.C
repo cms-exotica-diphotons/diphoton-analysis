@@ -16,7 +16,7 @@ const double etaMaxEndcap1 = 2.033;
 const double etaMaxEndcap = 2.5;
 const double minvMin = 500;
 
-void fakePrediction::Loop(int year, const std::string &dataset)
+void fakePrediction::Loop(int year, const std::string &dataset, const std::string &source)
 {
   fakeRates fakeRate(dataset, year);
 
@@ -49,7 +49,11 @@ void fakePrediction::Loop(int year, const std::string &dataset)
     std::cout << "Please issue cmsenv before running" << std::endl;
     exit(-1);
   }
-  const std::string outputFile("data/fakes_" + std::to_string(year) + "_" + dataset + ".root");
+  std::string suffix("");
+  if(isMC) {
+    suffix = "_" + source;
+  }
+  const std::string outputFile("data/fakes_" + std::to_string(year) + "_" + dataset + suffix + ".root");
   TFile *output = new TFile(outputFile.c_str(), "recreate");
   output->mkdir("BB");
   output->mkdir("BE");
@@ -93,10 +97,9 @@ void fakePrediction::Loop(int year, const std::string &dataset)
       double weight = 1.0;
       bool triggered = false;
       if(isMC) weight = Event_weightAll;
-      else {
-	if(year == 2016) triggered = TriggerBit_HLT_DoublePhoton60;
-	else triggered = TriggerBit_HLT_DoublePhoton70;
-      }
+      // use trigger data for MC as well
+      if(year == 2016) triggered = TriggerBit_HLT_DoublePhoton60 or TriggerBit_HLT_ECALHT800;
+      else triggered = TriggerBit_HLT_DoublePhoton70 or TriggerBit_HLT_ECALHT800;
       if(!triggered) continue;
 
       // highest pT photons

@@ -60,9 +60,9 @@ void compare_pv_bin(int year)
   datasetLabel["doublemuon"] = std::to_string(year) + " DoubleMuon";
   std::map<std::string, double> graphMax;
   graphMax["EB"] = 0.3;
-  graphMax["EE"] = 0.7;
-  graphMax["EE1"] = 0.7;
-  graphMax["EE2"] = 0.7;
+  graphMax["EE"] = 0.9;
+  graphMax["EE1"] = 0.9;
+  graphMax["EE2"] = 0.9;
 
   for(auto pvCut : pvCuts) {
     for(auto region : regions) {

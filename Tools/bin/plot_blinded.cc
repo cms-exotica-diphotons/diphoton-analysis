@@ -8,6 +8,7 @@
 #include "TFile.h"
 #include "TGraphAsymmErrors.h"
 #include "TH1.h"
+#include "THStack.h"
 #include "TLatex.h"
 #include "TLegend.h"
 #include "TLine.h"
@@ -35,6 +36,14 @@ int main(void)
 
 void plot_blinded(const std::string& years_to_plot)
 {
+  std::map<std::string, int> fillColors;
+  fillColors["gg"] = kCyan;
+  fillColors["gj"] = kBlue;
+  fillColors["jj"] = kSpring;
+  fillColors["vg"] = kOrange;
+  fillColors["dy"] = kYellow;
+  fillColors["ttg"] = kMagenta;
+
   const double xmin = 500.;
   setTDRStyle();
   gROOT->ForceStyle();
@@ -50,18 +59,45 @@ void plot_blinded(const std::string& years_to_plot)
   else years.push_back(std::atoi(years_to_plot.c_str()));
 
   std::vector<std::string> regions = {"BB", "BE"};
-  std::vector<TH1F*> histsBackground, histsData;
+  std::vector<TH1F*> histsBackground, histsData, histsGG, histsGJ, histsVG, histsTTG, histsDY;
 
-  std::map<std::string, TH1F*> sumBackground, sumData;
+  std::map<std::string, TH1F*> sumBackground, sumData, sumGG, sumGJ, sumVG, sumTTG, sumDY;
+  std::map<std::string, THStack*> stacks;
   for(const auto& region : regions) {
     sumBackground[region] = sumData[region] = nullptr;
     for(const auto& year : years) {
       histsBackground.push_back(getHist(f, year, type, region, "total_background"));
       histsData.push_back(getHist(f, year, type, region, "data"));
+      histsGG.push_back(getHist(f, year, type, region, "gg"));
+      histsGJ.push_back(getHist(f, year, type, region, "gj"));
+      histsVG.push_back(getHist(f, year, type, region, "vg"));
+      histsTTG.push_back(getHist(f, year, type, region, "ttg"));
+      histsDY.push_back(getHist(f, year, type, region, "dy"));
       if(sumBackground[region] == nullptr) sumBackground[region] = histsBackground.back();
       else sumBackground[region]->Add(histsBackground.back());
       if(sumData[region] == nullptr) sumData[region] = histsData.back();
       else sumData[region]->Add(histsData.back());
+      if(sumGG[region] == nullptr) sumGG[region] = histsGG.back();
+      else sumGG[region]->Add(histsGG.back());
+      if(sumGJ[region] == nullptr) sumGJ[region] = histsGJ.back();
+      else sumGJ[region]->Add(histsGJ.back());
+      if(sumVG[region] == nullptr) sumVG[region] = histsVG.back();
+      else sumVG[region]->Add(histsVG.back());
+      if(sumTTG[region] == nullptr) sumTTG[region] = histsTTG.back();
+      else sumTTG[region]->Add(histsTTG.back());
+      if(sumDY[region] == nullptr) sumDY[region] = histsDY.back();
+      else sumDY[region]->Add(histsDY.back());
+      sumDY[region]->SetFillColor(fillColors["dy"]);
+      sumGG[region]->SetFillColor(fillColors["gg"]);
+      sumGJ[region]->SetFillColor(fillColors["gj"]);
+      sumVG[region]->SetFillColor(fillColors["vg"]);
+      sumTTG[region]->SetFillColor(fillColors["ttg"]);
+      stacks[region] = new THStack("hs", "hs");
+      stacks[region]->Add(sumDY[region]);
+      stacks[region]->Add(sumTTG[region]);
+      stacks[region]->Add(sumVG[region]);
+      stacks[region]->Add(sumGJ[region]);
+      stacks[region]->Add(sumGG[region]);
     }
   }
 
@@ -84,13 +120,19 @@ void plot_blinded(const std::string& years_to_plot)
     sumBackground[region]->SetTitle(Form(";m_{#gamma#gamma} (GeV); Events / %d GeV", static_cast<int>(binWidth)));
     sumBackground[region]->GetXaxis()->SetRangeUser(xmin, 1000);
     sumBackground[region]->Draw("hist");
+    sumBackground[region]->GetYaxis()->SetRangeUser(0., 1.3*sumBackground[region]->GetMaximum());
+    stacks[region]->Draw("hist same");
     sumData[region]->SetLineColor(kBlack);
     sumData[region]->SetMarkerStyle(kFullCircle);
     sumData[region]->GetXaxis()->SetRangeUser(xmin, 1000);
     sumData[region]->Draw("same");
     TLegend *leg = new TLegend(0.6, 0.6, 0.9, 0.9);
-    leg->AddEntry(sumBackground[region], "Total background", "L");
     leg->AddEntry(sumData[region], "Data", "ELP");
+    leg->AddEntry(sumGG[region], "#gamma#gamma", "F");
+    leg->AddEntry(sumGJ[region], "#gamma+j, j+j", "F");
+    leg->AddEntry(sumVG[region], "V#gamma", "F");
+    leg->AddEntry(sumTTG[region], "t#bar{t}#gamma", "F");
+    leg->AddEntry(sumDY[region], "DY", "F");
     leg->SetBorderSize(0);
     leg->SetFillStyle(0);
     leg->Draw();
@@ -141,6 +183,7 @@ void plot_blinded(const std::string& years_to_plot)
     pad1->cd();
     lat->DrawLatexNDC(0.4, 0.6, Form("#chi^{2} = %2.1f", chi2));
 
+    pad1->RedrawAxis();
 
     std::string histName("plots/mgg_");
     histName += region;

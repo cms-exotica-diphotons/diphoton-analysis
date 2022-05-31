@@ -5,6 +5,9 @@
 
 int main(int argc, char *argv[])
 {
+  // include GG + (W, Z, ttbar)
+  bool includeGGX = false;
+
   std::string data_year("");
 
   std::string region;
@@ -67,8 +70,16 @@ int main(int argc, char *argv[])
   sample w("w", "W", data_year, weights.Data());
   sample dy("dy", "DY", data_year, weights.Data());
   sample ttg("ttg", "t#bar{t}#gamma", data_year, weights.Data());
+  sample wgg("wgg", "W#gamma#gamma", data_year, weights.Data());
+  sample zgg("zgg", "Z#gamma#gamma", data_year, weights.Data());
+  sample ttgg("ttgg", "t#bar{t}#gamma#gamma", data_year, weights.Data());
   std::vector<sample> samples;
   samples.push_back(data);
+  if(includeGGX) {
+    samples.push_back(ttgg);
+    samples.push_back(zgg);
+    samples.push_back(wgg);
+  }
   samples.push_back(ttg);
   samples.push_back(w);
   samples.push_back(vg);

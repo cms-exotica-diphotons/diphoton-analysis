@@ -5,39 +5,80 @@
 
 #include "TChain.h"
 
+template <class T>
+bool isAllowedParameter(const T& parameter, const std::vector<T>& allowedParameters)
+{
+  for(const auto& allowedParameter : allowedParameters) {
+    if(parameter == allowedParameter) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+template <class T>
+void printAllowed(const std::vector<T>& allowedParameters)
+{
+  for(const auto& allowedParameter : allowedParameters) {
+    std::cout << allowedParameter << "\n";
+  }
+  std::cout << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
-  std::string source, dataset;
+  std::string source, year, dataset;
 
-  int year = 0;
-  if(argc!=3) {
-    std::cout << "Syntax: getFakeRatePrediction.exe [data_2016/data_2017/data_2018/mc] [average/doublemuon/jetht]" << std::endl;
+  std::vector<std::string> allowedSources({"gg", "data"});
+  std::vector<std::string> allowedYears({"2016", "2017", "2018"});
+  std::vector<std::string> allowedDatasets({"average", "jetht", "doublemuon"});
+  std::map<std::string, std::vector<std::string>> allowedParameters;
+  allowedParameters["sources"] = allowedSources;
+  allowedParameters["years"] = allowedYears;
+  allowedParameters["datasets"] = allowedDatasets;
+
+  if(argc != static_cast<int>(allowedParameters.size()+1)) {
+    std::cout << "Syntax: getFakeRatePrediction.exe [gg/data] [2016/2017/2018] [average/doublemuon/jetht]" << std::endl;
     return -1;
   }
   else {
     source = argv[1];
-    //    if(source!="mc" and source!="data") {
-    if(source!="mc" and source!="data_2016" and source!="data_2017" and source!="data_2018") {
-      std::cout << "Only 'data_2016', 'data_2017', 'data_2018' and 'mc' are allowed input parameters. " << std::endl;
+    if(!isAllowedParameter(source, allowedSources)) {
+      std::cout << "Allowed sources: " << std::endl;
+      printAllowed(allowedSources);
       return -1;
     }
-    dataset = argv[2];
-    if(dataset!= "average" && dataset!="jetht" && dataset!="doublemuon") {
-      std::cout << "Only 'average', 'jetht' and 'doublemuon' are allowed datasets." << std::endl;
+    year = argv[2];
+    if(!isAllowedParameter(year, allowedYears)) {
+      std::cout << "Allowed years:" << std::endl;
+      printAllowed(allowedYears);
+      return -1;
+    }
+    dataset = argv[3];
+    if(!isAllowedParameter(dataset, allowedDatasets)) {
+      std::cout << "Allowed datasets:" << std::endl;
+      printAllowed(allowedDatasets);
+      return -1;
     }
   }
-  if(source=="data_2016") year = 2016;
-  if(source=="data_2017") year = 2017;
-  if(source=="data_2018") year = 2018;
+
+  // Previous
+  // if(source=="data_2016") year = 2016;
+  // if(source=="data_2017") year = 2017;
+  // if(source=="data_2018") year = 2018;
+
+  std::string chainType(source);
+  chainType += "_" + year;
 
   init();
-  TChain *ch = chains[source];
+  TChain *ch = chains[chainType];
   fakePrediction f(ch);
 
-  if(source=="mc") f.setIsMC(true);
+  if(source=="gg") f.setIsMC(true);
   else f.setIsMC(false);
 
-  f.Loop(year, dataset);
+  f.Loop(atoi(year.c_str()), dataset, source);
 
   return 0;
 }

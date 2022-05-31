@@ -91,7 +91,7 @@ std::vector<std::string> getSampleList()
 
 void init(bool includeUnskimmed = false, bool includeSignal = false, bool includeNonSignal = true)
 {
-  std::vector<std::string> sampleNames = {"data", "data_2015", "data_2016", "data_2017", "data_2018", "data_2018_newjson", "data_2017_2018", "gg", "gj", "jj", "vg", "w", "dy", "ttg", "gg70", "gg_2016", "gj_2016"};
+  std::vector<std::string> sampleNames = {"data", "data_2015", "data_2016", "data_2017", "data_2018", "data_2018_newjson", "data_2017_2018", "gg", "gj", "jj", "vg", "w", "dy", "ttg", "wgg", "zgg", "ttgg", "gg70", "gg_2016", "gj_2016"};
 
   TString treeType("diphoton/fTree");
   TString baseDirectory("root://cmseos.fnal.gov/");
@@ -493,7 +493,7 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
     chVG_NLO_2017->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/crab_ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8__Fall17_PU2017-v3__MINIAODSIM/191204_193302/0000/*.root");
 
     TChain *chVG_2017 = new TChain(treeType);
-    chVG_2017->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/WGJets_MonoPhoton_PtG-40to130_TuneCP5_13TeV-madgraph/crab_WGJets_MonoPhoton_PtG-40to130_TuneCP5_13TeV-madgraph__Fall17_PU2017-v3__MINIAODSIM/191204_193008/0000/*.root");
+    chVG_2017->Add(baseDirectory + "/store/user/cawest/diphoton/ddc7e33/WGJets_MonoPhoton_PtG-40to130_TuneCP5_13TeV-madgraph/crab_WGJets_MonoPhoton_PtG-40to130_TuneCP5_13TeV-madgraph__Fall17_PU2017-v3__MINIAODSIM/220527_063335/0000/*.root");
     chVG_2017->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/WGJets_MonoPhoton_PtG-130_TuneCP5_13TeV-madgraph/crab_WGJets_MonoPhoton_PtG-130_TuneCP5_13TeV-madgraph__Fall17_PU2017-v1__MINIAODSIM/191204_193031/0000/*.root");
     chVG_2017->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/crab_ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8__Fall17_PU2017-v3__MINIAODSIM/191204_193302/0000/*.root");
 
@@ -502,7 +502,7 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
     chVG_NLO_2018->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/crab_ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8__Autumn18_ext1-v2__MINIAODSIM/191120_193251/0000/*.root");
 
     TChain *chVG_2018 = new TChain(treeType);
-    chVG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/WGJets_MonoPhoton_PtG-40to130_TuneCP5_13TeV-madgraph/crab_WGJets_MonoPhoton_PtG-40to130_TuneCP5_13TeV-madgraph__Autumn18-v1__MINIAODSIM/191120_193135/0000/*.root");
+    chVG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/ddc7e33/WGJets_MonoPhoton_PtG-40to130_TuneCP5_13TeV-madgraph/crab_WGJets_MonoPhoton_PtG-40to130_TuneCP5_13TeV-madgraph__Autumn18-v1__MINIAODSIM/220527_063311/0000/*.root");
     chVG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/WGJets_MonoPhoton_PtG-130_TuneCP5_13TeV-madgraph/crab_WGJets_MonoPhoton_PtG-130_TuneCP5_13TeV-madgraph__Autumn18-v1__MINIAODSIM/191120_193154/0000/*.root");
     chVG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/crab_ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8__Autumn18_ext1-v2__MINIAODSIM/191120_193251/0000/*.root");
 
@@ -596,6 +596,37 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
     chTTG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/b399c31/TTGamma_Dilept_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8/crab_TTGamma_Dilept_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8__Autumn18-v1__MINIAODSIM/200206_034106/0000/*.root");
     chTTG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/b399c31/TTGamma_Dilept_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8/crab_TTGamma_Dilept_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8__Autumn18-v1__MINIAODSIM/200207_162720/0000/*.root");
 
+    TChain *chWGG_2016 = new TChain(treeType);
+    chWGG_2016->Add(baseDirectory + "/store/user/cawest/diphoton/33adbe7/WGGJets_TuneCUETP8M1_13TeV_madgraphMLM_pythia8/crab_WGGJets_TuneCUETP8M1_13TeV_madgraphMLM_pythia8__Summer16MiniAODv3-v1__MINIAODSIM/220528_142711/0000/*.root");
+
+    TChain *chWGG_2017 = new TChain(treeType);
+    chWGG_2017->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/WGGJets_TuneCP5_13TeV_madgraphMLM_pythia8/crab_WGGJets_TuneCP5_13TeV_madgraphMLM_pythia8__Fall17_PU2017-v1__MINIAODSIM/220527_071609/0000/*.root");
+
+    TChain *chWGG_2018 = new TChain(treeType);
+    chWGG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/WGGJets_TuneCP5_13TeV_madgraphMLM_pythia8/crab_WGGJets_TuneCP5_13TeV_madgraphMLM_pythia8__Autumn18-v1__MINIAODSIM/220527_071636/0000/*.root");
+
+    TChain *chZGG_2016 = new TChain(treeType);
+    chZGG_2016->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/ZGGJets_ZToHadOrNu_5f_LO_madgraph_pythia8/crab_ZGGJets_ZToHadOrNu_5f_LO_madgraph_pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220527_071757/0000/*.root");
+    chZGG_2016->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/ZGGToLLGG_5f_TuneCUETP8M1_13TeV-amcatnlo-pythia8/crab_ZGGToLLGG_5f_TuneCUETP8M1_13TeV-amcatnlo-pythia8__Summer16MiniAODv3-v1__MINIAODSIM/220527_071907/0000/*.root");
+
+    TChain *chZGG_2017 = new TChain(treeType);
+    chZGG_2017->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/ZGGJets_ZToHadOrNu_5f_LO_madgraph_pythia8/crab_ZGGJets_ZToHadOrNu_5f_LO_madgraph_pythia8__Fall17_PU2017-v1__MINIAODSIM/220527_071823/0000/*.root");
+    chZGG_2017->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/ZGGToLLGG_5f_TuneCP5_13TeV-amcatnlo-pythia8/crab_ZGGToLLGG_5f_TuneCP5_13TeV-amcatnlo-pythia8__Fall17_PU2017-v1__MINIAODSIM/220527_072534/0000/*.root");
+
+    TChain *chZGG_2018 = new TChain(treeType);
+    // there is no ZGG -> hadrons sample for 2018
+    chZGG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/ZGGTonunuGG_5f_TuneCP5_13TeV-amcatnlo-pythia8/crab_ZGGTonunuGG_5f_TuneCP5_13TeV-amcatnlo-pythia8__Autumn18-v1__MINIAODSIM/220527_071845/0000/*.root");
+    chZGG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/ZGGToLLGG_5f_TuneCP5_13TeV-amcatnlo-pythia8/crab_ZGGToLLGG_5f_TuneCP5_13TeV-amcatnlo-pythia8__Autumn18-v1__MINIAODSIM/220527_073601/0000/*.root");
+
+    TChain *chTTGG_2016 = new TChain(treeType);
+    chTTGG_2016->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8/crab_TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8__Summer16MiniAODv3-v1__MINIAODSIM/220527_070616/0000/*.root");
+
+    TChain *chTTGG_2017 = new TChain(treeType);
+    chTTGG_2017->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8/crab_TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8__Fall17_PU2017-v2__MINIAODSIM/220527_070849/0000/*.root");
+
+    TChain *chTTGG_2018 = new TChain(treeType);
+    chTTGG_2018->Add(baseDirectory + "/store/user/cawest/diphoton/83c0135/TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8/crab_TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8__Autumn18-v3__MINIAODSIM/220527_071016/0000/*.root");
+
     // sum of minor backgrounds for use in limit setting
     TChain *chOther_2016 = new TChain(treeType);
     chOther_2016->Add(chVG_2016);
@@ -650,18 +681,25 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
     chGG70_2016_sherpa->Add(baseDirectory + "/store/user/cawest/diphoton/6a01524/GG_M-4000To8000_Pt-70_13TeV-sherpa/crab_GG_M-4000To8000_Pt-70_13TeV-sherpa__Summer16MiniAODv3-v2__MINIAODSIM/191007_020027/0000/*.root");
     chGG70_2016_sherpa->Add(baseDirectory + "/store/user/cawest/diphoton/6a01524/GG_M-8000To13000_Pt-70_13TeV-sherpa/crab_GG_M-8000To13000_Pt-70_13TeV-sherpa__Summer16MiniAODv3-v2__MINIAODSIM/191007_020100/0000/*.root");
 
-    // this sample contains an ad-hoc modification of the weights from TuneCUETPM1 to TuneCP2
     TChain *chGG70_2016 = new TChain(treeType);
-    // chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/9205c6c/GG_M-500To1000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220325_172106/output_no_gg_v2.root");
-    // chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/8e010ef/GG_M-1000To2000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-1000To2000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220228_152825/output_no_gg_v2.root");
-    // chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/8e010ef/GG_M-2000To4000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-2000To4000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220228_152847/output_no_gg_v2.root");
-    // chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/8e010ef/GG_M-4000To13000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-4000To13000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220311_193622/output_no_gg_v2.root");
-    // FIXME: Temporary sub
-    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213601/0000/*.root");
-    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213628/0000/*.root");
-    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213653/0000/*.root");
-    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-4000To13000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-4000To13000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213719/0000/*.root");
 
+    // FIXME: Temporary substitution for Unparticles study
+    // chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213601/0000/*.root");
+    // chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213628/0000/*.root");
+    // chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213653/0000/*.root");
+    // chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-4000To13000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-4000To13000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213719/0000/*.root");
+
+    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/efcd821/GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8__Summer16MiniAODv3-v1__MINIAODSIM/220523_204152/0000/*.root");
+    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/efcd821/GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8__Summer16MiniAODv3-v1__MINIAODSIM/220518_194439/0000/*.root");
+    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/efcd821/GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8__Summer16MiniAODv3-v1__MINIAODSIM/220517_043247/0000/*.root");
+    chGG70_2016->Add(baseDirectory + "/store/user/cawest/diphoton/efcd821/GG_M-4000To13000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-4000To13000_Pt70_TuneCP2_13TeV-pythia8__Summer16MiniAODv3-v1__MINIAODSIM/220517_043812/0000/*.root");
+
+    // this sample contains an ad-hoc modification of the weights from TuneCUETPM1 to TuneCP2
+    TChain *chGG70_2016_reweight = new TChain(treeType);
+    chGG70_2016_reweight->Add(baseDirectory + "/store/user/cawest/diphoton/a847742/GG_M-500To1000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM_resub/220422_071406/output_no_gg_v2.root");
+    chGG70_2016_reweight->Add(baseDirectory + "/store/user/cawest/diphoton/8e010ef/GG_M-1000To2000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-1000To2000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220228_152825/output_no_gg_v2.root");
+    chGG70_2016_reweight->Add(baseDirectory + "/store/user/cawest/diphoton/8e010ef/GG_M-2000To4000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-2000To4000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220228_152847/output_no_gg_v2.root");
+    chGG70_2016_reweight->Add(baseDirectory + "/store/user/cawest/diphoton/8e010ef/GG_M-4000To13000_Pt70_TuneCUEP8M1_13TeV-pythia8/crab_GG_M-4000To13000_Pt70_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220311_193622/output_no_gg_v2.root");
 
     TChain *chGG70_2017 = new TChain(treeType);
     chGG70_2017->Add(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8__Fall17_PU2017-v1__MINIAODSIM/210715_233628/0000/*.root");
@@ -705,9 +743,6 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
     chains["data_jetht_2017_unskimmed"] = chDataJetHT2017_unskimmed;
     chains["data_jetht_2018_unskimmed"] = chDataJetHT2018_unskimmed;
     chains["data_2018_unskimmed"] = chData2018_unskimmed;
-    chains["data_2018_newjson"] = chData2018_newjson;
-    chains["data_2017_2018"] = chData2017_2018;
-    chains["data_2016_2017_2018"] = chData2016_2017_2018;
     chains["gg_aMC_2015"] = chGG_aMC_2015;
     chains["gg_2018"] = chGG_2018;
     chains["gg_2017"] = chGG_2017;
@@ -749,6 +784,15 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
     chains["ttg_nlo_2018"] = chTTG_NLO_2018;
     chains["ttg_nlo_2017"] = chTTG_NLO_2017;
     chains["ttg_nlo_2016"] = chTTG_NLO_2016;
+    chains["wgg_2016"] = chWGG_2016;
+    chains["wgg_2017"] = chWGG_2017;
+    chains["wgg_2018"] = chWGG_2018;
+    chains["zgg_2016"] = chZGG_2016;
+    chains["zgg_2017"] = chZGG_2017;
+    chains["zgg_2018"] = chZGG_2018;
+    chains["ttgg_2016"] = chTTGG_2016;
+    chains["ttgg_2017"] = chTTGG_2017;
+    chains["ttgg_2018"] = chTTGG_2018;
     chains["gg70_2018"] = chGG70_2018;
     chains["gg70_2017"] = chGG70_2017;
     chains["gg70_2016"] = chGG70_2016;
@@ -790,6 +834,9 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
   fillColors["w"] = kBlack;
   fillColors["dy"] = kYellow;
   fillColors["ttg"] = kMagenta;
+  fillColors["wgg"] = kBlack;
+  fillColors["zgg"] = kYellow+1;
+  fillColors["ttgg"] = kMagenta+1;
   fillColors["gg70"] = kCyan;
 
   prettyName["data"]="Data";
@@ -797,12 +844,9 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
   prettyName["data_2016"]="Data (2016)";
   prettyName["data_2017"]="Data (2017)";
   prettyName["data_2018"]="Data (2018)";
-  prettyName["data_2017_2018"]="Data (2017+2018)";
-  prettyName["data_2016_2017_2018"]="Data (2016-2018)";
   prettyName["data_2016_unskimmed"]="Data (2016)";
   prettyName["data_2017_unskimmed"]="Data (2017)";
   prettyName["data_2018_unskimmed"]="Data (2018)";
-  prettyName["data_2018_newjson"]="Data (2018, new JSON)";
   prettyName["gg"]="#gamma#gamma";
   //  prettyName["gg_2016"]="#gamma#gamma (2016)";
   prettyName["gg_aMC_2015"]="#gamma#gamma (aMC@NLO)";
@@ -813,6 +857,9 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
   prettyName["w"]="W";
   prettyName["dy"]="DY";
   prettyName["ttg"]="t#bar{t}#gamma";
+  prettyName["wgg"]="W#gamma#gamma";
+  prettyName["zgg"]="Z#gamma#gamma";
+  prettyName["ttgg"]="t#bar{t}#gamma#gamma";
   prettyName["gg70"]="Diphoton, p_{T,#gamma} > 70";
 
   setTDRStyle();
@@ -1626,34 +1673,36 @@ void initHeavyHiggs(const TString & baseDirectory)
   // chains["GluGluSpin0ToGammaGamma_W_0p014_M_500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M_500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031802/0000/*.root");
   // chains["GluGluSpin0ToGammaGamma_W_0p014_M_740_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-740_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-740_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031913/0000/*.root");
   // chains["GluGluSpin0ToGammaGamma_W_0p014_M_745_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-745_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-745_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031926/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_750_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-750_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-750_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201217_160019/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_750_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-750_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-750_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050907/0000/*.root");
   // chains["GluGluSpin0ToGammaGamma_W_0p014_M_755_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-755_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-755_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v1__MINIAODSIM/201203_031954/0000/*.root");
   // chains["GluGluSpin0ToGammaGamma_W_0p014_M_760_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-760_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-760_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_032007/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_1000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-1000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-1000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031437/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_1250_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-1250_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-1250_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031452/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_1500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-1500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-1500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201217_155916/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_1750_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-1750_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-1750_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201217_155930/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_2000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-2000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-2000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031531/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_2250_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-2250_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-2250_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201217_155944/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_2500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-2500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-2500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031558/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_2750_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-2750_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-2750_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031614/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_3000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-3000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-3000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031627/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_3250_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-3250_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-3250_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031640/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_3500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-3500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-3500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031654/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_1000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-1000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-1000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050250/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_1250_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-1250_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-1250_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050315/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_1500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-1500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-1500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050341/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_1750_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-1750_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-1750_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050406/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_2000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-2000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-2000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050432/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_2250_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-2250_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-2250_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050456/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_2500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-2500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-2500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050524/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_2750_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-2750_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-2750_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050548/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_3000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-3000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-3000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050613/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_3250_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-3250_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-3250_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050638/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_3500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-3500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-3500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050703/0000/*.root");
   //  chains["GluGluSpin0ToGammaGamma_W_0p014_M_3750_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-3750_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-3750_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031707/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_4000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-4000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-4000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031721/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_4500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-4500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-4500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031734/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_0p014_M_5000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-5000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-5000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031747/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_4000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-4000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-4000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050753/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_4500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-4500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-4500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050818/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_0p014_M_5000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-0p014_M-5000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-5000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_050842/0000/*.root");
   // chains["GluGluSpin0ToGammaGamma_W_0p014_M_5500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-5500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-5500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031815/0000/*.root");
   // chains["GluGluSpin0ToGammaGamma_W_0p014_M_6000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-6000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-6000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031830/0000/*.root");
   // chains["GluGluSpin0ToGammaGamma_W_0p014_M_6500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-6500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-6500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201217_155959/0000/*.root");
   // chains["GluGluSpin0ToGammaGamma_W_0p014_M_7000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-0p014_M-7000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-0p014_M-7000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_031859/0000/*.root");
   //  chains["GluGluSpin0ToGammaGamma_W_1p4_M_500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-1p4_M-500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-1p4_M-500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201217_160114/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_1p4_M_1000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-1p4_M-1000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-1p4_M-1000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_032021/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_1p4_M_1500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-1p4_M-1500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-1p4_M-1500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201217_160032/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_1p4_M_2000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-1p4_M-2000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-1p4_M-2000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201217_160046/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_1p4_M_3000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-1p4_M-3000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-1p4_M-3000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201217_160059/0000/*.root");
-  chains["GluGluSpin0ToGammaGamma_W_1p4_M_4000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-1p4_M-4000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-1p4_M-4000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_032113/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_1p4_M_750_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-5p6_M-750_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-5p6_M-750_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_051454/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_1p4_M_1000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-5p6_M-1000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-5p6_M-1000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_051225/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_1p4_M_1500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-5p6_M-1500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-5p6_M-1500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v1__MINIAODSIM/220421_051251/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_1p4_M_2000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-5p6_M-2000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-5p6_M-2000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_051316/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_1p4_M_3000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-5p6_M-3000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-5p6_M-3000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_051340/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_1p4_M_4000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-5p6_M-4000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-5p6_M-4000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_051406/0000/*.root");
+  chains["GluGluSpin0ToGammaGamma_W_1p4_M_5000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/a847742/GluGluSpin0ToGG_W-5p6_M-5000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-5p6_M-5000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/220421_051430/0000/*.root");
   // chains["GluGluSpin0ToGammaGamma_W_1p4_M_6000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-1p4_M-6000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-1p4_M-6000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201217_160127/0000/*.root");
   // chains["GluGluSpin0ToGammaGamma_W_1p4_M_7000_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-1p4_M-7000_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-1p4_M-7000_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_032208/0000/*.root");
   // chains["GluGluSpin0ToGammaGamma_W_5p6_M_500_13TeV_pythia8_2016"]->Add(baseDirectory+"/store/user/cawest/diphoton/188f9ce/GluGluSpin0ToGG_W-5p6_M-500_TuneCUEP8M1_13TeV-pythia8/crab_GluGluSpin0ToGG_W-5p6_M-500_TuneCUEP8M1_13TeV-pythia8__Summer16MiniAODv3-v2__MINIAODSIM/201203_032519/0000/*.root");
