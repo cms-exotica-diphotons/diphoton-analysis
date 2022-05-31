@@ -48,11 +48,16 @@ void FakeRateAnalysis::Loop(int iCut, TString era, TString dataset, int pvCutLow
   
   // array of pt bin edges
   std::vector<double> ptBinArray({ 50., 70., 90., 110., 130., 150.});
+  bool extendJetHTBinning = true;
   // With higher statistics in JetHT sample, additional bins can be used
   if(dataset=="jetht") {
     ptBinArray.push_back(200.);
     ptBinArray.push_back(250.);
     ptBinArray.push_back(300.);
+    if(extendJetHTBinning) {
+      ptBinArray.push_back(400.);
+      ptBinArray.push_back(500.);
+    }
   }
   ptBinArray.push_back(600.);
   const int nBins = ptBinArray.size();

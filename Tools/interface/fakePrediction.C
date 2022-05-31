@@ -16,9 +16,9 @@ const double etaMaxEndcap1 = 2.033;
 const double etaMaxEndcap = 2.5;
 const double minvMin = 500;
 
-void fakePrediction::Loop(int year, const std::string &dataset, const std::string &source)
+void fakePrediction::Loop(int year, const std::string &dataset, const std::string &source, const std::string &isosideband)
 {
-  fakeRates fakeRate(dataset, year);
+  fakeRates fakeRate(dataset, year, isosideband);
 
   std::map<int, double> ptCuts;
   ptCuts[2016] = 125.;
@@ -53,7 +53,10 @@ void fakePrediction::Loop(int year, const std::string &dataset, const std::strin
   if(isMC) {
     suffix = "_" + source;
   }
-  const std::string outputFile("data/fakes_" + std::to_string(year) + "_" + dataset + suffix + ".root");
+  if(isosideband != "chIso5To10") {
+    suffix += "_" + isosideband;
+  }
+  const std::string outputFile("data/fakes_" + std::to_string(year) + "_" + dataset + suffix + "_test.root");
   TFile *output = new TFile(outputFile.c_str(), "recreate");
   output->mkdir("BB");
   output->mkdir("BE");

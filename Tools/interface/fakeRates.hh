@@ -15,15 +15,15 @@ class fakeRates {
   std::string m_fakeRateType;
 
  public:
-  fakeRates(std::string fakeRateType, int year);
+  fakeRates(std::string fakeRateType, int year, std::string chIsoSideband);
   double getFakeRate(double pt, int region, int nPV);
   double getFakeRateClosureTest(double pt, std::string region, int year);
 
 };
 
-fakeRates::fakeRates(std::string fakeRateType, int year) : m_year(year)
+fakeRates::fakeRates(std::string fakeRateType, int year, std::string chIsoSideband) : m_year(year)
 {
-  const std::string iso("chIso5To10");
+  std::string iso = "chIso" + chIsoSideband;
 
   m_fakeRateType = fakeRateType;
   bool isClosureTest = (fakeRateType=="all") ? true : false;
