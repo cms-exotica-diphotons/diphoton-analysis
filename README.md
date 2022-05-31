@@ -67,3 +67,35 @@ Make sure to get the latest changes from the master branch and work from there.
  git push origin master
 
  ```
+
+## To run full analysis
+### k-factor analysis
+- Generate all needed ntuples using `ExoDiPhotonAnalyzer/test/submit_crab_cfg.py` (for the main diphoton ntuples) and `ExoDiPhotonFakeRateAnalyzer/test/submit_crab_cfg.py` (for the fake rate ntuples)
+- Run MCFM k-factor jobs and k-factor uncertainty jobs
+- Run `plot_sherpa.exe` to create sherpa histograms for k-factor calculation; copy outputs to `diphoton-analysis/Tools/data`
+- Modify paths in plotKfactor.cc to refer to new Sherpa files and MCFM outputs. Then create k-factor root files with `plotKfactor.exe`
+
+### Real and fake template analysis
+```
+cd ${CMSSW_BASE}/src/diphoton-analysis/FakeRateAnalysis
+python bin/create_templates.py | bash
+```
+- Copy the output files to your prefered location and modify "basefilename" in `rooFitClosureTest.C` and `rooFitFakeRateProducer.C`
+- Run `python bin/fit_histos.py | bash`
+
+### Run limits
+```
+cd ${CMSSW_BASE}/src/
+git clone -b v8.0.1-ADD https://github.com/christopheralanwest/HiggsAnalysis-CombinedLimit.git HiggsAnalysis/CombinedLimit
+scram b -j 6
+cd HiggsAnalysis/CombinedLimit
+source scripts/run_all.sh
+```
+ 
+### Make plots with output from limits
+```
+cd ${CMSSW_BASE}/src/diphoton-analysis/Tools
+plot_blinded.exe
+limit.exe
+```
+###
