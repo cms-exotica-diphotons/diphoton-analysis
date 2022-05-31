@@ -105,9 +105,9 @@ std::string addCutsPerSample(const std::string &cut, const std::string &sample, 
     }
     // // need to increase selection for Pythia ADD cuts to avoid negative weights
     // // from background subtraction
-    if( sample.find("ADD") != std::string::npos
+    if( sample.find("ADD") != std::string::npos or sample.find("Unpar")!= std::string::npos
 	or sample.find("gg70") != std::string::npos ) {
-      if( sample.find("ADDGravToGG_NegInt") != std::string::npos
+      if( sample.find("ADDGravToGG_NegInt") != std::string::npos or sample.find("Unpar")!= std::string::npos
           || sample.find("gg70_2016") != std::string::npos
           || sample.find("gg70_2017") != std::string::npos
           || sample.find("gg70_2018") != std::string::npos ) sampleCut += "*(Diphoton.Minv > 600)";
@@ -339,27 +339,33 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
     if(title.find("ADDGravToGG_") != std::string::npos or title.find("UnparToGG_") != std::string::npos) {
       std::size_t systPosition = title.find("_energy");
       std::string syst;
+
       if(systPosition != std::string::npos) {
-	syst = title.substr(systPosition);
+	       syst = title.substr(systPosition);
       }
       systPosition = title.find("_pileup");
+
       if(systPosition != std::string::npos) {
-	syst = title.substr(systPosition);
+	       syst = title.substr(systPosition);
       }
       systPosition = title.find("_eff");
+
       if(systPosition != std::string::npos) {
-	syst = title.substr(systPosition);
+	       syst = title.substr(systPosition);
       }
+
+      // Actual Background Subtraction
       std::string histName;
-      if(title.find("ADDGravToGG_NegInt") != std::string::npos) {
-	histName = "gg70_" + year;
+      if(title.find("ADDGravToGG_NegInt") != std::string::npos or title.find("UnparToGG_") != std::string::npos) {
+          histName = "gg70_" + year;
       }
       else {
-	histName = "gg70_sherpa_2016";
+	       histName = "gg70_sherpa_2016";
       }
       if(!syst.empty()) {
-	histName += syst;
+	       histName += syst;
       }
+
       histogram.second->Add(histograms[histName], -1);
     }
     histogram.second->Write();
