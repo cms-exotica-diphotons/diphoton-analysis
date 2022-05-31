@@ -17,7 +17,6 @@ for dataset in datasets:
             arguments = dataset + " " + variable + " " + str(year) +  " " + pu
             print("fakeRateCalculation.exe " + arguments)
 
-print("compare_pv.exe");
 for year in years:
     print("compare_pv.exe " + str(year))
     print("compare_pv_bin.exe " + str(year))
