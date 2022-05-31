@@ -8,8 +8,8 @@ datasets = ["jetht", "doublemuon"]
 for year in years:
     for bin in bins:
         pu = str(bin[0]) + " " + str(bin[1])
-        arguments = str(year) + " all " + pu
+        arguments = str(year) + " all " + pu + " false"
         print("real_templates.exe " + arguments)
         for dataset in datasets:
-            arguments = str(year) + " " + dataset + " " + pu + " false"
+            arguments = str(year) + " " + dataset + " " + pu
             print("fake_templates.exe " + arguments)
