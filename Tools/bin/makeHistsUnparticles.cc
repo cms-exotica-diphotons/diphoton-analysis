@@ -11,10 +11,9 @@ std::string getSampleBase(const std::string & sampleName, const std::string & ye
 std::string getBase(const std::string & sampleName);
 void addFakePrediction(const std::string &region, const std::string &year, TFile * output);
 std::string addCutsPerSample(const std::string &cut, const std::string &sample, const std::string &region, const std::string &year);
-std::map<std::string, std::string> reweightingList(std::vector<std::string> &postfixes);
+std::map<std::string, std::string> reweightingList();
 void addTheoryUncertanties(std::map<std::string, TH1F*> &histograms, const std::string &region, TFile * output);
 void overflowToLastBin(TH1F* histogram);
-void getDiphotonYieldVariations(const std::string& region, const std::string& variation, const std::string& year);
 
 int main(int argc, char *argv[])
 {
@@ -37,7 +36,7 @@ int main(int argc, char *argv[])
     }
   }
 
-  // include signal samples but not unskimmed data samples
+  // include Unparticles signal samples only but not unskimmed data samples
   init(false, true);
 
   TFile *output = new TFile(Form("datacards/Minv_histos_%s_%s.root", region.c_str(), year.c_str()), "recreate");
@@ -50,12 +49,6 @@ int main(int argc, char *argv[])
   allSamples(region, year, output);
   output->Write();
   output->Close();
-
-  // re-open files and add statistical error to files
-  getDiphotonYieldVariations(region, "kfactorStat0", year);
-  getDiphotonYieldVariations(region, "kfactorStat1", year);
-  getDiphotonYieldVariations(region, "kfactorStat2", year);
-  getDiphotonYieldVariations(region, "kfactorStat3", year);
 
 }
 
@@ -93,26 +86,20 @@ std::string addCutsPerSample(const std::string &cut, const std::string &sample, 
   }
   if( sample.find("data") == std::string::npos ) {
     sampleCut+="*weightAll*" + std::to_string(luminosity[year]);
-    // add photon efficiency scale factor, zero sigma from mean
-    sampleCut+="*" + std::string(scale_factor_cut(atoi(year.c_str()), 0).Data());
-    // add pileup weights, zero sigma from mean
-    sampleCut+="*" + std::string(npv_reweight_str(atoi(year.c_str()), 0).Data());
-    if( sample.find("gg70_2016") != std::string::npos
-	or sample.find("gg70_2017") != std::string::npos
+    if( sample.find("gg70_2017") != std::string::npos
 	or sample.find("gg70_2018") != std::string::npos) {
       // GG Pythia samples include box diagram but signal does not
       sampleCut += "*(pdf_id1 != 21 && pdf_id2 != 21)";
     }
     // // need to increase selection for Pythia ADD cuts to avoid negative weights
     // // from background subtraction
-    if( sample.find("ADD") != std::string::npos or sample.find("Unpar")!= std::string::npos
-	or sample.find("gg70") != std::string::npos ) {
-      if( sample.find("ADDGravToGG_NegInt") != std::string::npos or sample.find("Unpar")!= std::string::npos
-          || sample.find("gg70_2016") != std::string::npos
-          || sample.find("gg70_2017") != std::string::npos
-          || sample.find("gg70_2018") != std::string::npos ) sampleCut += "*(Diphoton.Minv > 600)";
-      else sampleCut += "*(Diphoton.Minv > 600)";
-    }
+    // if( sample.find("ADD") != std::string::npos
+    // 	or sample.find("gg70") != std::string::npos ) {
+    //   if( sample.find("ADDGravToGG_NegInt") != std::string::npos
+    // 	  || sample.find("gg70_2017") != std::string::npos
+    // 	  || sample.find("gg70_2018") != std::string::npos ) sampleCut += "*(Diphoton.Minv > 600)";
+    //   else sampleCut += "*(Diphoton.Minv > 600)";
+    // }
   }
   else {
     sampleCut += "*(Diphoton.Minv < 1000)";
@@ -181,7 +168,7 @@ void addTheoryUncertanties(std::map<std::string, TH1F*> &histograms, const std::
   histograms["gg"]->Write();
   // create histograms for PDF uncertainties
   const int bin_offset = 10; // MCFM output starts at 500 GeV
-  std::string pdfFile("data/pdf_uncert_nlo_" + region + ".root");
+  std::string pdfFile("data/pdf_uncert_LO_" + region + ".root");
   TFile *fPDF = TFile::Open(pdfFile.c_str());
   std::vector<std::string> variations = {"Up", "Down"};
   for(const auto &  variation : variations) {
@@ -244,15 +231,26 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
   for(auto sample : samples) {
     // skip the Sherpa GEN trees
     if( sample.find("gg_gen") != std::string::npos) continue;
-    // skip the Sherpa trees with the fake rate ntuple format
-    if( sample.find("gg_fake") != std::string::npos) continue;
     // skimmed samples give equivalent results
     if( sample.find("unskimmed") != std::string::npos ) continue;
     // use data-driven gamma+jets prediction instead
     if( sample.find("gj") != std::string::npos ) continue;
     // skip most samples that do not include the year
-    // 2016 ADD sample names do not encode year and so should not be skipped
-    if (sample.find("gg70") == std::string::npos and sample.find("ADDGravToGG_MS") == std::string::npos) {
+  //   if(sample.find("ADDGravToGG") != std::string::npos) {
+  //     // 2016 ADD sample names do not encode year and so should not be skipped
+  //     if( sample.find("ADDGravToGG_NegInt") != std::string::npos ) {
+	// // for 2016, use 2017 pythia samples, as pythia background subtraction samples are not available
+	// if( year == "2018" and sample.find("2017") == std::string::npos) continue;
+	// if( (year == "2016" or year == "2017") and sample.find("2018") == std::string::npos) continue;
+  //     }
+  //   }
+    // include unparticles samples
+    if( sample.find("UnparToGG") != std::string::npos){
+      // only consider the year of interest
+      if ( sample.find(year) == std::string::npos ) continue;
+    }
+
+    else if (sample.find("gg70") == std::string::npos) {
       // only consider the year of interest
       if( sample.find(year) == std::string::npos ) continue;
     }
@@ -268,61 +266,27 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
     // add reweightings for energy scale systematics
     std::vector<std::string> postfixes;
     std::map<std::string, std::string> reweightings = reweightingList(postfixes);
-    postfixes.push_back("_effUp");
-    postfixes.push_back("_effDown");
-    postfixes.push_back("_pileupUp");
-    postfixes.push_back("_pileupDown");
 
     //    TEntryList *elist;
     for(const auto& postfix : postfixes) {
       std::string baseName(getSampleBase(sample, year));
       baseName += postfix;
-      // do not perform additional systematic variations on k-factor scale variations
-      if(baseName.find("diphotonkfactorScale") != std::string::npos and
-	 (baseName.find("energy") != std::string::npos or
-	  baseName.find("eff") != std::string::npos or
-	  baseName.find("pileup") != std::string::npos)) {
-	continue;
-      }
       TH1F *hist = new TH1F(baseName.c_str(), baseName.c_str(), nBins, xMin, xMax);
       histograms[baseName] = hist;
       std::string varname("Diphoton.Minv");
-      // efficiency scale factors are applied to the cut rather than the plotting variable
-      bool eff_scale_factor = postfix.find("_eff") != std::string::npos
-	or postfix.find("_pileup") != std::string::npos;
-      if(!eff_scale_factor) {
-	varname += reweightings[postfix];
-      }
+      varname += reweightings[postfix];
       std::string cut("*(");
       cut += varname;
       std::string minv_cut("500");
-      if(sample.find("UnparToGG") != std::string::npos or sample.find("ADDGravToGG") != std::string::npos or sample.find("gg70") != std::string::npos) {
-	minv_cut = "600";
+  //     if(sample.find("ADDGravToGG") != std::string::npos or sample.find("gg70") != std::string::npos) {
+	// minv_cut = "600";
+  //     }
+      if(sample.find("UnparToGG") != std::string::npos or sample.find("gg70") != std::string::npos){
+        minv_cut = "600";
       }
       cut += ">" + minv_cut + ")";
       std::string fullCut(sampleCut);
       fullCut += cut;
-
-      // do not apply reweightings to data, only MC
-      if( sample.find("data") == std::string::npos ) {
-	int year_int = atoi(year.c_str());
-	if(postfix == "_effUp") {
-	  std::string old_str(scale_factor_cut(year_int, 0).Data());
-	  fullCut.replace(fullCut.find(old_str), old_str.size(), scale_factor_cut(year_int, 1).Data());
-	}
-	else if(postfix == "_effDown") {
-	  std::string old_str(scale_factor_cut(year_int, 0).Data());
-	  fullCut.replace(fullCut.find(old_str), old_str.size(), scale_factor_cut(year_int, -1).Data());
-	}
-	else if(postfix == "_pileupUp") {
-	  std::string old_str(npv_reweight_str(year_int, 0).Data());
-	  fullCut.replace(fullCut.find(old_str), old_str.size(), npv_reweight_str(year_int, 1).Data());
-	}
-	else if(postfix == "_pileupDown") {
-	  std::string old_str(npv_reweight_str(year_int, 0).Data());
-	  fullCut.replace(fullCut.find(old_str), old_str.size(), npv_reweight_str(year_int, -1).Data());
-	}
-      }
       std::cout << "Making histograms for sample " << hist->GetName()
 		<< " with basename " << baseName
 		<< " with cut\n" << fullCut
@@ -336,39 +300,31 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
   // subtract nonresonant background
   for(auto histogram : histograms) {
     std::string title(histogram.second->GetTitle());
-    if(title.find("ADDGravToGG_") != std::string::npos or title.find("UnparToGG_") != std::string::npos) {
+    //if(title.find("ADDGravToGG_") != std::string::npos) {
+    if(title.find("UnparToGG_") != std::string::npos) {
       std::size_t systPosition = title.find("_energy");
       std::string syst;
-
       if(systPosition != std::string::npos) {
-	       syst = title.substr(systPosition);
+	syst = title.substr(systPosition);
       }
-      systPosition = title.find("_pileup");
-
-      if(systPosition != std::string::npos) {
-	       syst = title.substr(systPosition);
-      }
-      systPosition = title.find("_eff");
-
-      if(systPosition != std::string::npos) {
-	       syst = title.substr(systPosition);
-      }
-
-      // Actual Background Subtraction
       std::string histName;
-      if(title.find("ADDGravToGG_NegInt") != std::string::npos or title.find("UnparToGG_") != std::string::npos) {
-          histName = "gg70_" + year;
+      // if(title.find("ADDGravToGG_NegInt") != std::string::npos) {
+      if(title.find("UnparToGG_") != std::string::npos) {
+	if (year == "2017" or year == "2018") {
+	histName = "gg70_" + year;
+	}
+	// use 2017 sample for nonexistent 2016 sample
+	else histName = "gg70_2017";
       }
       else {
-	       histName = "gg70_sherpa_2016";
+	histName = "gg70_2016";
       }
       if(!syst.empty()) {
-	       histName += syst;
+	histName += syst;
       }
-
       histogram.second->Add(histograms[histName], -1);
     }
-    histogram.second->Write();
+    //    histogram.second->Write();
   }
 
   // add PDF uncertainty histograms
@@ -415,51 +371,4 @@ std::string getBase(const std::string & sampleName)
   if(sampleName == "gg_R2F2_2018" ) return "gg_2018";
   if(sampleName == "gg_R0p5F0p5_2018" ) return "gg_2018";
   return sampleName;
-}
-
-
-void getDiphotonYieldVariations(const std::string& region, const std::string& variation, const std::string& year)
-{
-  TString histID("id1");
-  // barrel-endcap fit has a different histogram ID in MCFM
-  if(region == "BE") histID = "id15";
-
-  TString histogramFile(Form("datacards/Minv_histos_%s_%s.root", region.c_str(), year.c_str()));
-  // put dummy values here for now
-  if(variation.find("kfactorStat") != std::string::npos) {
-    std::string varString(variation);
-    // remove string "kfactorStat" from variation name; number afterwards is the fit parameter
-    int parameter = atoi(varString.replace(0, 11, "").c_str());
-    TFile *input = TFile::Open(histogramFile, "update");
-    TH1D* diphoton = static_cast<TH1D*>(input->Get(Form("%s/gg", region.c_str())));
-    TH1D* diphotonStatUp = static_cast<TH1D*>(diphoton->Clone(Form("gg_kfactorStat%dUp", parameter)));
-    TH1D* diphotonStatDown = static_cast<TH1D*>(diphoton->Clone(Form("gg_kfactorStat%dDown", parameter)));
-    TF1 *kfactorFunction = kfactor(region, "R1F1_125GeV_NNPDF");
-    TString fitFunc("pol3");
-    TString filename="data/kfactor_" + region + "_R1F1_125GeV_NNPDF.root";
-    TFile *file = TFile::Open(filename);
-    TFitResult* fitResult = static_cast<TFitResult*>(file->Get(Form("TFitResult-%s-%s", histID.Data(), fitFunc.Data())));
-
-    TF1 *kfactorStatUp = eigenvectorVariation(true, parameter, kfactorFunction, fitResult);
-    TF1 *kfactorStatDown = eigenvectorVariation(false, parameter, kfactorFunction, fitResult);
-    for(int i=0; i <= diphotonStatUp->GetNbinsX(); i++) {
-      float binContent = diphoton->GetBinContent(i);
-      float binCenter = diphoton->GetBinCenter(i);
-      float statUp = kfactorStatUp->Eval(binCenter)/kfactorFunction->Eval(binCenter);
-      float statDown = kfactorStatDown->Eval(binCenter)/kfactorFunction->Eval(binCenter);
-      diphotonStatUp->SetBinContent(i, binContent*statUp);
-      diphotonStatDown->SetBinContent(i, binContent*statDown);
-    }
-
-    bool exists = input->cd(region.c_str());
-    if(!exists) {
-      input->mkdir(region.c_str());
-      input->cd(region.c_str());
-    }
-    diphotonStatUp->Write();
-    diphotonStatDown->Write();
-    input->Write();
-    input->Close();
-    file->Close();
-  }
 }

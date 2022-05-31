@@ -17,6 +17,8 @@ do2017signalADD = False
 do2017signalRSG = False
 do2017signalHeavyHiggs = False
 do2016signalRSG = False
+do2018signalUnpar = False
+do2017signalUnpar = False
 # Data
 do2018data = False
 do2018datarereco = False
@@ -54,6 +56,11 @@ DATASETS = [[]]
 #   datasets.append(["/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM",
 #                   "/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring15MiniAODv2-Asympt25ns_74X_mcRun2_asymptotic_v2_ext1-v1/MINIAODSIM"])
 
+if do2018signalUnpar:
+    DATASETS.extend(submission.CommonClasses.submit_utils.get_dataset_list("2018_Unparticles"))
+if do2017signalUnpar:
+    DATASETS.extend(submission.CommonClasses.submit_utils.get_dataset_list("2017_Unparticles"))
+
 if do2018signalADD:
     DATASETS.extend(submission.CommonClasses.submit_utils.get_dataset_list("2018_ADD"))
 if do2018signalRSG:
@@ -68,7 +75,7 @@ if do2017signalint:
   DATASETS.append(['/GG_M-2000To4000_Pt-70_13TeV-sherpa/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/MINIAODSIM'])
   DATASETS.append(['/GG_M-4000To6000_Pt-70_13TeV-sherpa/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM'])
   DATASETS.append(['/GG_M-6000To8000_Pt-70_13TeV-sherpa/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM'])
-  
+
 if do2017signalADD:
     DATASETS.extend(submission.CommonClasses.submit_utils.get_dataset_list("2017_ADD"))
 if do2017signalRSG:
