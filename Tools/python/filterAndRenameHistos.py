@@ -1,22 +1,20 @@
 import ROOT
 import argparse
 import re
-from itertools import imap
+from itertools import imap, izip
 
 parser = argparse.ArgumentParser(description='rebin options')
 #parser.add_argument('-i','--input', help='Input file to rebin.',default="Minv_histos_BB_2018.root", type=str)
 parser.add_argument('-y','--year', help='year',default="2018", type=str)
 parser.add_argument('-r','--region', help='region',default="BB", type=str)
 parser.add_argument('-p','--path', help='Path to input.',default="datacards/datacards/", type=str)
+parser.add_argument('--all', help='Run All Years and Regions')
 
 args = parser.parse_args()
-
 region     = args.region
 year       = args.year
 inputFile  = args.path + "Minv_histos_%s_%s.root" %(region, year)
 
-
-f = ROOT.TFile(inputFile, "READ")
 
 ###################
 
@@ -24,18 +22,13 @@ f = ROOT.TFile(inputFile, "READ")
 
 ###################
 
-###
-
 contents_keep = [
 "gj",
-"data",
-# "data_obs",
-# "data_2017_2018",
-# "data_legacy",
+"data_obs",
 "dy",
 "gg",
 "jj",
-"other",
+#"other", #drellyan, ttgamma, vgamma - to study whether it was stable to put them all together. Default to separated
 "ttg",
 "vg",
 #"w",
@@ -58,11 +51,24 @@ w_contents = [
 "w_pileupUp"
 ]
 
-# negint, exclude MS
+skip_contents = [
+"dataAB",
+"dataCD",
+"dataABC",
+"dataD",
+"data_2017_2018",
+"data_2018",
+"gg70",
+"other",
+"data_legacy",
+"data_newjson",
+"RSGrav",
+"UnparToGG",
+"GluGluSpin0ToGammaGamma",
+"ADDGravToGG_MS"
+];
 
-
-
-def ADD_string_rename(ADD_old_name, region):
+def ADD_string_rename(ADD_old_name, region, year):
     # ADD with MS are 2016 samples
     # MS   = re.search('MS-(.*)_NED', ADD_old_name).group(1)
     # NED  = re.search('NED-(.*)_KK', ADD_old_name).group(1)
@@ -83,9 +89,7 @@ def ADD_string_rename(ADD_old_name, region):
 
     return ADD_new_name
 
-print ADD_string_rename("ADDGravToGG_NegInt-0_LambdaT-13000_TuneCP2_13TeV-pythia8_energyScaleGainDown", region)
-
-def background_rename(orig_bkgstring, region):
+def background_rename(orig_bkgstring, region, year):
     new_name = "%s%s__%s" %(region, year[2:], orig_bkgstring)
     trailing_subStr = orig_bkgstring.split('_')[-1]
 
@@ -98,10 +102,6 @@ def background_rename(orig_bkgstring, region):
 
     return new_name
 
-#print background_rename("other_effUp", region)
-#print background_rename("gj", region)
-#print background_rename("data", region)
-
 def getall(d, basepath="/"):
     "Generator function to recurse into a ROOT file/dir and yield (path, obj) pairs"
     for key in d.GetListOfKeys():
@@ -113,52 +113,66 @@ def getall(d, basepath="/"):
             yield basepath+kname, d.Get(kname)
 
 
-###################
+def main(region, year, inputFile):
+    ###################
 
-# Renaming
+    # Renaming
 
-###################
+    ###################
 
-index = inputFile.find('.root')
-outfileName = inputFile[:index] + '_filtered_renamed' + inputFile[index:]
+    f = ROOT.TFile(inputFile, "READ")
 
-outfile = ROOT.TFile(outfileName, "RECREATE")
-# outfile.mkdir(region)
+    index = inputFile.find('.root')
+    outfileName = inputFile[:index] + '_filtered_renamed' + inputFile[index:]
 
-for k, o in getall(f):
-    f.cd(region)
-    if ("/%s/" %(region) in k):
+    outfile = ROOT.TFile(outfileName, "RECREATE")
+    # outfile.mkdir(region)
 
-        histName = k[4:]
-        hist = ROOT.gDirectory.Get(histName)
+    histDuplicateContainer = []
 
-        #### Background
-        #if histName in contents_keep:
-        if any(imap(histName.__contains__, contents_keep)):
-            if "ADD" in histName and "NegInt" in histName:
-                newHistName = ADD_string_rename(histName, region)
-                #print "Renaming %s to %s" %(histName, newHistName)
-            else:
-                newHistName = background_rename(histName, region)
-                if "vg" in histName:
-                    print "Renaming %s to %s" %(histName, newHistName)
+    # Loop over all histograms in input file
+    for k, o in getall(f):
+        f.cd(region)
+        if ("/%s/" %(region) in k):
 
-            outfile.WriteObject(hist, newHistName)
+            histName = k[4:]
 
-        elif histName in w_contents:
-            newHistName = background_rename(histName, region)
-            # print "Renaming %s to %s" %(histName, newHistName)
+            if histName not in histDuplicateContainer:
+                histDuplicateContainer.append(histName)
+                hist = ROOT.gDirectory.Get(histName)
 
+                #### Background
+                if any(imap(histName.__contains__, skip_contents)):
+                    continue
 
-        #### Rename Signal
-        # - Keep only ADD (and maybe Unparticles Later)
-        # if "ADD" in histName and "NegInt" in histName:
-        #     newHistName = ADD_string_rename(histName, region)
-        #     print "Renaming %s to %s" %(histName, newHistName)
-        #     outfile.WriteObject(hist, newHistName)
+                if any(imap(histName.__contains__, contents_keep)):
+                    if "ADD" in histName and "NegInt" in histName:
+                        newHistName = ADD_string_rename(histName, region, year)
+                        #print "Renaming %s to %s" %(histName, newHistName)
+                    else:
+                        newHistName = background_rename(histName, region, year)
 
-        ## FIXME/TODO:
-        # 1.) If written twice - remove (Write a separate for loop for this?)
-        # 2.) Ask Chris what dataABC are for..
+                elif histName in w_contents:
+                    newHistName = background_rename(histName, region, year)
 
-print "Histograms rewritten to new file: %s" %(outfileName)
+                outfile.WriteObject(hist, newHistName)
+                print "Renaming %s to %s" %(histName, newHistName)
+
+    print "Removed duplicates and Renamed Histograms. Filtered Contents rewritten to new file: %s" %(outfileName)
+
+if __name__ == "__main__":
+
+    if args.all:
+        region_list = ["BE", "BB"]
+        year_list = ["2016", "2017", "2018"]
+
+        for i in year_list:
+            for j in region_list:
+                inFile = args.path + "Minv_histos_%s_%s.root" %(j, i)
+                #print i, j
+                print "####################"
+                print "Renaming and filtering inputFile: %s" %(inFile)
+                print "####################"
+                main(j, i, inFile)
+    else:
+        main(region, year, inputFile)
