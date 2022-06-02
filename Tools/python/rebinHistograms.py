@@ -5,8 +5,9 @@ parser = argparse.ArgumentParser(description='rebin options')
 #parser.add_argument('-i','--input', help='Input file to rebin.',default="Minv_histos_BB_2018.root", type=str)
 parser.add_argument('-y','--year', help='year',default="2018", type=str)
 parser.add_argument('-r','--region', help='region',default="BB", type=str)
-parser.add_argument('-p','--path', help='Path to input.',default="../../../datacards/datacards/", type=str)
+parser.add_argument('-p','--path', help='Path to input.',default="datacards/datacards/", type=str)
 parser.add_argument('-b','--binScale', help='Rebinning Scale',default=1, type=int)
+parser.add_argument('--all', help='Run All Years and Regions')
 
 args = parser.parse_args()
 
@@ -15,7 +16,7 @@ year       = args.year
 inputFile  = args.path + "Minv_histos_%s_%s.root" %(region, year)
 rebinScale = args.binScale
 
-f = ROOT.TFile(inputFile, "READ")
+
 
 def getall(d, basepath="/"):
     "Generator function to recurse into a ROOT file/dir and yield (path, obj) pairs"
@@ -27,28 +28,48 @@ def getall(d, basepath="/"):
         else:
             yield basepath+kname, d.Get(kname)
 
-index = inputFile.find('.root')
-outfileName = inputFile[:index] + '_rebinned' + inputFile[index:]
+def main(region, year, inputFile):
 
-outfile = ROOT.TFile(outfileName, "RECREATE")
-outfile.mkdir(region)
+    f = ROOT.TFile(inputFile, "READ")
+    index = inputFile.find('.root')
+    outfileName = inputFile[:index] + '_rebinned' + inputFile[index:]
 
-for k, o in getall(f):
-    f.cd(region)
-    if ("/%s/" %(region) in k):
+    outfile = ROOT.TFile(outfileName, "RECREATE")
+    outfile.mkdir(region)
 
-        histName = k[4:]
-        hist = ROOT.gDirectory.Get(histName)
+    histDuplicateContainer = []
 
-        N = hist.Integral()
-        hist.Rebin(rebinScale)
+    for k, o in getall(f):
+        f.cd(region)
+        if ("/%s/" %(region) in k):
 
-        outfile.cd(region)
+            histName = k[4:]
 
-        print "Writing %s to %s" %(histName, outfileName), N
+            if histName not in histDuplicateContainer:
+                histDuplicateContainer.append(histName)
+                hist = ROOT.gDirectory.Get(histName)
+                N = hist.Integral()
+                hist.Rebin(rebinScale)
 
-        #outfile.WriteObject(hist, histName)
+                outfile.cd(region)
 
-        #hist.SetDirectory(gDirectory)
-        hist.SetName(histName)
-        hist.Write()
+                print "Writing %s" %(histName), N
+                hist.SetName(histName)
+                hist.Write()
+    print "Rebinned histograms written to: %s" %(outfileName)
+
+if __name__ == "__main__":
+    if args.all:
+        region_list = ["BE", "BB"]
+        year_list = ["2016", "2017", "2018"]
+
+        for i in year_list:
+            for j in region_list:
+                inFile = args.path + "Minv_histos_%s_%s.root" %(j, i)
+                #print i, j
+                print "####################"
+                print "Renaming and filtering inputFile: %s" %(inFile)
+                print "####################"
+                main(j, i, inFile)
+    else:
+        main(region, year, inputFile)

@@ -78,7 +78,7 @@ def ADD_string_rename(ADD_old_name, region, year):
     LambdaT   = re.search('LambdaT-(.*)_TuneCP2', ADD_old_name).group(1)
 
     #ADD_new_name = "%s__ADD%sned%s" %(region, MS, NED)
-    ADD_new_name = "%s%s__ADD%slambdaT%s" %(region, year[2:], NegInt, LambdaT)
+    ADD_new_name = "%s%s__ADDNegInt%sLT%s" %(region, year[2:], NegInt, LambdaT)
 
     if "Down" in ADD_old_name:
         systDown  = re.search('pythia8_(.*)Down', ADD_old_name).group(1)
