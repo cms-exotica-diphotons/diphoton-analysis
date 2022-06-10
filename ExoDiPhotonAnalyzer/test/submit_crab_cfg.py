@@ -11,12 +11,13 @@ submission = __import__("diphoton-analysis.CommonClasses.submit_utils")
 
 #process-2018
 do2018signalADD = False
-do2018signalRSG = False
-do2018signalHeavyHiggs = False
+do2018signalRSG = True
+do2018signalHeavyHiggs = True
 do2017signalADD = False
-do2017signalRSG = False
-do2017signalHeavyHiggs = False
-do2016signalRSG = False
+do2017signalRSG = True
+do2017signalHeavyHiggs = True
+do2016signalRSG = True
+do2016signalHeavyHiggs = True
 # Data
 do2018data = False
 do2018datarereco = False
@@ -78,6 +79,9 @@ if do2017signalHeavyHiggs:
 
 if do2016signalRSG:
     DATASETS.extend(submission.CommonClasses.submit_utils.get_dataset_list("2016_RSG"))
+if do2016signalHeavyHiggs:
+    DATASETS.extend(submission.CommonClasses.submit_utils.get_dataset_list("2016_HeavyHiggs"))
+
 
 if do2018datarereco:
   DATASETS.append(["/EGamma/Run2018A-17Sep2018-v2/MINIAOD"])

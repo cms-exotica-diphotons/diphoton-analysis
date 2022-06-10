@@ -35,7 +35,12 @@ namespace ExoDiPhotons
     double pt;
     double eta;
     double phi;
-    
+
+    // vertex
+    double vx;
+    double vy;
+    double vz;
+
     // for matching
     double deltaR_match;
     double deltaR_matchDau;
@@ -53,13 +58,18 @@ namespace ExoDiPhotons
     int grandmotherPdgId;
   };
 
-  const std::string genParticleBranchDefString("pt/D:eta:phi:deltaR_match:deltaR_matchDau:ptDiff_match:matchCategory/I:matchType:nPhotonMotherDaughters:status:motherStatus:grandmotherStatus:pdgId:motherPdgId:grandmotherPdgId");
+  const std::string genParticleBranchDefString("pt/D:eta:phi:vx:vy:vz:deltaR_match:deltaR_matchDau:ptDiff_match:matchCategory/I:matchType:nPhotonMotherDaughters:status:motherStatus:grandmotherStatus:pdgId:motherPdgId:grandmotherPdgId");
 
   void InitGenParticleInfo(genParticleInfo_t &genParticleInfo) {
     // kinematics
     genParticleInfo.pt  = -999999.99;
     genParticleInfo.eta = -999999.99;
     genParticleInfo.phi = -999999.99;
+
+    // vertex
+    genParticleInfo.vx  = -999999.99;
+    genParticleInfo.vy = -999999.99;
+    genParticleInfo.vz = -999999.99;
     
     // for matching
     genParticleInfo.deltaR_match           = -999999.99;
@@ -133,6 +143,11 @@ namespace ExoDiPhotons
     genParticleInfo.pt  = genParticle->pt();
     genParticleInfo.eta = genParticle->eta();
     genParticleInfo.phi = genParticle->phi();
+
+    // vertex
+    genParticleInfo.vx = genParticle->vertex().x();
+    genParticleInfo.vy = genParticle->vertex().y();
+    genParticleInfo.vz = genParticle->vertex().z();
 
   }
   

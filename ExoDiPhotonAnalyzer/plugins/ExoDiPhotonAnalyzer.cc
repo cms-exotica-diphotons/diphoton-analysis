@@ -243,6 +243,9 @@ class ExoDiPhotonAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResource
   // number of reconstructed primary vertices
   int nPV_;
 
+  // cutflow histograms
+  std::map<std::string,TH1F*> cutFlowHist_;
+
   enum {
     LOOSE = 0,
     MEDIUM = 1,
@@ -305,7 +308,7 @@ ExoDiPhotonAnalyzer::ExoDiPhotonAnalyzer(const edm::ParameterSet& iConfig)
   fTree->Branch("Diphoton",&fDiphotonInfo,ExoDiPhotons::diphotonBranchDefString.c_str());
   fTree->Branch("GenDiphoton",&fGenDiphotonInfo,ExoDiPhotons::diphotonBranchDefString.c_str());
 
-  isSherpaDiphoton_ = outputFile_.Contains("GGJets_M") or outputFile_.Contains("DiPhotonJets");
+  isSherpaDiphoton_ = outputFile_.Contains("GGJets_M") or outputFile_.Contains("DiPhotonJets") or outputFile_.Contains("RSG") or outputFile_.Contains("GluGlu");
   processNameData_ =  "RECO";
   // 17Jul2018 re-MINIAOD runs in the "DQM" process
   if(isReMINIAOD_) {
@@ -356,6 +359,14 @@ ExoDiPhotonAnalyzer::ExoDiPhotonAnalyzer(const edm::ParameterSet& iConfig)
 
   // number of reconstructed primary vertices
   fTree->Branch("nPV", &nPV_);
+
+  cutFlowHist_["pt125"]=fs->make<TH1F>("h_pt125", "h_pt125", 1, 0, 2);
+  cutFlowHist_["photonID"]=fs->make<TH1F>("h_photonID", "h_photonID", 1, 0, 2);
+  cutFlowHist_["eta"]=fs->make<TH1F>("h_eta", "h_eta", 1, 0, 2);
+  cutFlowHist_["EBEB"]=fs->make<TH1F>("h_EBEB", "h_EBEB", 1, 0, 2);
+  cutFlowHist_["EBEE"]=fs->make<TH1F>("h_EBEE", "h_EBEE", 1, 0, 2);
+  cutFlowHist_["mass"]=fs->make<TH1F>("h_mass", "h_mass", 1, 0, 2);
+  cutFlowHist_["deltaR"]=fs->make<TH1F>("h_deltaR", "h_deltaR", 1, 0, 2);
 
   // photon token
   photonsMiniAODToken_ = mayConsume<edm::View<pat::Photon> >(iConfig.getParameter<edm::InputTag>("photonsMiniAOD"));
@@ -436,7 +447,7 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   ExoDiPhotons::FillBasicEventInfo(fEventInfo, iEvent);
   ExoDiPhotons::FillBeamHaloEventInfo(fEventInfo, bhs);
   
-  //  cout <<  "Run: " << iEvent.id().run() << ", LS: " <<  iEvent.id().luminosityBlock() << ", Event: " << iEvent.id().event() << endl;
+   // cout <<  "Run: " << iEvent.id().run() << ", LS: " <<  iEvent.id().luminosityBlock() << ", Event: " << iEvent.id().event() << endl;
 
   // ==============
   // GEN EVENT INFO
@@ -612,12 +623,12 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     // find diphoton candidates
     for(size_t i=0; i<genParticles->size(); i++) {
       edm::Ptr<reco::GenParticle> gen = genParticles->ptrAt(i);
-      if(gen->status()==3 && gen->pdgId()==22) sherpaDiphotons.push_back(gen);
+      if(gen->isHardProcess() && gen->pdgId()==22) sherpaDiphotons.push_back(gen);
     }
 
     // the following assumes that we have exactly two photons
-    if(sherpaDiphotons.size()==2) sherpaDiphotonFiller(genParticles, sherpaDiphotons);
-    else throw cms::Exception("Should always have exactly two photons with status==3 in the diphoton sample");
+    if(sherpaDiphotons.size()>=2) sherpaDiphotonFiller(genParticles, sherpaDiphotons);
+    // else throw cms::Exception("Should always have exactly two photons with status==3 in the diphoton sample");
   }
 
   // =======
@@ -648,6 +659,8 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     
   std::vector<std::pair<edm::Ptr<pat::Photon>, int> > realAndFakePhotons;
 
+  int pt125Count=0;
+  int photonIDCount=0;
   //for (edm::View<pat::Photon>::const_iterator pho = photons->begin(); pho != photons->end(); ++pho) {
   for (size_t i = 0; i < photons->size(); ++i) {
     const auto pho = photons->ptrAt(i);
@@ -668,6 +681,10 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     if(denominatorObject) {
       realAndFakePhotons.push_back(std::pair<edm::Ptr<pat::Photon>, int>(pho, FAKE));
     }
+    // For cut flow
+    if(pho->pt()>125) pt125Count++;
+    if(pho->pt()>125 && passID) photonIDCount++;
+
   } // end of photon loop
 
   // sort vector of photons by pt
@@ -724,7 +741,15 @@ ExoDiPhotonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       fTree->Fill();
     }
   }
-  
+
+  // CutFlow
+  if(pt125Count>=2)                                                                                                                                 cutFlowHist_["pt125"] ->Fill(1);
+  if(photonIDCount>=2)                                                                                                                              cutFlowHist_["photonID"] ->Fill(1);
+  if(photonIDCount>=2 && (fDiphotonInfo.isEBEB||fDiphotonInfo.isEBEE||fDiphotonInfo.isEEEB))                                                        cutFlowHist_["eta"] ->Fill(1);
+  if(photonIDCount>=2 && fDiphotonInfo.isEBEB)                                                                                                      cutFlowHist_["EBEB"] ->Fill(1);
+  if(photonIDCount>=2 && (fDiphotonInfo.isEBEE||fDiphotonInfo.isEEEB))                                                                              cutFlowHist_["EBEE"] ->Fill(1);
+  if(photonIDCount>=2 && (fDiphotonInfo.isEBEB||fDiphotonInfo.isEBEE||fDiphotonInfo.isEEEB) && fDiphotonInfo.Minv>600 )                             cutFlowHist_["mass"] ->Fill(1);
+  if(photonIDCount>=2 && (fDiphotonInfo.isEBEB||fDiphotonInfo.isEBEE||fDiphotonInfo.isEEEB) && fDiphotonInfo.Minv>600 && fDiphotonInfo.deltaR>0.45) cutFlowHist_["deltaR"] ->Fill(1);
 
   //  cout << endl;
   
@@ -922,13 +947,27 @@ void ExoDiPhotonAnalyzer::sherpaDiphotonFiller(const edm::Handle<edm::View<reco:
 
   for(size_t k=0; k<genParticles->size(); k++ ){
     const auto gen = genParticles->ptrAt(k);
-    //    if( gen->fromHardProcessFinalState() || (abs(gen->pdgId())>=11 && abs(gen->pdgId())<=16) ) continue;
-    if( gen->status()!=3 || gen->pdgId()==22 ) continue;
+    // if( gen->fromHardProcessFinalState() || (abs(gen->pdgId())>=11 && abs(gen->pdgId())<=16) ) continue;
+    // We use sherpaDiphotons to store the genisolation information for the resonant signal fiducial selection
+    // Remove neutrinos, hardprocess photons ( resonant signal photons )
+    // Calculate the pT sum of every gen particle left (with gen->status() == 1) inside the 0.4 deltaR cone of each hardprocess photon
+    if( gen->status()!=1 || gen->isHardProcess() || gen->pdgId()==12 || gen->pdgId()==14 || gen->pdgId()==16 ) continue;
     double deltaR0 = reco::deltaR(sherpaDiphotons.at(0)->eta(), sherpaDiphotons.at(0)->phi(), gen->eta(), gen->phi());
     double deltaR1 = reco::deltaR(sherpaDiphotons.at(1)->eta(), sherpaDiphotons.at(1)->phi(), gen->eta(), gen->phi());
-    if( deltaR0 < isolationConeR_ ) SherpaGenPhoton0_iso_+=gen->pt();
-    if( deltaR1 < isolationConeR_ ) SherpaGenPhoton1_iso_+=gen->pt();
+    if( deltaR0 < isolationConeR_ && deltaR0 > 0. ) SherpaGenPhoton0_iso_+=gen->pt();
+    if( deltaR1 < isolationConeR_ && deltaR1 > 0. ) SherpaGenPhoton1_iso_+=gen->pt();
   }
+  // if(SherpaGenPhoton0_iso_ > 10 || SherpaGenPhoton1_iso_ > 10) {
+  //   for(size_t k=0; k<genParticles->size(); k++ ){
+  //     const auto gen = genParticles->ptrAt(k);
+  //     //    if( gen->fromHardProcessFinalState() || (abs(gen->pdgId())>=11 && abs(gen->pdgId())<=16) ) continue;
+  //     if( gen->status()!=1 || gen->isHardProcess() || gen->pdgId()==12 || gen->pdgId()==14 || gen->pdgId()==16 ) continue;
+  //     double deltaR0 = reco::deltaR(sherpaDiphotons.at(0)->eta(), sherpaDiphotons.at(0)->phi(), gen->eta(), gen->phi());
+  //     double deltaR1 = reco::deltaR(sherpaDiphotons.at(1)->eta(), sherpaDiphotons.at(1)->phi(), gen->eta(), gen->phi());
+  //     if( deltaR0 < isolationConeR_ && deltaR0 > 0. ) std::cout << "1= " << gen->pdgId() << " " << gen->pt() << " " << sherpaDiphotons.at(0)->pt() << " " << deltaR0 << std::endl;
+  //     if( deltaR1 < isolationConeR_ && deltaR1 > 0. ) std::cout << "2= " << gen->pdgId() << " " << gen->pt() << " " << sherpaDiphotons.at(1)->pt() << " " << deltaR1 << std::endl;
+  //   }
+  // }
 } // end sherpaDiphotonFiller
 
 void ExoDiPhotonAnalyzer::mcTruthFiller(const pat::Photon *photon, ExoDiPhotons::photonInfo_t& photonInfo, const edm::Handle<edm::View<reco::GenParticle> > genParticles)

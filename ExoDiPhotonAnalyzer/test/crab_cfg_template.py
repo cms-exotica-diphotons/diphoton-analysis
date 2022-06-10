@@ -41,7 +41,7 @@ config.JobType.pyCfgParams = ['nEventsSample=' + str(nevents), 'outputFile=out_'
 config.section_("Data")
 config.Data.inputDataset = dataset
 config.Data.inputDBS = 'global'
-if user == "cawest":
+if user == "cawest" or user == "hsinyeh":
     cmssw_base = os.environ['CMSSW_BASE']
     commit_hash = subprocess.check_output(['git', '--git-dir=' + cmssw_base + '/src/diphoton-analysis/.git',  'rev-parse', '--short', 'HEAD']).replace('\n', '')
     config.Data.outLFNDirBase = '/store/user/' + user + '/diphoton/' + commit_hash
@@ -66,5 +66,5 @@ else:
     config.Data.unitsPerJob = 2
 
 config.section_("Site")
-config.Site.storageSite = 'T3_US_FNALLPC'
+config.Site.storageSite = 'T2_TW_NCHC'
 config.Site.blacklist = ['T1_RU_JINR', 'T2_US_Vanderbilt']
