@@ -145,7 +145,7 @@ process.diphoton = cms.EDAnalyzer(
     isMC = cms.bool(isMC),
     isClosureTest = cms.bool(False),
     isReMINIAOD = cms.bool(isReMINIAOD),
-    isolationConeR = cms.double(0.3)
+    isolationConeR = cms.double(0.4)
     )
 
 # analyzer to print cross section
