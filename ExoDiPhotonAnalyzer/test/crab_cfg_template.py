@@ -6,6 +6,8 @@ import os
 import subprocess
 submit_utils = importlib.import_module("diphoton-analysis.CommonClasses.submit_utils")
 
+submitVersion = "2022-06-11" # add some date here
+
 dataset = 'DATASETNAME'
 nevents = NEVENTS
 user = os.environ['USER']
@@ -30,12 +32,12 @@ config = Configuration()
 
 config.section_("General")
 config.General.requestName = taskname
-config.General.workArea = 'out_crab'
+config.General.workArea = 'crab_%s' % submitVersion
 config.General.transferLogs = False
 
 config.section_("JobType")
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'diphoton-analysis/ExoDiPhotonAnalyzer/test/diphoton_cfg.py'
+config.JobType.psetName = '../diphoton_cfg.py'
 config.JobType.pyCfgParams = ['nEventsSample=' + str(nevents), 'outputFile=out_' + datasetID + '.root']
 
 config.section_("Data")
