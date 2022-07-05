@@ -1,5 +1,10 @@
 # EXO DiPhoton Analysis Code
 
+## Features
+* Vertex Accuracy Study
+* CutFlow
+* genIsolation for resonant fiducial volume
+
 ## To build. Note that the recipe is different for 2016/2017 and 2018 data/MC.
 
 ```
