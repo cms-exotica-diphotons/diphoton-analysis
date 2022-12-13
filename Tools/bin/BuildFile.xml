@@ -15,7 +15,8 @@
   <bin file="limit.cc" name="limit.exe"/>
   <bin file="signal.cc" name="signal.exe"/>
   <bin file="efficiency.cc" name="efficiency.exe"/>
-  <bin file="makeHistograms.cc" name="makeHistograms.exe"/>
+  <!-- <bin file="makeHistograms.cc" name="makeHistograms.exe"/> -->
+  <bin file="makeHistClockwork.cc" name="makeHistClockwork.exe"/>
   <bin file="makeHistsUnpar.cc" name="makeHistsUnpar.exe"/>
   <bin file="makeDatacards.cc" name="makeDatacards.exe"/>
   <bin file="getFakeRates.cc" name="getFakeRates.exe"/>
