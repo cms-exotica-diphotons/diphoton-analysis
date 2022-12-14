@@ -6,7 +6,7 @@
 #include "TH1.h"
 #include "TFile.h"
 
-void allSamples(const std::string &region, const std::string &year, TFile * output);
+void allSamples(const std::string &region, const std::string &year, TFile * output, double k);
 std::string getSampleBase(const std::string & sampleName, const std::string & year);
 std::string getBase(const std::string & sampleName);
 std::string addCutsPerSample(const std::string &cut, const std::string &sample, const std::string &region, const std::string &year);
@@ -44,19 +44,29 @@ int main(int argc, char *argv[])
   std::cout << "Making clockwork histograms" << std::endl;
   std::cout << "Initializing ADD histograms" << std::endl;
 
-  //TFile *output = new TFile(Form("datacards/Minv_histosCW_%s_%s.root", region.c_str(), year.c_str()), "recreate");
-  TFile *output = new TFile(Form("datacards/Minv_histos_CW_%s_%s.root", region.c_str(), year.c_str()), "recreate");
-  output->mkdir(region.c_str());
+  //TFile *output = new TFile(Form("datacards/Minv_histosCW_%s_%s.root", region.c_str(), year.c_str()), "recreate")
 
   TString baseDirectory("root://cmseos.fnal.gov/");
   initADD(baseDirectory);
-  allSamples(region, year, output);
-  // clockworkHistograms(region, year, output);
-  std::cout << "======================================="<< std::endl;
-  std::cout << "Written " << Form("datacards/Minv_histos_CW_%s_%s.root", region.c_str(), year.c_str()) << std::endl;
+
+  // std::vector<double> kvalue = {0.1, 1, 10, 100, 500, 1000, 2000, 3000, 4000, 5000};
+  // std::vector<double> kvalues = {500, 1000, 2000, 3000, 4000, 5000};
+  std::vector<double> kvalues = {1000, 5000};
+
+
+  for (auto k : kvalues){
+
+    TFile *output = new TFile(Form("datacards/Minv_histos_CW_k-%s_%s_%s.root",  std::to_string(int(k)).c_str(), region.c_str(), year.c_str()), "recreate");
+    output->mkdir(region.c_str());
+    allSamples(region, year, output, k);
+    // clockworkHistograms(region, year, output);
+    std::cout << "======================================="<< std::endl;
+    std::cout << "Written " << Form("datacards/Minv_histos_CW_k-%s_%s_%s.root",  std::to_string(int(k)).c_str(), region.c_str(), year.c_str()) << std::endl;
+
+  }
 }
 
-void allSamples(const std::string &region, const std::string &year, TFile * output){
+void allSamples(const std::string &region, const std::string &year, TFile * output, double k){
 
   std::cout << "Initializing ADD histograms" << std::endl;
   std::vector<std::string> samples = getSampleList();
@@ -99,6 +109,7 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
         // std::cout << sample << std::endl;
         std::string baseName(getSampleBase(sample, year));
         std::string sampleCut = addCutsPerSample(cuts[region], sample, region, year);
+        sampleCut += Form("*(GenDiphoton.Minv > %s)", std::to_string(k).c_str()); //FIXME: add the scale factor involving lambda???
         std::string fullCut(sampleCut);
 
         std::cout << baseName << "with cut" << fullCut << std::endl;
@@ -118,7 +129,9 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
       }
     }
 
-    double sf=(30.0*pow(((double) points[j])/1000.0,8)/(283*TMath::Pi()*pow(10,3)))*pow(10,15);
+    //double sf=(30.0*pow(((double) points[j])/1000.0,8)/(283*TMath::Pi()*pow(10,3)))*pow(10,15);/
+    double sf  = 30*pow(lambdaT, 8)/(283*TMath::Pi()*pow(10,15));
+    // double sf2 = sqrt(1-(pow(k,2)/));
 
     histGRW->Add(histHew, 1);
     histGRW->Scale(0.5);
