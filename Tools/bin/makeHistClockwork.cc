@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
   initADD(baseDirectory);
 
   // std::vector<double> kvalue = {0.1, 1, 10, 100, 500, 1000, 2000, 3000, 4000, 5000};
-  // std::vector<double> kvalues = {500, 1000, 2000, 3000, 4000, 5000};
+  //std::vector<double> kvalues = {500, 1000, 2000, 3000, 4000, 5000};
   std::vector<double> kvalues = {1000, 5000};
 
 
@@ -91,7 +91,7 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
   std::vector<int> lambdaTs = {4000, 8000, 11000};
 
   for (int lambdaT: lambdaTs){
-
+    double mgg;
     std::string lambdaTName = "LambdaT-" + std::to_string(lambdaT);
     std::string histGRWname = "GRW-" + lambdaTName;
     std::string histHewname = "Hew-" + lambdaTName;
@@ -109,7 +109,8 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
         // std::cout << sample << std::endl;
         std::string baseName(getSampleBase(sample, year));
         std::string sampleCut = addCutsPerSample(cuts[region], sample, region, year);
-        sampleCut += Form("*(GenDiphoton.Minv > %s)", std::to_string(k).c_str()); //FIXME: add the scale factor involving lambda???
+        sampleCut += Form("*(GenDiphoton.Minv > %s)", std::to_string(k).c_str());
+        // sampleCut += "*(GenDiphoton.Minv)";
         std::string fullCut(sampleCut);
 
         std::cout << baseName << "with cut" << fullCut << std::endl;
@@ -119,9 +120,14 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
         std::string varname("GenDiphoton.Minv");
 
         chains[getBase(sample)]->Project(baseName.c_str(), varname.c_str(),  fullCut.c_str());
-        //std::cout << hist->GetName() << " Integral: " << histograms[baseName]->Integral() << std::endl;
-        // std::cout << hist->Integral() << " Integral: " << histograms[baseName]->Integral() << std::endl
-        // hist->Write();
+
+        // std::cout << "Chain Entries: " << chains[getBase(sample)]->GetEntries() << std::endl;
+        //------- Chain loop
+        Double_t GenDiphoton_Minv;
+        chains[getBase(sample)]->SetBranchAddress("GenDiphoton",  &GenDiphoton_Minv);
+        mgg = double(GenDiphoton_Minv);
+        double sf2 = sqrt(1-(pow(k,2)/pow(mgg, 2)))*(1/pow(mgg, 5));
+        hist->Scale(sf2); // Fill each event with reconstructed diphoton mass weighted by sf2
 
         //FIXME: Maybe to write in a separate function that accepts histogram std::map<key, value> map;
         if ( sample.find("NegInt-1") != std::string::npos ) histGRW = hist;
@@ -131,7 +137,7 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
 
     //double sf=(30.0*pow(((double) points[j])/1000.0,8)/(283*TMath::Pi()*pow(10,3)))*pow(10,15);/
     double sf  = 30*pow(lambdaT, 8)/(283*TMath::Pi()*pow(10,15));
-    // double sf2 = sqrt(1-(pow(k,2)/));
+    // double sf  = 1.00;
 
     histGRW->Add(histHew, 1);
     histGRW->Scale(0.5);
@@ -143,6 +149,10 @@ void allSamples(const std::string &region, const std::string &year, TFile * outp
   }
 }
 
+//Long64_t nEntries = chains[getBase(sample)]->GetEntries();
+// for (Long64_t jentry=0; jentry<nEntries;jentry++) {
+//   if (jentry%100000==0) std::cout << GenDiphoton_Minv << std::endl;
+// }
 // // std::map<std::string, TH1F*> clockworkConversion(std::string nameCCW, std::map<std::string, TH1F*> histosGRW, std::map<std::string, TH1F*> histosHew){
 // void clockworkConversion(std::string nameCCW, std::map<std::string, TH1F*> histosGRW, std::map<std::string, TH1F*> histosHew){
 //
