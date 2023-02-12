@@ -1,0 +1,70 @@
+#define clockWorkHistMaker_cxx
+#include "clockWorkHistMaker.h"
+#include <TH2.h>
+#include <TStyle.h>
+#include <TCanvas.h>
+#include "TMath.h"
+
+
+void clockWorkHistMakerBase::Loop() {};
+
+class clockWorkHistMaker : public clockWorkHistMakerBase {
+public:
+  using clockWorkHistMakerBase::clockWorkHistMakerBase;
+  void Loop() {};
+  void Loop(std::string run, std::string kVal, std::string lambdaT, std::string negInt);
+};
+
+void clockWorkHistMaker::Loop(std::string run, std::string kVal, std::string lambdaT, std::string negInt)
+{
+   if (fChain == 0) return;
+
+   TString fileout_name = "Test" + run + "_k-" + kVal + "_LT-" + negInt + "_LT-" + lambdaT + ".root";
+   std::cout << fileout_name << std::endl;
+
+  Long64_t nentries = fChain->GetEntriesFast();
+
+  int nBins = 120;
+  double xMin = 0.0;
+  double xMax = 6000.;
+
+   //histograms
+  TH1D* genMinvBB = new TH1D("genMinvBB", "", nBins, xMin, xMax);// 100, 0, 10000
+  genMinvBB->Sumw2();
+  TH1D* genMinvBE = new TH1D("genMinvBE", "", nBins, xMin, xMax);// 100, 0, 10000
+  genMinvBE->Sumw2();
+
+   Long64_t nbytes = 0, nb = 0;
+   for (Long64_t jentry=0; jentry<nentries;jentry++) {
+      Long64_t ientry = LoadTree(jentry);
+      if (ientry < 0) break;
+      nb = fChain->GetEntry(jentry);   nbytes += nb;
+      // if (Cut(ientry) < 0) continue;
+      if(jentry%10000 == 0) std::cout << "Number of processed events: " << jentry << std::endl;
+
+      double lT = std::stod(lambdaT.c_str());
+      double k  = std::stod(kVal.c_str());
+
+      double sf1     = 30*pow(lT, 8)/(283*TMath::Pi()*pow(10,15));
+      double sf2     = sqrt(1-(pow(k,2)/pow(GenDiphoton_Minv, 2)))*(1/pow(GenDiphoton_Minv, 5));
+      double weight  = Event_weightAll*sf1*sf2;
+
+      bool genPho1_isEB = fabs(GenPhoton1_eta) < 1.4442;
+      bool genPho2_isEB = fabs(GenPhoton2_eta) < 1.4442;
+      bool genPho1_isEE = 1.566 < fabs(GenPhoton1_eta) && fabs(GenPhoton1_eta) < 2.5;
+      bool genPho2_isEE = 1.566 < fabs(GenPhoton2_eta) && fabs(GenPhoton2_eta) < 2.5;
+
+      if (GenDiphoton_Minv > 600){
+        if (GenDiphoton_deltaR > 0.45 && GenPhoton1_pt>125 && GenPhoton2_pt>125 && genPho1_isEB && genPho2_isEB){
+           genMinvBB->Fill(GenDiphoton_Minv, weight);
+        }
+        if (GenDiphoton_deltaR > 0.45 && GenPhoton1_pt>125 && GenPhoton2_pt>125 && ( (genPho1_isEB && genPho2_isEE) || (genPho2_isEB &&  genPho1_isEE ))){
+           genMinvBE->Fill(GenDiphoton_Minv, weight);
+        }
+      }
+   }
+   TFile file_out(fileout_name, "RECREATE");
+
+   genMinvBB->Write();
+   genMinvBE->Write();
+}// end class

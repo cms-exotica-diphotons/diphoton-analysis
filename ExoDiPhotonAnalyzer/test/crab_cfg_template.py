@@ -1,14 +1,21 @@
-## Template file for CRAB submission. The script generate_crab_config.py 
+## Template file for CRAB submission. The script generate_crab_config.py
 ## replaces the following two lines with the appropriate values
 ## Do not edit manually!
 import importlib
 import os
 import subprocess
+from datetime import datetime
 submit_utils = importlib.import_module("diphoton-analysis.CommonClasses.submit_utils")
 
 dataset = 'DATASETNAME'
 nevents = NEVENTS
 user = os.environ['USER']
+
+now = datetime.now()      # current date and time
+year  = now.strftime("%Y")
+month = now.strftime("%m")
+day   = now.strftime("%d")
+date_stamp = '_' + year + '_' + month + '_' + day
 
 # CRAB3 task names can no longer be greater than 100 characters; need to shorten task name
 taskname = dataset[1:].replace('/','__').replace('RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2','MiniAODv2').replace('TuneCUETP8M1_13TeV-madgraphMLM-pythia8','13TeV-MG-PY8')
@@ -29,8 +36,8 @@ from WMCore.Configuration import Configuration
 config = Configuration()
 
 config.section_("General")
-config.General.requestName = taskname
-config.General.workArea = 'out_crab'
+config.General.requestName  = taskname
+config.General.workArea     = 'out_CRAB' + date_stamp
 config.General.transferLogs = False
 
 config.section_("JobType")
@@ -45,8 +52,8 @@ if user == "cawest":
     cmssw_base = os.environ['CMSSW_BASE']
     commit_hash = subprocess.check_output(['git', '--git-dir=' + cmssw_base + '/src/diphoton-analysis/.git',  'rev-parse', '--short', 'HEAD']).replace('\n', '')
     config.Data.outLFNDirBase = '/store/user/' + user + '/diphoton/' + commit_hash
-else:
-    config.Data.outLFNDirBase = '/store/user/ciperez/DiPhotonAnalysis/ExoANDiphoton'
+if user == "cuperez":
+    config.Data.outLFNDirBase = '/store/user/ciperez' + '/dissertation/unparticles' + date_stamp
 
 good_run_JSON = submit_utils.get_good_run_JSON(taskname)
 if good_run_JSON:

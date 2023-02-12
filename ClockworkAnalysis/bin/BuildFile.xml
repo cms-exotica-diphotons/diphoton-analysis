@@ -1,0 +1,7 @@
+<use name="root"/>
+<use name="rootinteractive"/>
+<use name="roofit"/>
+<environment>
+  <bin file="clockwork.cc" name="clockwork.exe"/>
+</environment>
+<flags CXXFLAGS="-Wall -g"/>

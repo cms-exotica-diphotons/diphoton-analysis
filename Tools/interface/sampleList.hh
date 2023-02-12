@@ -804,9 +804,9 @@ void init(bool includeUnskimmed = false, bool includeSignal = false, bool includ
 
   // signal initialization done separately to avoid clutter
   if(includeSignal) {
-    initADD(baseDirectory);
-    initRSG(baseDirectory);
-    initHeavyHiggs(baseDirectory);
+    // initADD(baseDirectory);
+    // initRSG(baseDirectory);
+    // initHeavyHiggs(baseDirectory);
     initUnparticles(baseDirectory);
   }
 
@@ -1851,6 +1851,35 @@ void initUnparticles(const TString & baseDirectory){
     }
   }
 
+      // Stitching Issue Fix
+
+      // // Stitching issue fix for 500-1000
+      // chains["UnparToGG_Spin0_du1p5_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121108/0000/*.root");
+      // chains["UnparToGG_Spin0_du1p5_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121132/0000/*.root");
+      // //chains["UnparToGG_Spin0_du1p5_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121158/0000/*.root");
+      // chains["UnparToGG_Spin0_du1p5_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/dissertation/unparticles_2023_02_06/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/230206_211002/0000/*.root");
+      //
+      // // Stitching issue fix for 500-1000
+      // chains["UnparToGG_Spin0_du1p5_LambdaU-3500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121223/0000/*.root");
+      // chains["UnparToGG_Spin0_du1p5_LambdaU-3500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121247/0000/*.root");
+      // chains["UnparToGG_Spin0_du1p5_LambdaU-3500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121311/0000/*.root");
+      // //chains["UnparToGG_Spin0_du1p5_LambdaU-3500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121337/0000/*.root");
+      // chains["UnparToGG_Spin0_du1p5_LambdaU-3500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/dissertation/unparticles_2023_02_06/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/230206_211152/0000/*.root");
+      //
+      // // Stitching Mass block fix
+      // chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/dissertation/unparticles_2023_02_06/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/230206_211858/0000/*.root");
+      // //chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121924/0000/*.root");
+      // chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121950/0000/*.root");
+      // chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_122014/0000/*.root");
+      //
+      // // Stitching Fix
+      // chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2017"]-> Add(baseDirectory + "/store/user/cuperez/dissertation/unparticles_2023_02_06/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/230206_214853/0000/*.root");
+      // //chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2017Only/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/220407_110238/0000/*.root");
+      // chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2017Only/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/220407_110259/0000/*.root");
+      // chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2017Only/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/220407_110319/0000/*.root");
+
+      // ---------------------------------
+
       // 2018
 
       //----- Spin 0 du1p1 2018
@@ -1875,14 +1904,18 @@ void initUnparticles(const TString & baseDirectory){
       chains["UnparToGG_Spin0_du1p5_LambdaU-2000_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121018/0000/*.root");
       chains["UnparToGG_Spin0_du1p5_LambdaU-2000_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121042/0000/*.root");
 
+      // Stitching issue fix for 500-1000
       chains["UnparToGG_Spin0_du1p5_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121108/0000/*.root");
       chains["UnparToGG_Spin0_du1p5_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121132/0000/*.root");
-      chains["UnparToGG_Spin0_du1p5_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121158/0000/*.root");
+      //chains["UnparToGG_Spin0_du1p5_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121158/0000/*.root");
+      chains["UnparToGG_Spin0_du1p5_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/dissertation/unparticles_2023_02_06/UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/230206_211002/0000/*.root");
 
+      // Stitching issue fix for 500-1000
       chains["UnparToGG_Spin0_du1p5_LambdaU-3500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121223/0000/*.root");
       chains["UnparToGG_Spin0_du1p5_LambdaU-3500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121247/0000/*.root");
       chains["UnparToGG_Spin0_du1p5_LambdaU-3500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121311/0000/*.root");
-      chains["UnparToGG_Spin0_du1p5_LambdaU-3500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121337/0000/*.root");
+      //chains["UnparToGG_Spin0_du1p5_LambdaU-3500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121337/0000/*.root");
+      chains["UnparToGG_Spin0_du1p5_LambdaU-3500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/dissertation/unparticles_2023_02_06/UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p5_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/230206_211152/0000/*.root");
 
       //---- Spin 0 du1p9 2018
       chains["UnparToGG_Spin0_du1p9_LambdaU-2000_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p9_LambdaU-2000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121401/0000/*.root");
@@ -1903,7 +1936,9 @@ void initUnparticles(const TString & baseDirectory){
       chains["UnparToGG_Spin2_du1p1_LambdaU-2000_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121834/0000/*.root");
       chains["UnparToGG_Spin2_du1p1_LambdaU-2000_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121859/0000/*.root");
 
-      chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121924/0000/*.root");
+      // Stitching Mass block fix
+      chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/dissertation/unparticles_2023_02_06/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/230206_211858/0000/*.root");
+      //chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121924/0000/*.root");
       chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_121950/0000/*.root");
       chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2018"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220329_122014/0000/*.root");
 
@@ -1947,7 +1982,9 @@ void initUnparticles(const TString & baseDirectory){
       chains["UnparToGG_Spin2_du1p1_LambdaU-2000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2017Only/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/220407_110156/0000/*.root");
       chains["UnparToGG_Spin2_du1p1_LambdaU-2000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2017Only/UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/220407_110216/0000/*.root");
 
-      chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2017Only/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/220407_110238/0000/*.root");
+      // Stitching Fix
+      chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2017"]-> Add(baseDirectory + "/store/user/cuperez/dissertation/unparticles_2023_02_06/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/230206_214853/0000/*.root");
+      //chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2017Only/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/220407_110238/0000/*.root");
       chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2017Only/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODSIM/220407_110259/0000/*.root");
       chains["UnparToGG_Spin2_du1p1_LambdaU-2500_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2017Only/UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-2500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/220407_110319/0000/*.root");
 
@@ -1960,6 +1997,9 @@ void initUnparticles(const TString & baseDirectory){
       chains["UnparToGG_Spin0_du1p1_LambdaU-10000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAO/220329_123501/0000/*.root");
       chains["UnparToGG_Spin0_du1p1_LambdaU-10000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAO/220329_123522/0000/*.root");
       chains["UnparToGG_Spin0_du1p1_LambdaU-10000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/220329_123548/0000/*.root");
+      chains["UnparToGG_Spin0_du1p1_LambdaU-10000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/dissertation/unparticles_2023_02_06/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M4000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/230206_210308/0000/*.root");
+      //Stitch Fix 4000
+
 
       chains["UnparToGG_Spin0_du1p1_LambdaU-4000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/220329_123615/0000/*.root");
       chains["UnparToGG_Spin0_du1p1_LambdaU-4000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/220329_123640/0000/*.root");
@@ -2122,7 +2162,6 @@ void initUnparticles(const TString & baseDirectory){
       chains["UnparToGG_Spin2_du1p9_LambdaU-3500_TuneCP2_13TeV_pythia8_2016"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin2_du1p9_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p9_LambdaU-3500_pT70_M2000-3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220328_165731/0000/*.root");
       chains["UnparToGG_Spin2_du1p9_LambdaU-3500_TuneCP2_13TeV_pythia8_2016"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin2_du1p9_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p9_LambdaU-3500_pT70_M3000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220328_165751/0000/*.root");
       chains["UnparToGG_Spin2_du1p9_LambdaU-3500_TuneCP2_13TeV_pythia8_2016"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin2_du1p9_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p9_LambdaU-3500_pT70_M500-1000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/220328_165811/0000/*.root");
-
 }
 
 
