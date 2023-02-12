@@ -6,6 +6,8 @@
 #include "TH1.h"
 #include "TFile.h"
 
+#include <chrono>
+
 void allSamples(const std::string &region, const std::string &year, TFile * output);
 std::string getSampleBase(const std::string & sampleName, const std::string & year);
 std::string getBase(const std::string & sampleName);
@@ -38,6 +40,8 @@ int main(int argc, char *argv[])
   }
 
   // include signal samples but not unskimmed data samples
+  std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
   init(false, true);
 
   TFile *output = new TFile(Form("datacards/Minv_histos_%s_%s.root", region.c_str(), year.c_str()), "recreate");
@@ -57,6 +61,10 @@ int main(int argc, char *argv[])
   getDiphotonYieldVariations(region, "kfactorStat2", year);
   getDiphotonYieldVariations(region, "kfactorStat3", year);
 
+  std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+  std::cout << "Time Elapsed = " << std::chrono::duration_cast<std::chrono::hours>(end - begin).count() << "[hrs]" << std::endl;
+
+  std::cout << "DONE " << std::endl;
 }
 
 void addFakePrediction(const std::string &region, const std::string &year, TFile * output)
@@ -97,12 +105,12 @@ std::string addCutsPerSample(const std::string &cut, const std::string &sample, 
     sampleCut+="*" + std::string(scale_factor_cut(atoi(year.c_str()), 0).Data());
     // add pileup weights, zero sigma from mean
     sampleCut+="*" + std::string(npv_reweight_str(atoi(year.c_str()), 0).Data());
-    if( sample.find("gg70_2016") != std::string::npos
-	or sample.find("gg70_2017") != std::string::npos
-	or sample.find("gg70_2018") != std::string::npos) {
-      // GG Pythia samples include box diagram but signal does not
-      sampleCut += "*(pdf_id1 != 21 && pdf_id2 != 21)";
-    }
+  //   if( sample.find("gg70_2016") != std::string::npos
+	// or sample.find("gg70_2017") != std::string::npos
+	// or sample.find("gg70_2018") != std::string::npos) {
+  //     // GG Pythia samples include box diagram but signal does not
+  //     sampleCut += "*(pdf_id1 != 21 && pdf_id2 != 21)";
+  //   }
     // // need to increase selection for Pythia ADD cuts to avoid negative weights
     // // from background subtraction
     if( sample.find("ADD") != std::string::npos or sample.find("Unpar")!= std::string::npos
