@@ -1994,11 +1994,11 @@ void initUnparticles(const TString & baseDirectory){
       chains["UnparToGG_Spin2_du1p1_LambdaU-3000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2017Only/UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin2_du1p1_LambdaU-3000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAODS/220407_110448/0000/*.root");
 
       //--- Spin 0 du1p1 2017
+      //Stitch Fix 4000 - Infinity
       chains["UnparToGG_Spin0_du1p1_LambdaU-10000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAO/220329_123501/0000/*.root");
       chains["UnparToGG_Spin0_du1p1_LambdaU-10000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M2000-4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M2000-4000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAO/220329_123522/0000/*.root");
       chains["UnparToGG_Spin0_du1p1_LambdaU-10000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M500-1000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M500-1000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/220329_123548/0000/*.root");
       chains["UnparToGG_Spin0_du1p1_LambdaU-10000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/dissertation/unparticles_2023_02_06/UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M4000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-10000_pT70_M4000_TuneCP2_13TeV_pythia8__Autumn18-v1__MINIAODSIM/230206_210308/0000/*.root");
-      //Stitch Fix 4000
 
 
       chains["UnparToGG_Spin0_du1p1_LambdaU-4000_TuneCP2_13TeV_pythia8_2017"]->Add(baseDirectory + "/store/user/cuperez/Unparticles2GGReprocess/UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M1000-2000_TuneCP2_13TeV_pythia8/crab_UnparToGG_Spin0_du1p1_LambdaU-4000_pT70_M1000-2000_TuneCP2_13TeV_pythia8__Fall17_PU2017-v1__MINIAOD/220329_123615/0000/*.root");
