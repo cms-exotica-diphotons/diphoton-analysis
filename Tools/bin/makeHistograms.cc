@@ -105,12 +105,14 @@ std::string addCutsPerSample(const std::string &cut, const std::string &sample, 
     sampleCut+="*" + std::string(scale_factor_cut(atoi(year.c_str()), 0).Data());
     // add pileup weights, zero sigma from mean
     sampleCut+="*" + std::string(npv_reweight_str(atoi(year.c_str()), 0).Data());
-  //   if( sample.find("gg70_2016") != std::string::npos
-	// or sample.find("gg70_2017") != std::string::npos
-	// or sample.find("gg70_2018") != std::string::npos) {
-  //     // GG Pythia samples include box diagram but signal does not
-  //     sampleCut += "*(pdf_id1 != 21 && pdf_id2 != 21)";
-  //   }
+
+    if( sample.find("gg70_2016") != std::string::npos
+	or sample.find("gg70_2017") != std::string::npos
+	or sample.find("gg70_2018") != std::string::npos) {
+      // GG Pythia samples include box diagram but signal does not
+      sampleCut += "*(pdf_id1 != 21 && pdf_id2 != 21)";
+    }
+
     // // need to increase selection for Pythia ADD cuts to avoid negative weights
     // // from background subtraction
     if( sample.find("ADD") != std::string::npos or sample.find("Unpar")!= std::string::npos

@@ -248,11 +248,11 @@ void fakePrediction::Loop(int year, const std::string &dataset, const std::strin
    TH1D *sum[2], *sum_copy[2], *sum_for_datacard[2];
    sum[BB] = static_cast<TH1D*>(TF[BB]->Clone("gjDataDrivenBB"));
    sum[BB]->Add(FT[BB]);
-   sum[BB]->Add(FF[BB]);
+   sum[BB]->Add(FF[BB], -1.0); // correction for double counting -1.0
    // barrel, endcap fakes sum
    sum[BE] = static_cast<TH1D*>(TF[BE]->Clone("gjDataDrivenBE"));
    sum[BE]->Add(FT[BE]);
-   sum[BE]->Add(FF[BE]);
+   sum[BE]->Add(FF[BE], -1.0); // correction for double counting -1.0
    // different binning needed for data_driven.exe script in blinded region
    sum_copy[BB] = new TH1D("BB_Minv", "BB_Minv", nbins_limited, xmin, xmax_limited);
    sum_copy[BE] = new TH1D("BE_Minv", "BE_Minv", nbins_limited, xmin, xmax_limited);
