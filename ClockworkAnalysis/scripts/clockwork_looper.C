@@ -11,7 +11,7 @@
 
 using namespace std;
 
-void clockwork_looper(std::string run, double kVal, double lambdaT, int negInt){
+void clockwork_looper(std::string run, double lambdaT, int negInt){
   // cout << "\nRun Configuration: " << run << "; kVal: " << kVal << "; lambdaT: " << lambdaT << "; negInt: "  << negInt << endl;
 
   // use stopwatch for timing
@@ -549,7 +549,7 @@ if (run == "2018") {
     chain->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/ADDGravToGG_NegInt-1_LambdaT-9000_M-500To1000_TuneCP2_13TeV-pythia8/crab_ADDGravToGG_NegInt-1_LambdaT-9000_M-500To1000_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/191203_200837/0000/*.root");
   }
   // SM LO background
-  if (negInt == 1 && lT == 100000) {
+  if (lT == 100000) {
     chain->Add(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-500To1000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213601/0000/*.root");
     chain->Add(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-1000To2000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213628/0000/*.root");
     chain->Add(baseDirectory + "/store/user/cawest/diphoton/cba3996/GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8/crab_GG_M-2000To4000_Pt70_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/210715_213653/0000/*.root");
@@ -565,7 +565,7 @@ if (run == "2018") {
 
 
   clockWorkHistMaker loop(chain);
-  loop.Loop(run, kVal, lambdaT, negInt);
+  loop.Loop(run, lambdaT, negInt);
 
   // stop stopwatch
   sw.Stop();
