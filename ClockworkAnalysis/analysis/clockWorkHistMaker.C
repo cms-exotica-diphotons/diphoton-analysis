@@ -36,46 +36,88 @@ void clockWorkHistMaker::Loop(std::string run, double lambdaT, int negInt)
 
    TString fileout_name = oss.str().c_str();
 
-
+   // vector<TString> kvalue = {"0p1", "1", "10", "100", "500", "1000", "2000", "3000", "4000", "5000"};
+   //
    std::cout << fileout_name << std::endl;
 
    if (fChain == 0) return;
 
    Long64_t nentries = fChain->GetEntriesFast();
 
+   // int nBins = 100.; //120; // 100
+   // double xMin = 500.; //0.0; // 500
+   // double xMax = 4000.;//6000.; // 4000
+   // k = 0p1
+
+   TH1D* diphotonMinvEBEB_k0p1 = new TH1D("diphotonMinvEBEB_k0p1", "", 120, 0., 6000.);// 100, 0, 10000
+   diphotonMinvEBEB_k0p1->Sumw2();
+
+   TH1D* diphotonMinvEBEE_k0p1 = new TH1D("diphotonMinvEBEE_k0p1", "", 120, 0., 6000.);// 100, 0, 10000
+   diphotonMinvEBEE_k0p1->Sumw2();
+
+
+   // k = 1
+
+   TH1D* diphotonMinvEBEB_k1 = new TH1D("diphotonMinvEBEB_k1", "", 120, 0., 6000.);// 100, 0, 10000
+   diphotonMinvEBEB_k1->Sumw2();
+
+   TH1D* diphotonMinvEBEE_k1 = new TH1D("diphotonMinvEBEE_k1", "", 120, 0., 6000.);// 100, 0, 10000
+   diphotonMinvEBEE_k1->Sumw2();
+
+   // k = 10
+   TH1D* diphotonMinvEBEB_k10 = new TH1D("diphotonMinvEBEB_k10", "", 120, 0., 6000.);// 100, 0, 10000
+   diphotonMinvEBEB_k10->Sumw2();
+
+   TH1D* diphotonMinvEBEE_k10 = new TH1D("diphotonMinvEBEE_k10", "", 120, 0., 6000.);// 100, 0, 10000
+   diphotonMinvEBEE_k10->Sumw2();
+
+   // k = 100
+   TH1D* diphotonMinvEBEB_k100 = new TH1D("diphotonMinvEBEB_k100", "", 120, 0., 6000.);// 100, 0, 10000
+   diphotonMinvEBEB_k100->Sumw2();
+
+   TH1D* diphotonMinvEBEE_k100 = new TH1D("diphotonMinvEBEE_k100", "", 120, 0., 6000.);// 100, 0, 10000
+   diphotonMinvEBEE_k100->Sumw2();
+
    // k = 500
-   TH1D* diphotonMinvEBEB_k500 = new TH1D("diphotonMinvEBEB_k500", "", 100, 500., 4000.);// 100, 0, 10000
+   TH1D* diphotonMinvEBEB_k500 = new TH1D("diphotonMinvEBEB_k500", "", 120, 0., 6000.);// 100, 0, 10000
    diphotonMinvEBEB_k500->Sumw2();
 
-   TH1D* diphotonMinvEBEE_k500 = new TH1D("diphotonMinvEBEE_k500", "", 100, 500., 4000.);// 100, 0, 10000
+   TH1D* diphotonMinvEBEE_k500 = new TH1D("diphotonMinvEBEE_k500", "", 120, 0., 6000.);// 100, 0, 10000
    diphotonMinvEBEE_k500->Sumw2();
 
    // k = 1000
-   TH1D* diphotonMinvEBEB_k1000 = new TH1D("diphotonMinvEBEB_k1000", "", 100, 500., 4000.);// 100, 0, 10000
+   TH1D* diphotonMinvEBEB_k1000 = new TH1D("diphotonMinvEBEB_k1000", "", 120, 0., 6000.);// 100, 0, 10000
    diphotonMinvEBEB_k1000->Sumw2();
 
-   TH1D* diphotonMinvEBEE_k1000 = new TH1D("diphotonMinvEBEE_k1000", "", 100, 500., 4000.);// 100, 0, 10000
+   TH1D* diphotonMinvEBEE_k1000 = new TH1D("diphotonMinvEBEE_k1000", "", 120, 0., 6000.);// 100, 0, 10000
    diphotonMinvEBEE_k1000->Sumw2();
 
    // k = 2000
-   TH1D* diphotonMinvEBEB_k2000 = new TH1D("diphotonMinvEBEB_k2000", "", 100, 500., 4000.);// 100, 0, 10000
+   TH1D* diphotonMinvEBEB_k2000 = new TH1D("diphotonMinvEBEB_k2000", "", 120, 0., 6000.);// 100, 0, 10000
    diphotonMinvEBEB_k2000->Sumw2();
 
-   TH1D* diphotonMinvEBEE_k2000 = new TH1D("diphotonMinvEBEE_k2000", "", 100, 500., 4000.);// 100, 0, 10000
+   TH1D* diphotonMinvEBEE_k2000 = new TH1D("diphotonMinvEBEE_k2000", "", 120, 0., 6000.);// 100, 0, 10000
    diphotonMinvEBEE_k2000->Sumw2();
 
    // k = 3000
-   TH1D* diphotonMinvEBEB_k3000 = new TH1D("diphotonMinvEBEB_k3000", "", 100, 500., 4000.);// 100, 0, 10000
+   TH1D* diphotonMinvEBEB_k3000 = new TH1D("diphotonMinvEBEB_k3000", "", 120, 0., 6000.);// 100, 0, 10000
    diphotonMinvEBEB_k3000->Sumw2();
 
-   TH1D* diphotonMinvEBEE_k3000 = new TH1D("diphotonMinvEBEE_k3000", "", 100, 500., 4000.);// 100, 0, 10000
+   TH1D* diphotonMinvEBEE_k3000 = new TH1D("diphotonMinvEBEE_k3000", "", 120, 0., 6000.);// 100, 0, 10000
    diphotonMinvEBEE_k3000->Sumw2();
 
+   // k = 4000
+   TH1D* diphotonMinvEBEB_k4000 = new TH1D("diphotonMinvEBEB_k4000", "", 120, 0., 6000.);// 100, 0, 10000
+   diphotonMinvEBEB_k4000->Sumw2();
+
+   TH1D* diphotonMinvEBEE_k4000 = new TH1D("diphotonMinvEBEE_k4000", "", 120, 0., 6000.);// 100, 0, 10000
+   diphotonMinvEBEE_k4000->Sumw2();
+
    // k = 5000
-   TH1D* diphotonMinvEBEB_k5000 = new TH1D("diphotonMinvEBEB_k5000", "", 100, 500., 4000.);// 100, 0, 10000
+   TH1D* diphotonMinvEBEB_k5000 = new TH1D("diphotonMinvEBEB_k5000", "", 120, 0., 6000.);// 100, 0, 10000
    diphotonMinvEBEB_k5000->Sumw2();
 
-   TH1D* diphotonMinvEBEE_k5000 = new TH1D("diphotonMinvEBEE_k5000", "", 100, 500., 4000.);// 100, 0, 10000
+   TH1D* diphotonMinvEBEE_k5000 = new TH1D("diphotonMinvEBEE_k5000", "", 120, 0., 6000.);// 100, 0, 10000
    diphotonMinvEBEE_k5000->Sumw2();
 
    Long64_t nbytes = 0, nb = 0;
@@ -92,35 +134,59 @@ void clockWorkHistMaker::Loop(std::string run, double lambdaT, int negInt)
       //double scale = Event_weightAll*30*std::pow(lambdaT, 8)/(283*3.14159*pow(M5,3))*sqrt(1-(std::pow(kVal,2)/std::pow(GenDiphoton_Minv,2)))*(1/std::pow(GenDiphoton_Minv,5));
       // double scale = Event_weightAll*30/(283*3.14159*pow(M5,3))*sqrt(1-(std::pow(kVal,2)/std::pow(GenDiphoton_Minv,2)))*(1/std::pow(GenDiphoton_Minv,5));
 
+      // vector<TString> kvalue = {"0p1", "1", "10", "100", "500", "1000", "2000", "3000", "4000", "5000"};
       // if Diphoton_isEBEB
       if (Diphoton_isEBEB){
+        if (GenDiphoton_Minv > 0.1)  diphotonMinvEBEB_k0p1->Fill(Diphoton_Minv, scale(0.1, Event_weightAll, GenDiphoton_Minv, M5));
+        if (GenDiphoton_Minv > 1)  diphotonMinvEBEB_k1->Fill(Diphoton_Minv, scale(1, Event_weightAll, GenDiphoton_Minv, M5));
+        if (GenDiphoton_Minv > 10)  diphotonMinvEBEB_k10->Fill(Diphoton_Minv, scale(10, Event_weightAll, GenDiphoton_Minv, M5));
+        if (GenDiphoton_Minv > 100)  diphotonMinvEBEB_k100->Fill(Diphoton_Minv, scale(100, Event_weightAll, GenDiphoton_Minv, M5));
         if (GenDiphoton_Minv > 500)  diphotonMinvEBEB_k500->Fill(Diphoton_Minv, scale(500, Event_weightAll, GenDiphoton_Minv, M5));
         if (GenDiphoton_Minv > 1000) diphotonMinvEBEB_k1000->Fill(Diphoton_Minv, scale(1000, Event_weightAll, GenDiphoton_Minv, M5));
         if (GenDiphoton_Minv > 2000) diphotonMinvEBEB_k2000->Fill(Diphoton_Minv, scale(2000, Event_weightAll, GenDiphoton_Minv, M5));
         if (GenDiphoton_Minv > 3000) diphotonMinvEBEB_k3000->Fill(Diphoton_Minv, scale(3000, Event_weightAll, GenDiphoton_Minv, M5));
+        if (GenDiphoton_Minv > 4000)  diphotonMinvEBEB_k4000->Fill(Diphoton_Minv, scale(4000, Event_weightAll, GenDiphoton_Minv, M5));
         if (GenDiphoton_Minv > 5000) diphotonMinvEBEB_k5000->Fill(Diphoton_Minv, scale(5000, Event_weightAll, GenDiphoton_Minv, M5));
       }
 
       // if Diphoton_isEBEE or Diphoton_isEEEB
       if (Diphoton_isEBEE or Diphoton_isEEEB){
+        if (GenDiphoton_Minv > 0.1)  diphotonMinvEBEE_k0p1->Fill(Diphoton_Minv, scale(0.1, Event_weightAll, GenDiphoton_Minv, M5));
+        if (GenDiphoton_Minv > 1)  diphotonMinvEBEE_k1->Fill(Diphoton_Minv, scale(1, Event_weightAll, GenDiphoton_Minv, M5));
+        if (GenDiphoton_Minv > 10)  diphotonMinvEBEE_k10->Fill(Diphoton_Minv, scale(10, Event_weightAll, GenDiphoton_Minv, M5));
+        if (GenDiphoton_Minv > 100)  diphotonMinvEBEE_k100->Fill(Diphoton_Minv, scale(100, Event_weightAll, GenDiphoton_Minv, M5));
         if (GenDiphoton_Minv > 500)  diphotonMinvEBEE_k500->Fill(Diphoton_Minv, scale(500, Event_weightAll, GenDiphoton_Minv, M5));
         if (GenDiphoton_Minv > 1000) diphotonMinvEBEE_k1000->Fill(Diphoton_Minv, scale(1000, Event_weightAll, GenDiphoton_Minv, M5));
         if (GenDiphoton_Minv > 2000) diphotonMinvEBEE_k2000->Fill(Diphoton_Minv, scale(2000, Event_weightAll, GenDiphoton_Minv, M5));
         if (GenDiphoton_Minv > 3000) diphotonMinvEBEE_k3000->Fill(Diphoton_Minv, scale(3000, Event_weightAll, GenDiphoton_Minv, M5));
+        if (GenDiphoton_Minv > 4000)  diphotonMinvEBEE_k4000->Fill(Diphoton_Minv, scale(4000, Event_weightAll, GenDiphoton_Minv, M5));
         if (GenDiphoton_Minv > 5000) diphotonMinvEBEE_k5000->Fill(Diphoton_Minv, scale(5000, Event_weightAll, GenDiphoton_Minv, M5));
       }
    }
 
+   // vector<TString> kvalue = {"0p1", "1", "10", "100", "500", "1000", "2000", "3000", "4000", "5000"};
    TFile file_out(fileout_name, "RECREATE");
+
+   diphotonMinvEBEB_k0p1->Write();
+   diphotonMinvEBEB_k1->Write();
+   diphotonMinvEBEB_k10->Write();
+   diphotonMinvEBEB_k100->Write();
    diphotonMinvEBEB_k500->Write();
    diphotonMinvEBEB_k1000->Write();
    diphotonMinvEBEB_k2000->Write();
    diphotonMinvEBEB_k3000->Write();
+   diphotonMinvEBEB_k4000->Write();
    diphotonMinvEBEB_k5000->Write();
 
+
+   diphotonMinvEBEE_k0p1->Write();
+   diphotonMinvEBEE_k1->Write();
+   diphotonMinvEBEE_k10->Write();
+   diphotonMinvEBEE_k100->Write();
    diphotonMinvEBEE_k500->Write();
    diphotonMinvEBEE_k1000->Write();
    diphotonMinvEBEE_k2000->Write();
    diphotonMinvEBEE_k3000->Write();
+   diphotonMinvEBEE_k4000->Write();
    diphotonMinvEBEE_k5000->Write();
 }

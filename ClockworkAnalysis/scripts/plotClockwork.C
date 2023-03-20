@@ -11,17 +11,26 @@
 
 TFile *rootfile=0;
 // std::string year = "2017";
+TString year = "2017";
+std::string stryear = "2017";
+TString yr = "17";
 
 TH1* getHist(const char* name, int ANATYPE)
 {
   rootfile=0;
   // 2016
   // 2017
-  if(ANATYPE==0) rootfile=new TFile("Test2017_SMGGLOPythia.root"); // SM background done
-  if(ANATYPE==1) rootfile=new TFile("Test2017_negInt-1_lT-4000.root"); //
-  if(ANATYPE==2) rootfile=new TFile("Test2017_negInt-0_lT-4000.root"); //
-  if(ANATYPE==3) rootfile=new TFile("Test2017_negInt-1_lT-6000.root"); //
-  if(ANATYPE==4) rootfile=new TFile("Test2017_negInt-0_lT-6000.root"); //
+  if(ANATYPE==0) rootfile=new TFile("Test"+ year +"_SMGGLOPythia.root"); // SM background done
+  if(ANATYPE==1) rootfile=new TFile("Test"+ year +"_negInt-1_lT-4000.root"); //
+  if(ANATYPE==2) rootfile=new TFile("Test"+ year +"_negInt-0_lT-4000.root"); //
+  if(ANATYPE==3) rootfile=new TFile("Test"+ year +"_negInt-1_lT-6000.root"); //
+  if(ANATYPE==4) rootfile=new TFile("Test"+ year +"_negInt-0_lT-6000.root"); //
+
+  // if(ANATYPE==0) rootfile=new TFile(Form("Test{%s}_SMGGLOPythia.root", year).Data()); // SM background done
+  // if(ANATYPE==1) rootfile=new TFile(Form("Test{%s}_negInt-1_lT-4000.root", year).Data()); //
+  // if(ANATYPE==2) rootfile=new TFile(Form("Test{%s}_negInt-0_lT-4000.root", year).Data()); //
+  // if(ANATYPE==3) rootfile=new TFile(Form("Test{%s}_negInt-1_lT-6000.root", year).Data()); //
+  // if(ANATYPE==4) rootfile=new TFile(Form("Test{%s}_negInt-0_lT-6000.root", year).Data()); //
   // 2018
 
 
@@ -53,13 +62,22 @@ TH1* combine(TH1 *hNegLo, TH1 *hPosLo, TH1 *hNegHi, TH1 *hPosHi, TH1 *hbkg, doub
 
 void plotClockwork(void){
 
-  // std::cout << "Plotting for year " << year << std::endl;
+  std::cout << "Plotting for year " << year << std::endl;
   std::map<std::string, std::string> lumi = {
       {"2018",   "59.7"},
       {"2017",   "41.5"},
       {"2016",   "36.3"},
       {"161718", "137.6"}
   };
+
+  std::map<std::string, double> lumiNum = {
+      {"2018",   59.7},
+      {"2017",   41.5},
+      {"2016",   36.3},
+      {"161718", 137.6}
+  };
+
+  double luminosity = lumiNum[stryear];
 
   TCanvas *cEBEB=new TCanvas();
   gPad->SetLogy(1);
@@ -70,34 +88,45 @@ void plotClockwork(void){
   TH1* h3000_EBEB=combine(getHist("diphotonMinvEBEB_k3000",1),getHist("diphotonMinvEBEB_k3000",2), getHist("diphotonMinvEBEB_k3000",3), getHist("diphotonMinvEBEB_k3000",4), getHist("diphotonMinvEBEB_k3000",0), 4000, 6000);
   TH1* h5000_EBEB=combine(getHist("diphotonMinvEBEB_k5000",1),getHist("diphotonMinvEBEB_k5000",2), getHist("diphotonMinvEBEB_k5000",3), getHist("diphotonMinvEBEB_k5000",4), getHist("diphotonMinvEBEB_k5000",0), 4000, 6000);
 
+  TH1* h0p1_EBEB=combine(getHist("diphotonMinvEBEB_k500",1),getHist("diphotonMinvEBEB_k500",2), getHist("diphotonMinvEBEB_k500",3), getHist("diphotonMinvEBEB_k500",4), getHist("diphotonMinvEBEB_k500",0), 4000, 6000);
+  TH1* h1000_EBEB=combine(getHist("diphotonMinvEBEB_k1000",1),getHist("diphotonMinvEBEB_k1000",2), getHist("diphotonMinvEBEB_k1000",3), getHist("diphotonMinvEBEB_k1000",4), getHist("diphotonMinvEBEB_k1000",0), 4000, 6000);
+  TH1* h2000_EBEB=combine(getHist("diphotonMinvEBEB_k2000",1),getHist("diphotonMinvEBEB_k2000",2), getHist("diphotonMinvEBEB_k2000",3), getHist("diphotonMinvEBEB_k2000",4), getHist("diphotonMinvEBEB_k2000",0), 4000, 6000);
+  TH1* h3000_EBEB=combine(getHist("diphotonMinvEBEB_k3000",1),getHist("diphotonMinvEBEB_k3000",2), getHist("diphotonMinvEBEB_k3000",3), getHist("diphotonMinvEBEB_k3000",4), getHist("diphotonMinvEBEB_k3000",0), 4000, 6000);
+  TH1* h5000_EBEB=combine(getHist("diphotonMinvEBEB_k5000",1),getHist("diphotonMinvEBEB_k5000",2), getHist("diphotonMinvEBEB_k5000",3), getHist("diphotonMinvEBEB_k5000",4), getHist("diphotonMinvEBEB_k5000",0), 4000, 6000);
+
   h500_EBEB->SetLineWidth(2);
   h500_EBEB->SetLineColor(kYellow);
   h500_EBEB->Rebin(4);
-  h500_EBEB->Scale(38.5);
+  // h500_EBEB->Scale(38.5);
+  h500_EBEB->Scale(luminosity);
   h500_EBEB->Draw("HIST");
 
   h1000_EBEB->SetLineWidth(2);
   h1000_EBEB->SetLineColor(kOrange);
   h1000_EBEB->Rebin(4);
-  h1000_EBEB->Scale(38.5);
+  // h1000_EBEB->Scale(38.5);
+  h1000_EBEB->Scale(luminosity);
   h1000_EBEB->Draw("HIST, SAME");
 
   h2000_EBEB->SetLineWidth(2);
   h2000_EBEB->SetLineColor(kRed);
   h2000_EBEB->Rebin(4);
-  h2000_EBEB->Scale(38.5);
+  // h2000_EBEB->Scale(38.5);
+  h2000_EBEB->Scale(luminosity);
   h2000_EBEB->Draw("HIST, SAME");
 
   h3000_EBEB->SetLineWidth(2);
   h3000_EBEB->SetLineColor(kGreen);
   h3000_EBEB->Rebin(4);
-  h3000_EBEB->Scale(38.5);
+  // h3000_EBEB->Scale(38.5);
+  h3000_EBEB->Scale(luminosity);
   h3000_EBEB->Draw("HIST, SAME");
 
   h5000_EBEB->SetLineWidth(2);
   h5000_EBEB->SetLineColor(kBlue);
   h5000_EBEB->Rebin(4);
-  h5000_EBEB->Scale(38.5);
+  // h5000_EBEB->Scale(38.5);
+  h5000_EBEB->Scale(luminosity);
   h5000_EBEB->Draw("HIST, SAME");
 
   h500_EBEB->GetXaxis()->SetTitle("M_{#gamma#gamma} [GeV]");
@@ -117,7 +146,7 @@ void plotClockwork(void){
   legEBEB->AddEntry(h5000_EBEB, "k = 5000 GeV" ,"l");
   legEBEB->Draw();
 
-  TLatex* cmst = new TLatex(0.58, 0.82, Form("#font[61]{CMS} #font[42]{%s} #font[42]{%s}", "EBEB", "2017"));
+  TLatex* cmst = new TLatex(0.58, 0.82, Form("#font[61]{CMS} #font[42]{%s} #font[42]{%s}", "EBEB", stryear.c_str()));
   cmst->SetNDC();
   cmst->SetTextSize(0.06);
   cmst->Draw();
@@ -126,7 +155,7 @@ void plotClockwork(void){
   clockworkEBEB->SetNDC();
   clockworkEBEB->SetTextSize(0.04);
   clockworkEBEB->Draw();
-  TLatex* lumit = new TLatex(0.65, 0.92, Form("#font[42]{%s fb^{-1} (13 TeV)}", lumi["2017"].c_str()));
+  TLatex* lumit = new TLatex(0.65, 0.92, Form("#font[42]{%s fb^{-1} (13 TeV)}", lumi[stryear].c_str()));
   lumit->SetNDC();
   lumit->SetTextSize(0.04);
   lumit->Draw();
@@ -144,31 +173,36 @@ void plotClockwork(void){
   h500_EBEE->SetLineWidth(2);
   h500_EBEE->SetLineColor(kYellow);
   h500_EBEE->Rebin(4);
-  h500_EBEE->Scale(38.5);
+  //h500_EBEE->Scale(38.5);
+  h500_EBEE->Scale(luminosity);
   h500_EBEE->Draw("HIST");
 
   h1000_EBEE->SetLineWidth(2);
   h1000_EBEE->SetLineColor(kOrange);
   h1000_EBEE->Rebin(4);
-  h1000_EBEE->Scale(38.5);
+  //h1000_EBEE->Scale(38.5);
+  h1000_EBEE->Scale(luminosity);
   h1000_EBEE->Draw("HIST, SAME");
 
   h2000_EBEE->SetLineWidth(2);
   h2000_EBEE->SetLineColor(kRed);
   h2000_EBEE->Rebin(4);
-  h2000_EBEE->Scale(38.5);
+  //h2000_EBEE->Scale(38.5);
+  h2000_EBEE->Scale(luminosity);
   h2000_EBEE->Draw("HIST, SAME");
 
   h3000_EBEE->SetLineWidth(2);
   h3000_EBEE->SetLineColor(kGreen);
   h3000_EBEE->Rebin(4);
-  h3000_EBEE->Scale(38.5);
+  // h3000_EBEE->Scale(38.5);
+  h3000_EBEE->Scale(luminosity);
   h3000_EBEE->Draw("HIST, SAME");
 
   h5000_EBEE->SetLineWidth(2);
   h5000_EBEE->SetLineColor(kBlue);
   h5000_EBEE->Rebin(4);
-  h5000_EBEE->Scale(38.5);
+  // h5000_EBEE->Scale(38.5);
+  h5000_EBEE->Scale(luminosity);
   h5000_EBEE->Draw("HIST, SAME");
 
   h500_EBEE->GetXaxis()->SetTitle("M_{#gamma#gamma} [GeV]");
@@ -188,7 +222,7 @@ void plotClockwork(void){
   leg->AddEntry(h5000_EBEE, "k = 5000 GeV" ,"l");
   leg->Draw();
 
-  TLatex* cmstEBEE = new TLatex(0.58, 0.82, Form("#font[61]{CMS} #font[42]{%s} #font[42]{%s}", "EBEE", "2017"));
+  TLatex* cmstEBEE = new TLatex(0.58, 0.82, Form("#font[61]{CMS} #font[42]{%s} #font[42]{%s}", "EBEE", stryear.c_str()));
   cmstEBEE->SetNDC();
   cmstEBEE->SetTextSize(0.06);
   cmstEBEE->Draw();
@@ -198,16 +232,45 @@ void plotClockwork(void){
   clockworkEBEE->SetTextSize(0.04);
   clockworkEBEE->Draw();
 
-  TLatex* lumitEBEE = new TLatex(0.65, 0.92, Form("#font[42]{%s fb^{-1} (13 TeV)}", lumi["2017"].c_str()));
+  TLatex* lumitEBEE = new TLatex(0.65, 0.92, Form("#font[42]{%s fb^{-1} (13 TeV)}", lumi[stryear].c_str()));
   lumitEBEE->SetNDC();
   lumitEBEE->SetTextSize(0.04);
   lumitEBEE->Draw();
 
-  cEBEB->SaveAs("2017EBEB.png");
-  cEBEB->SaveAs("2017EBEB.pdf");
+  cEBEB->SaveAs(year + "EBEB.png");
+  cEBEB->SaveAs(year + "EBEB.pdf");
 
-  cEBEE->SaveAs("2017EBEE.png");
-  cEBEE->SaveAs("2017EBEE.pdf");
+  cEBEE->SaveAs(year + "EBEE.png");
+  cEBEE->SaveAs(year + "EBEE.pdf");
+
+  TString outputfilename = "Test"+ year +"_Clockwork.root";
+  TFile* outputFile = new TFile(outputfilename, "RECREATE");
+
+  //ADD_new_name = "%s%s__ADDNegInt%sLT%s" %(region, year[2:], NegInt, LambdaT)
+  h500_EBEB->SetName("BB"+year+"__CWk500");
+  h1000_EBEB->SetName("BB"+year+"__CWk1000");
+  h2000_EBEB->SetName("BB"+year+"__CWk2000");
+  h3000_EBEB->SetName("BB"+year+"__CWk3000");
+  h5000_EBEB->SetName("BB"+year+"__CWk5000");
+
+  h500_EBEE->SetName("BE"+year+"__CWk500");
+  h1000_EBEE->SetName("BE"+year+"__CWk1000");
+  h2000_EBEE->SetName("BE"+year+"__CWk2000");
+  h3000_EBEE->SetName("BE"+year+"__CWk3000");
+  h5000_EBEE->SetName("BE"+year+"__CWk5000");
+
+  h500_EBEB->Write();
+  h1000_EBEB->Write();
+  h2000_EBEB->Write();
+  h3000_EBEB->Write();
+  h5000_EBEB->Write();
+
+  h500_EBEE->Write();
+  h1000_EBEE->Write();
+  h2000_EBEE->Write();
+  h3000_EBEE->Write();
+  h5000_EBEE->Write();
+
 }
 
 
