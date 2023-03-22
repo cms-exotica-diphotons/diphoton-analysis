@@ -11,9 +11,9 @@
 
 TFile *rootfile=0;
 // std::string year = "2017";
-TString year = "2017";
-std::string stryear = "2017";
-TString yr = "17";
+TString year = "2016";
+std::string stryear = "2016";
+TString yr = "16";
 
 TH1* getHist(const char* name, int ANATYPE)
 {
@@ -32,7 +32,6 @@ TH1* getHist(const char* name, int ANATYPE)
   // if(ANATYPE==3) rootfile=new TFile(Form("Test{%s}_negInt-1_lT-6000.root", year).Data()); //
   // if(ANATYPE==4) rootfile=new TFile(Form("Test{%s}_negInt-0_lT-6000.root", year).Data()); //
   // 2018
-
 
   assert(rootfile);
   rootfile->cd();
@@ -88,43 +87,37 @@ void plotClockwork(void){
   TH1* h3000_EBEB=combine(getHist("diphotonMinvEBEB_k3000",1),getHist("diphotonMinvEBEB_k3000",2), getHist("diphotonMinvEBEB_k3000",3), getHist("diphotonMinvEBEB_k3000",4), getHist("diphotonMinvEBEB_k3000",0), 4000, 6000);
   TH1* h5000_EBEB=combine(getHist("diphotonMinvEBEB_k5000",1),getHist("diphotonMinvEBEB_k5000",2), getHist("diphotonMinvEBEB_k5000",3), getHist("diphotonMinvEBEB_k5000",4), getHist("diphotonMinvEBEB_k5000",0), 4000, 6000);
 
-  TH1* h0p1_EBEB=combine(getHist("diphotonMinvEBEB_k500",1),getHist("diphotonMinvEBEB_k500",2), getHist("diphotonMinvEBEB_k500",3), getHist("diphotonMinvEBEB_k500",4), getHist("diphotonMinvEBEB_k500",0), 4000, 6000);
-  TH1* h1000_EBEB=combine(getHist("diphotonMinvEBEB_k1000",1),getHist("diphotonMinvEBEB_k1000",2), getHist("diphotonMinvEBEB_k1000",3), getHist("diphotonMinvEBEB_k1000",4), getHist("diphotonMinvEBEB_k1000",0), 4000, 6000);
-  TH1* h2000_EBEB=combine(getHist("diphotonMinvEBEB_k2000",1),getHist("diphotonMinvEBEB_k2000",2), getHist("diphotonMinvEBEB_k2000",3), getHist("diphotonMinvEBEB_k2000",4), getHist("diphotonMinvEBEB_k2000",0), 4000, 6000);
-  TH1* h3000_EBEB=combine(getHist("diphotonMinvEBEB_k3000",1),getHist("diphotonMinvEBEB_k3000",2), getHist("diphotonMinvEBEB_k3000",3), getHist("diphotonMinvEBEB_k3000",4), getHist("diphotonMinvEBEB_k3000",0), 4000, 6000);
-  TH1* h5000_EBEB=combine(getHist("diphotonMinvEBEB_k5000",1),getHist("diphotonMinvEBEB_k5000",2), getHist("diphotonMinvEBEB_k5000",3), getHist("diphotonMinvEBEB_k5000",4), getHist("diphotonMinvEBEB_k5000",0), 4000, 6000);
-
   h500_EBEB->SetLineWidth(2);
   h500_EBEB->SetLineColor(kYellow);
-  h500_EBEB->Rebin(4);
+  // h500_EBEB->Rebin(4);
   // h500_EBEB->Scale(38.5);
   h500_EBEB->Scale(luminosity);
   h500_EBEB->Draw("HIST");
 
   h1000_EBEB->SetLineWidth(2);
   h1000_EBEB->SetLineColor(kOrange);
-  h1000_EBEB->Rebin(4);
+  // h1000_EBEB->Rebin(4);
   // h1000_EBEB->Scale(38.5);
   h1000_EBEB->Scale(luminosity);
   h1000_EBEB->Draw("HIST, SAME");
 
   h2000_EBEB->SetLineWidth(2);
   h2000_EBEB->SetLineColor(kRed);
-  h2000_EBEB->Rebin(4);
+  // h2000_EBEB->Rebin(4);
   // h2000_EBEB->Scale(38.5);
   h2000_EBEB->Scale(luminosity);
   h2000_EBEB->Draw("HIST, SAME");
 
   h3000_EBEB->SetLineWidth(2);
   h3000_EBEB->SetLineColor(kGreen);
-  h3000_EBEB->Rebin(4);
+  // h3000_EBEB->Rebin(4);
   // h3000_EBEB->Scale(38.5);
   h3000_EBEB->Scale(luminosity);
   h3000_EBEB->Draw("HIST, SAME");
 
   h5000_EBEB->SetLineWidth(2);
   h5000_EBEB->SetLineColor(kBlue);
-  h5000_EBEB->Rebin(4);
+  // h5000_EBEB->Rebin(4);
   // h5000_EBEB->Scale(38.5);
   h5000_EBEB->Scale(luminosity);
   h5000_EBEB->Draw("HIST, SAME");
@@ -172,35 +165,35 @@ void plotClockwork(void){
 
   h500_EBEE->SetLineWidth(2);
   h500_EBEE->SetLineColor(kYellow);
-  h500_EBEE->Rebin(4);
+  // h500_EBEE->Rebin(4);
   //h500_EBEE->Scale(38.5);
   h500_EBEE->Scale(luminosity);
   h500_EBEE->Draw("HIST");
 
   h1000_EBEE->SetLineWidth(2);
   h1000_EBEE->SetLineColor(kOrange);
-  h1000_EBEE->Rebin(4);
+  // h1000_EBEE->Rebin(4);
   //h1000_EBEE->Scale(38.5);
   h1000_EBEE->Scale(luminosity);
   h1000_EBEE->Draw("HIST, SAME");
 
   h2000_EBEE->SetLineWidth(2);
   h2000_EBEE->SetLineColor(kRed);
-  h2000_EBEE->Rebin(4);
+  // h2000_EBEE->Rebin(4);
   //h2000_EBEE->Scale(38.5);
   h2000_EBEE->Scale(luminosity);
   h2000_EBEE->Draw("HIST, SAME");
 
   h3000_EBEE->SetLineWidth(2);
   h3000_EBEE->SetLineColor(kGreen);
-  h3000_EBEE->Rebin(4);
+  // h3000_EBEE->Rebin(4);
   // h3000_EBEE->Scale(38.5);
   h3000_EBEE->Scale(luminosity);
   h3000_EBEE->Draw("HIST, SAME");
 
   h5000_EBEE->SetLineWidth(2);
   h5000_EBEE->SetLineColor(kBlue);
-  h5000_EBEE->Rebin(4);
+  // h5000_EBEE->Rebin(4);
   // h5000_EBEE->Scale(38.5);
   h5000_EBEE->Scale(luminosity);
   h5000_EBEE->Draw("HIST, SAME");
@@ -243,6 +236,23 @@ void plotClockwork(void){
   cEBEE->SaveAs(year + "EBEE.png");
   cEBEE->SaveAs(year + "EBEE.pdf");
 
+  // ======================================================================================= EXTRA stuff ==========================
+
+  // vector<TString> kvalue = {"0p1", "1", "10", "100", "500", "1000", "2000", "3000", "4000", "5000"};
+  TH1* h0p1_EBEB=combine(getHist("diphotonMinvEBEB_k0p1",1),getHist("diphotonMinvEBEB_k0p1",2), getHist("diphotonMinvEBEB_k0p1",3), getHist("diphotonMinvEBEB_k0p1",4), getHist("diphotonMinvEBEB_k0p1",0), 4000, 6000);
+  TH1* h1_EBEB=combine(getHist("diphotonMinvEBEB_k1",1),getHist("diphotonMinvEBEB_k1",2), getHist("diphotonMinvEBEB_k1",3), getHist("diphotonMinvEBEB_k1",4), getHist("diphotonMinvEBEB_k1",0), 4000, 6000);
+  TH1* h10_EBEB=combine(getHist("diphotonMinvEBEB_k10",1),getHist("diphotonMinvEBEB_k10",2), getHist("diphotonMinvEBEB_k10",3), getHist("diphotonMinvEBEB_k10",4), getHist("diphotonMinvEBEB_k10",0), 4000, 6000);
+  TH1* h100_EBEB=combine(getHist("diphotonMinvEBEB_k100",1),getHist("diphotonMinvEBEB_k100",2), getHist("diphotonMinvEBEB_k100",3), getHist("diphotonMinvEBEB_k100",4), getHist("diphotonMinvEBEB_k100",0), 4000, 6000);
+  TH1* h4000_EBEB=combine(getHist("diphotonMinvEBEB_k4000",1),getHist("diphotonMinvEBEB_k4000",2), getHist("diphotonMinvEBEB_k4000",3), getHist("diphotonMinvEBEB_k4000",4), getHist("diphotonMinvEBEB_k4000",0), 4000, 6000);
+
+  TH1* h0p1_EBEE=combine(getHist("diphotonMinvEBEE_k0p1",1),getHist("diphotonMinvEBEE_k0p1",2), getHist("diphotonMinvEBEE_k0p1",3), getHist("diphotonMinvEBEE_k0p1",4), getHist("diphotonMinvEBEE_k0p1",0), 4000, 6000);
+  TH1* h1_EBEE=combine(getHist("diphotonMinvEBEE_k1",1),getHist("diphotonMinvEBEE_k1",2), getHist("diphotonMinvEBEE_k1",3), getHist("diphotonMinvEBEE_k1",4), getHist("diphotonMinvEBEE_k1",0), 4000, 6000);
+  TH1* h10_EBEE=combine(getHist("diphotonMinvEBEE_k10",1),getHist("diphotonMinvEBEE_k10",2), getHist("diphotonMinvEBEE_k10",3), getHist("diphotonMinvEBEE_k10",4), getHist("diphotonMinvEBEE_k10",0), 4000, 6000);
+  TH1* h100_EBEE=combine(getHist("diphotonMinvEBEE_k100",1),getHist("diphotonMinvEBEE_k100",2), getHist("diphotonMinvEBEE_k100",3), getHist("diphotonMinvEBEE_k100",4), getHist("diphotonMinvEBEE_k100",0), 4000, 6000);
+  TH1* h4000_EBEE=combine(getHist("diphotonMinvEBEE_k4000",1),getHist("diphotonMinvEBEE_k4000",2), getHist("diphotonMinvEBEE_k4000",3), getHist("diphotonMinvEBEE_k4000",4), getHist("diphotonMinvEBEE_k4000",0), 4000, 6000);
+
+  //====================== Input to Limits Code =======================================
+
   TString outputfilename = "Test"+ year +"_Clockwork.root";
   TFile* outputFile = new TFile(outputfilename, "RECREATE");
 
@@ -271,6 +281,45 @@ void plotClockwork(void){
   h3000_EBEE->Write();
   h5000_EBEE->Write();
 
+  // ======= EXTRA
+
+  h0p1_EBEB->SetName("BB"+year+"__CWk0p1");
+  h1_EBEB->SetName("BB"+year+"__CWk1");
+  h10_EBEB->SetName("BB"+year+"__CWk10");
+  h100_EBEB->SetName("BB"+year+"__CWk100");
+  h4000_EBEB->SetName("BB"+year+"__CWk4000");
+
+  h0p1_EBEE->SetName("BE"+year+"__CWk0p1");
+  h1_EBEE->SetName("BE"+year+"__CWk1");
+  h10_EBEE->SetName("BE"+year+"__CWk10");
+  h100_EBEE->SetName("BE"+year+"__CWk100");
+  h4000_EBEE->SetName("BE"+year+"__CWk4000");
+
+  h0p1_EBEB->Scale(luminosity);
+  h1_EBEB->Scale(luminosity);
+  h10_EBEB->Scale(luminosity);
+  h100_EBEB->Scale(luminosity);
+  h4000_EBEB->Scale(luminosity);
+
+  h0p1_EBEE->Scale(luminosity);
+  h1_EBEE->Scale(luminosity);
+  h10_EBEE->Scale(luminosity);
+  h100_EBEE->Scale(luminosity);
+  h4000_EBEE->Scale(luminosity);
+
+  h0p1_EBEB->Write();
+  h1_EBEB->Write();
+  h10_EBEB->Write();
+  h100_EBEB->Write();
+  h4000_EBEB->Write();
+
+  h0p1_EBEE->Write();
+  h1_EBEE->Write();
+  h10_EBEE->Write();
+  h100_EBEE->Write();
+  h4000_EBEE->Write();
+
+  outputFile->Close();
 }
 
 
