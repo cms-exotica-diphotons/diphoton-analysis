@@ -11,7 +11,7 @@
 
 using namespace std;
 
-void clockwork_looper(std::string run, double lambdaT, int negInt){
+void clockwork_looper(int run, double lambdaT, int negInt){
   // cout << "\nRun Configuration: " << run << "; kVal: " << kVal << "; lambdaT: " << lambdaT << "; negInt: "  << negInt << endl;
 
   // use stopwatch for timing
@@ -30,7 +30,7 @@ void clockwork_looper(std::string run, double lambdaT, int negInt){
   // double lT = std::stod(lambdaT);
   double lT = lambdaT;
 
-  if (run == "2016") {
+  if (run == 2016) {
       std::cout << "Chaining 2016 files: " << std::endl;
       if (negInt == 0 && lT == 10000) {
         chain->Add(baseDirectory + "/store/user/cawest/diphoton/516280d/ADDGravToGG_NegInt-0_LambdaT-10000_M-1000To2000_TuneCP2_13TeV-pythia8/crab_ADDGravToGG_NegInt-0_LambdaT-10000_M-1000To2000_TuneCP2_13TeV-pythia8__Summer16MiniAODv3-v1__MINIAO/220327_195505/0000/*.root");
@@ -212,7 +212,7 @@ void clockwork_looper(std::string run, double lambdaT, int negInt){
   }
 }
 
-if (run == "2017") {
+if (run == 2017) {
   if (negInt == 0 && lT == 10000) {
     chain->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/ADDGravToGG_NegInt-0_LambdaT-10000_M-1000To2000_TuneCP2_13TeV-pythia8/crab_ADDGravToGG_NegInt-0_LambdaT-10000_M-1000To2000_TuneCP2_13TeV-pythia8__Fall17_PU2017-v1__MINIAODSIM/191206_003250/0000/*.root");
     chain->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/ADDGravToGG_NegInt-0_LambdaT-10000_M-2000To4000_TuneCP2_13TeV-pythia8/crab_ADDGravToGG_NegInt-0_LambdaT-10000_M-2000To4000_TuneCP2_13TeV-pythia8__Fall17_PU2017-v1__MINIAODSIM/191206_003306/0000/*.root");
@@ -385,7 +385,7 @@ if (run == "2017") {
   }
 }
 
-if (run == "2018") {
+if (run == 2018) {
   if (negInt == 0 && lT == 10000) {
     chain->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/ADDGravToGG_NegInt-0_LambdaT-10000_M-1000To2000_TuneCP2_13TeV-pythia8/crab_ADDGravToGG_NegInt-0_LambdaT-10000_M-1000To2000_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/191203_184742/0000/*.root");
     chain->Add(baseDirectory + "/store/user/cawest/diphoton/969aff9/ADDGravToGG_NegInt-0_LambdaT-10000_M-2000To4000_TuneCP2_13TeV-pythia8/crab_ADDGravToGG_NegInt-0_LambdaT-10000_M-2000To4000_TuneCP2_13TeV-pythia8__Autumn18-v1__MINIAODSIM/191203_184815/0000/*.root");

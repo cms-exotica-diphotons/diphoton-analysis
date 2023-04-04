@@ -11,9 +11,9 @@
 
 TFile *rootfile=0;
 // std::string year = "2017";
-TString year = "2016";
-std::string stryear = "2016";
-TString yr = "16";
+TString year = "2018";
+std::string stryear = "2018";
+TString yr = "18";
 
 TH1* getHist(const char* name, int ANATYPE)
 {
@@ -253,8 +253,8 @@ void plotClockwork(void){
 
   //====================== Input to Limits Code =======================================
 
-  TString outputfilename = "Test"+ year +"_Clockwork.root";
-  TFile* outputFile = new TFile(outputfilename, "RECREATE");
+  TString outputfilenameBB = "BB"+ year +"_Clockwork.root";
+  TFile* outputFileBB = new TFile(outputfilenameBB, "RECREATE");
 
   //ADD_new_name = "%s%s__ADDNegInt%sLT%s" %(region, year[2:], NegInt, LambdaT)
   h500_EBEB->SetName("BB"+year+"__CWk500");
@@ -263,37 +263,11 @@ void plotClockwork(void){
   h3000_EBEB->SetName("BB"+year+"__CWk3000");
   h5000_EBEB->SetName("BB"+year+"__CWk5000");
 
-  h500_EBEE->SetName("BE"+year+"__CWk500");
-  h1000_EBEE->SetName("BE"+year+"__CWk1000");
-  h2000_EBEE->SetName("BE"+year+"__CWk2000");
-  h3000_EBEE->SetName("BE"+year+"__CWk3000");
-  h5000_EBEE->SetName("BE"+year+"__CWk5000");
-
-  h500_EBEB->Write();
-  h1000_EBEB->Write();
-  h2000_EBEB->Write();
-  h3000_EBEB->Write();
-  h5000_EBEB->Write();
-
-  h500_EBEE->Write();
-  h1000_EBEE->Write();
-  h2000_EBEE->Write();
-  h3000_EBEE->Write();
-  h5000_EBEE->Write();
-
-  // ======= EXTRA
-
   h0p1_EBEB->SetName("BB"+year+"__CWk0p1");
   h1_EBEB->SetName("BB"+year+"__CWk1");
   h10_EBEB->SetName("BB"+year+"__CWk10");
   h100_EBEB->SetName("BB"+year+"__CWk100");
   h4000_EBEB->SetName("BB"+year+"__CWk4000");
-
-  h0p1_EBEE->SetName("BE"+year+"__CWk0p1");
-  h1_EBEE->SetName("BE"+year+"__CWk1");
-  h10_EBEE->SetName("BE"+year+"__CWk10");
-  h100_EBEE->SetName("BE"+year+"__CWk100");
-  h4000_EBEE->SetName("BE"+year+"__CWk4000");
 
   h0p1_EBEB->Scale(luminosity);
   h1_EBEB->Scale(luminosity);
@@ -301,25 +275,54 @@ void plotClockwork(void){
   h100_EBEB->Scale(luminosity);
   h4000_EBEB->Scale(luminosity);
 
+  h0p1_EBEB->Write();
+  h1_EBEB->Write();
+  h10_EBEB->Write();
+  h100_EBEB->Write();
+  h500_EBEB->Write();
+  h1000_EBEB->Write();
+  h2000_EBEB->Write();
+  h3000_EBEB->Write();
+  h4000_EBEB->Write();
+  h5000_EBEB->Write();
+
+  outputFileBB->Close();
+
+  //======== BE
+
+  TString outputfilenameBE = "BE"+ year +"_Clockwork.root";
+  TFile* outputFileBE = new TFile(outputfilenameBE, "RECREATE");
+
+  h500_EBEE->SetName("BE"+year+"__CWk500");
+  h1000_EBEE->SetName("BE"+year+"__CWk1000");
+  h2000_EBEE->SetName("BE"+year+"__CWk2000");
+  h3000_EBEE->SetName("BE"+year+"__CWk3000");
+  h5000_EBEE->SetName("BE"+year+"__CWk5000");
+
+  h0p1_EBEE->SetName("BE"+year+"__CWk0p1");
+  h1_EBEE->SetName("BE"+year+"__CWk1");
+  h10_EBEE->SetName("BE"+year+"__CWk10");
+  h100_EBEE->SetName("BE"+year+"__CWk100");
+  h4000_EBEE->SetName("BE"+year+"__CWk4000");
+
   h0p1_EBEE->Scale(luminosity);
   h1_EBEE->Scale(luminosity);
   h10_EBEE->Scale(luminosity);
   h100_EBEE->Scale(luminosity);
   h4000_EBEE->Scale(luminosity);
 
-  h0p1_EBEB->Write();
-  h1_EBEB->Write();
-  h10_EBEB->Write();
-  h100_EBEB->Write();
-  h4000_EBEB->Write();
-
   h0p1_EBEE->Write();
   h1_EBEE->Write();
   h10_EBEE->Write();
   h100_EBEE->Write();
+  h500_EBEE->Write();
+  h1000_EBEE->Write();
+  h2000_EBEE->Write();
+  h3000_EBEE->Write();
   h4000_EBEE->Write();
+  h5000_EBEE->Write();
 
-  outputFile->Close();
+  outputFileBE->Close();
 }
 
 

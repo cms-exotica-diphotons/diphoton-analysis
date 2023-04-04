@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-  std::string run;
+  int run;
   double lambdaT;
   int negInt;
 
@@ -14,10 +14,10 @@ int main(int argc, char *argv[])
     return -1;
   }
   else {
-    run = argv[1];
-    if(run.find("2016") != std::string::npos
-       and run.find("2017") != std::string::npos
-       and run.find("2018") != std::string::npos) {
+    run = std::atoi(argv[1]);
+    if(run != 2016
+       and run != 2017
+       and run != 2018) {
       std::cout << "Only '2016', '2017', and '2018' are allowed years." << std::endl;
       return -1;
     }
