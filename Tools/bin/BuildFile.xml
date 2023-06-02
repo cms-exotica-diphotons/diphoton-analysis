@@ -6,6 +6,7 @@
   <bin file="draw_kfactor.cc" name="draw_kfactor.exe"/>
   <bin file="compare.cc" name="compare.exe"/>
   <bin file="compare_fake_predictions.cc" name="compare_fake_predictions.exe"/>
+  <bin file="compare_fake_pred_doublecount.cc" name="compare_fake_pred_doublecount.exe"/>
   <bin file="compare_lo_nlo.cc" name="compare_lo_nlo.exe"/>
   <bin file="compare_rereco.cc" name="compare_rereco.exe"/>
   <bin file="compareGenerators.cc" name="compareGenerators.exe"/>

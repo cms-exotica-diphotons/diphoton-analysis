@@ -10,16 +10,16 @@
 #include <string>
 #include <vector>
 
-void compare_fake_predictions();
+void compare_fake_pred_doublecount();
 
 int main()
 {
-  compare_fake_predictions();
+  compare_fake_pred_doublecount();
 
   return 0;
 }
 
-void compare_fake_predictions()
+void compare_fake_pred_doublecount()
 {
   setTDRStyle();
 
@@ -27,6 +27,7 @@ void compare_fake_predictions()
   std::vector<std::string> regions({"BB", "BE"});
   std::vector<int> years({2018, 2017, 2016});
   std::vector<TFile*> files;
+  std::vector<TFile*> files0;
   std::vector<std::string> hist_names({"Minv", "pt1", "pt2", "qt", "absDeltaPhi", "deltaEta", "deltaR", "scEta1", "phi1", "scEta2", "phi2"});
   std::map<std::string, std::string> pretty_names;
   pretty_names["Minv"] = "m_{#gamma#gamma} (GeV)";
@@ -41,6 +42,7 @@ void compare_fake_predictions()
   pretty_names["phi2"] = "#phi_{2}";
 
   std::vector<TH1D*> hists;
+  std::vector<TH1D*> hists0;
   std::vector<TH1D*> ratios;
   std::vector<TCanvas*> canvases;
   std::map<int, int> color;
@@ -76,8 +78,19 @@ void compare_fake_predictions()
 	  hists.back()->SetLineColor(color[year]);
 	  hists.back()->SetMarkerColor(color[year]);
 	  hists.back()->Scale(1/luminosity[std::to_string(year)]);
+
+    files0.push_back(TFile::Open(Form("data/originalFakes/fakes_%d_%s.root", year, fake_type.c_str())));
+    hists0.push_back((TH1D*)files0.back()->Get(Form("%s/%s_%s", region.c_str(), region.c_str(), hist_name.c_str())));
+    hists0.back()->SetDirectory(nullptr);
+    hists0.back()->SetLineColor(color[year]);
+    hists0.back()->SetMarkerColor(color[year]);
+    hists0.back()->SetMarkerStyle(22);
+    hists0.back()->Scale(1/luminosity[std::to_string(year)]);
 	  // scale down 2017 and 2018 for ease of visualization
-	  if(year == 2017 or year == 2018) hists.back()->Scale(0.5);
+	  if(year == 2017 or year == 2018){
+      hists.back()->Scale(0.5);
+      hists0.back()->Scale(0.5);
+    }
 	  hists.back()->GetXaxis()->SetTitle(pretty_names[hist_name].c_str());
 	  hists.back()->GetYaxis()->SetTitle("Entries/(1 fb^{-1})");
 	  if(!first_year) {
@@ -85,19 +98,26 @@ void compare_fake_predictions()
 	    first_year = hists.back();
 	  }
 	  else hists.back()->Draw("same");
-	  double histMax = hists.back()->GetMaximum();
+    hists0.back()->Draw("same");
+
+    double histMax = hists.back()->GetMaximum();
 	  if(histMax > max) {
 	    max = histMax;
 	    hists.back()->GetYaxis()->SetRangeUser(0, 1.25*max);
 	  }
+    std::string v0 = "v0";
 	  std::string year_str = std::to_string(year);
 	  // scale down 2017 and 2018 for ease of visualization
 	  if(year!=2016) {
 	    year_str += "/2";
 	  }
+
+    leg->AddEntry(hists0.back(), "2x");
 	  leg->AddEntry(hists.back(), year_str.c_str());
 	  lat->DrawLatexNDC(0.6, 0.5, region.c_str());
 	  lat->DrawLatexNDC(0.6, 0.4, fake_type.c_str());
+
+
 
 	  pad2->cd();
 	  ratios.push_back((TH1D*)hists.back()->Clone());
@@ -113,8 +133,8 @@ void compare_fake_predictions()
 	pad1->cd();
 	leg->Draw();
 
-	canvases.back()->Print(Form("plots/compare_fake_pred_%s.pdf", id_str.c_str()));
-	canvases.back()->Print(Form("plots/compare_fake_pred_%s.png", id_str.c_str()));
+	canvases.back()->Print(Form("plots/compare_fake_pred_doublecount_%s.pdf", id_str.c_str()));
+	canvases.back()->Print(Form("plots/compare_fake_pred_doublecount_%s.png", id_str.c_str()));
 
 	first_year = nullptr;
       }

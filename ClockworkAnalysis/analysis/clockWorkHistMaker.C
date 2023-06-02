@@ -1002,7 +1002,6 @@ void clockWorkHistMaker::Loop(int run, double lambdaT, int negInt)
    diphotonMinvEBEB_k4000->Write();
    diphotonMinvEBEB_k5000->Write();
 
-
    diphotonMinvEBEE_k0p1->Write();
    diphotonMinvEBEE_k1->Write();
    diphotonMinvEBEE_k10->Write();

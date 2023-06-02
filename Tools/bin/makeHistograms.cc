@@ -50,16 +50,16 @@ int main(int argc, char *argv[])
   // add fake rate prediction histograms
   addFakePrediction(region, year, output);
 
-  // loop over all other samples
-  allSamples(region, year, output);
+  // // loop over all other samples
+  // allSamples(region, year, output);
   output->Write();
   output->Close();
 
-  // re-open files and add statistical error to files
-  getDiphotonYieldVariations(region, "kfactorStat0", year);
-  getDiphotonYieldVariations(region, "kfactorStat1", year);
-  getDiphotonYieldVariations(region, "kfactorStat2", year);
-  getDiphotonYieldVariations(region, "kfactorStat3", year);
+  // // re-open files and add statistical error to files
+  // getDiphotonYieldVariations(region, "kfactorStat0", year);
+  // getDiphotonYieldVariations(region, "kfactorStat1", year);
+  // getDiphotonYieldVariations(region, "kfactorStat2", year);
+  // getDiphotonYieldVariations(region, "kfactorStat3", year);
 
   std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
   std::cout << "Time Elapsed = " << std::chrono::duration_cast<std::chrono::hours>(end - begin).count() << "[hrs]" << std::endl;
@@ -82,7 +82,6 @@ void addFakePrediction(const std::string &region, const std::string &year, TFile
     fakeHist->SetName(Form("gj%s", histPostFix[fakeRate].c_str()));
     fakeHist->Write();
   }
-
 }
 
 std::string addCutsPerSample(const std::string &cut, const std::string &sample, const std::string &region, const std::string &year)

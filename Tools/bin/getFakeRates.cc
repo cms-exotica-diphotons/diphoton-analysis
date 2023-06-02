@@ -82,9 +82,9 @@ int main(int argc, char *argv[])
 
   TFile *input = TFile::Open(fakeRateFile.c_str());
   TFile *output = new TFile(fakeRateOutputFile.c_str(), "recreate");
-  
+
   for(unsigned int iIso = 0; iIso<isolationSidebands.size(); iIso++) {
-    for(unsigned int iRegion = 0; iRegion<regions.size(); iRegion++) { 
+    for(unsigned int iRegion = 0; iRegion<regions.size(); iRegion++) {
       TString histName(Form("fakeRate%s_%s", regions[iRegion].c_str(), isolationSidebands[iIso].c_str()));
       TGraphAsymmErrors *graph;
       std::cout << "Getting fake rate graph " << histName << " from file " << fakeRateFile << std::endl;
@@ -160,5 +160,5 @@ TF1* getFakeRateFunction(const std::string& isolation, const std::string& region
     fakeRate->SetParameters(0., 2.3, 0.1);
     fakeRate->SetParLimits(2, 0.1, 3.5);
   }
-  return fakeRate;		    
+  return fakeRate;
 }

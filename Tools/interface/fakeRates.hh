@@ -78,6 +78,7 @@ else{
 // 2 = jetht
 double fakeRates::getFakeRate(double pt, int region, int nPV)
 {
+  // std::cout << "Do something " << pt << " " << region << " " << nPV << std::endl;
   std::vector<std::string> regions = {"EB", "EE", "EE1", "EE2"};
   std::string pvCut = "";
   if(nPV >= 0 && nPV <= 22) pvCut = "0-22";
@@ -96,7 +97,6 @@ double fakeRates::getFakeRate(double pt, int region, int nPV)
 
   std::string keyname_doublemuon(regions[region] + "_doublemuon_" + pvCut);
   std::string keyname_jetht(regions[region] + "_jetht_" + pvCut);
-
   int nmax_doublemuon = m_fakeRates[keyname_doublemuon]->GetN()-1;
   double pt_max_doublemuon = m_fakeRates[keyname_doublemuon]->GetX()[nmax_doublemuon];
   int nmax_jetht = m_fakeRates[keyname_jetht]->GetN()-1;
@@ -109,7 +109,6 @@ double fakeRates::getFakeRate(double pt, int region, int nPV)
   else if(m_fakeRateType == "doublemuon") return m_fakeRates[keyname_doublemuon]->Eval(pt_doublemuon);
   else if(m_fakeRateType == "jetht") return m_fakeRates[keyname_jetht]->Eval(pt_jetht);
   else std::cout << "Fake rate type " << m_fakeRateType << "not supported." << std::endl;
-
   return 0;
 }
 
