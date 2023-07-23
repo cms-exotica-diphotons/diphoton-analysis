@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
   }
 
   // include signal samples but not unskimmed data samples
-  init(false, true);
+  init(true, false);
 
   TFile *output = new TFile(Form("datacards/Minv_histos_%s_%s.root", region.c_str(), year.c_str()), "recreate");
   output->mkdir(region.c_str());
@@ -114,9 +114,10 @@ std::string addCutsPerSample(const std::string &cut, const std::string &sample, 
       else sampleCut += "*(Diphoton.Minv > 600)";
     }
   }
-  else {
-    sampleCut += "*(Diphoton.Minv < 1000)";
-  }
+// Remove after unblinding 
+  //else {
+    //sampleCut += "*(Diphoton.Minv < 1000)";
+ // }
   // apply k-factor to Sherpa GG sample
   if( sample.find("gg_R2F2_") != std::string::npos) {
     if( is2015 ) sampleCut += "*" + kfactorString(region, "R2F2_125GeV_CT10");
