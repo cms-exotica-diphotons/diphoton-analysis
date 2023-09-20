@@ -1,0 +1,7 @@
+Run2016B_v1_0.root*
+Run2016C_v1_0.root*
+Run2016D_v1_0.root*
+Run2016E_v1_0.root*
+Run2016F_v1_0.root*
+Run2016G_v1_0.root*
+Run2016H_v1_0.root*
