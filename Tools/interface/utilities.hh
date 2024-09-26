@@ -147,7 +147,6 @@ std::string kfactorString(const std::string & region, const std::string & scales
   else kfactorWeight = Form("(%6.6e + %6.6e*%s + %6.6e*%s + %6.6e*%s)",
                             kfactorFunction->GetParameter(0), kfactorFunction->GetParameter(1), reweightVariable.c_str(),
                             kfactorFunction->GetParameter(2),  squared.c_str(), kfactorFunction->GetParameter(3), cubed.c_str());
-  
   return kfactorWeight.Data();
 }
 
@@ -344,8 +343,8 @@ void getSignalAndInterference(std::string pointNameBase, std::string region, TH1
   histPositiveInt_sub->Draw();
   histPositiveInt_sub->GetXaxis()->SetRangeUser(500, 6000);
   histNegativeInt_sub->Draw("same");
-  
-  
+
+
   signal = static_cast<TH1D*>(histPositiveInt_sub->Clone(pointNameBase.c_str()));
   signal->SetName(pointNameBase.c_str());
   signal->SetTitle(pointNameBase.c_str());

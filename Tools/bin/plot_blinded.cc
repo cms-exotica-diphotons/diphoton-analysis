@@ -118,13 +118,13 @@ void plot_blinded(const std::string& years_to_plot)
 
     pad1->cd();
     sumBackground[region]->SetTitle(Form(";m_{#gamma#gamma} (GeV); Events / %d GeV", static_cast<int>(binWidth)));
-    sumBackground[region]->GetXaxis()->SetRangeUser(xmin, 1000);    
+    sumBackground[region]->GetXaxis()->SetRangeUser(xmin, 1000);
     sumBackground[region]->Draw("hist");
     sumBackground[region]->GetYaxis()->SetRangeUser(0., 1.3*sumBackground[region]->GetMaximum());
     stacks[region]->Draw("hist same");
     sumData[region]->SetLineColor(kBlack);
     sumData[region]->SetMarkerStyle(kFullCircle);
-    sumData[region]->GetXaxis()->SetRangeUser(xmin, 1000);    
+    sumData[region]->GetXaxis()->SetRangeUser(xmin, 1000);
     sumData[region]->Draw("same");
     TLegend *leg = new TLegend(0.6, 0.6, 0.9, 0.9);
     leg->AddEntry(sumData[region], "Data", "ELP");
@@ -159,10 +159,10 @@ void plot_blinded(const std::string& years_to_plot)
       if(data > 0.0) pull = (data - background) / sqrt(data);
       chi2 += pull*pull;
     }
-    std::cout << "chi^2/ndof (" << region << "): " 
+    std::cout << "chi^2/ndof (" << region << "): "
 	      << chi2 << "/" << ratio->GetNbinsX() << std::endl;
     ratio->SetTitle(";m_{#gamma#gamma} (GeV); Ratio");
-    ratio->GetXaxis()->SetRangeUser(xmin, 1000);    
+    ratio->GetXaxis()->SetRangeUser(xmin, 1000);
     ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
     ratio->GetXaxis()->SetTitleSize(ratio->GetXaxis()->GetTitleSize()/0.7);
     ratio->GetXaxis()->SetTitleOffset(ratio->GetXaxis()->GetTitleOffset()/0.7);
